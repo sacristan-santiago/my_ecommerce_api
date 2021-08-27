@@ -1,39 +1,83 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.carritoPersistencia = void 0;
-const moment_1 = __importDefault(require("moment"));
-const fs = require('fs/promises');
-const path = require('path');
-let carrito = {
-    id: 1,
-    timestamp: moment_1.default().format("D.M.YY HH:mm:ss"),
-    productos: [
-        { id: 2, timestamp: moment_1.default().format("D.M.YY HH:mm:ss"), nombre: "lapiz2", descripcion: "lapiz de caracteristicas 2", codigo: "ASD223", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 210, stock: 11 },
-        { id: 3, timestamp: moment_1.default().format("D.M.YY HH:mm:ss"), nombre: "lapiz3", descripcion: "lapiz de caracteristicas 3", codigo: "ASD323", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 220, stock: 12 },
-        { id: 5, timestamp: moment_1.default().format("D.M.YY HH:mm:ss"), nombre: "lapiz5", descripcion: "lapiz de caracteristicas 5", codigo: "ASD523", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 240, stock: 14 },
-    ]
-};
+const promises_1 = __importDefault(require("fs/promises"));
+const path_1 = __importDefault(require("path"));
+const carritoRute = "../database/carrito.txt";
 class Carrito {
     findProduct(id = undefined) {
-        return carrito.productos.find(aProduct => aProduct.id == Number(id));
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const ruta = path_1.default.resolve(__dirname, carritoRute);
+                const data = yield promises_1.default.readFile(ruta, "utf-8");
+                const carrito = JSON.parse(data);
+                return carrito.productos.find((aProduct) => aProduct.id == Number(id));
+            }
+            catch (_a) {
+                return console.log("no se encontro el archivo");
+            }
+        });
     }
     getProducts(id = undefined) {
-        if (id) {
-            return carrito.productos.find(aProduct => aProduct.id == Number(id));
-        }
-        return carrito.productos;
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const ruta = path_1.default.resolve(__dirname, carritoRute);
+                const data = yield promises_1.default.readFile(ruta, "utf-8");
+                const carrito = JSON.parse(data);
+                if (id) {
+                    return carrito.productos.find((aProduct) => aProduct.id == Number(id));
+                }
+                return carrito.productos;
+            }
+            catch (_a) {
+                return console.log("no se encontro el archivo");
+            }
+        });
     }
     addProduct(newProduct) {
-        carrito.productos.push(newProduct);
-        return newProduct;
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const ruta = path_1.default.resolve(__dirname, carritoRute);
+                const data = yield promises_1.default.readFile(ruta, "utf-8");
+                const carrito = JSON.parse(data);
+                carrito.productos.push(newProduct);
+                yield promises_1.default.writeFile(ruta, JSON.stringify(carrito, null, "\t"));
+                console.log("El producto fue agregado al carrito!");
+                return newProduct;
+            }
+            catch (_a) {
+                return console.log("no se encontro el archivo");
+            }
+        });
     }
     deleteProduct(id) {
-        const deletedProduct = carrito.productos.filter(aProduct => aProduct.id == Number(id));
-        carrito.productos = carrito.productos.filter(aProduct => aProduct.id !== Number(id));
-        return deletedProduct;
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const ruta = path_1.default.resolve(__dirname, carritoRute);
+                const data = yield promises_1.default.readFile(ruta, "utf-8");
+                const carrito = JSON.parse(data);
+                const deletedProduct = carrito.productos.filter((aProduct) => aProduct.id == Number(id));
+                carrito.productos = carrito.productos.filter((aProduct) => aProduct.id !== Number(id));
+                yield promises_1.default.writeFile(ruta, JSON.stringify(carrito, null, "\t"));
+                console.log("El producto fue eliminado del carrito!");
+                return deletedProduct;
+            }
+            catch (_a) {
+                return console.log("no se encontro el archivo");
+            }
+        });
     }
 }
 exports.carritoPersistencia = new Carrito();

@@ -1,16 +1,8 @@
 import moment from "moment";
-const fs =  require('fs/promises');
-const path = require('path');
+import fs from 'fs/promises';
+import path from 'path';
 
-let carrito = {
-    id: 1, 
-    timestamp: moment().format("D.M.YY HH:mm:ss"),
-    productos: [
-        { id: 2, timestamp: moment().format("D.M.YY HH:mm:ss"), nombre: "lapiz2", descripcion: "lapiz de caracteristicas 2", codigo: "ASD223", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 210, stock: 11},
-        { id: 3, timestamp: moment().format("D.M.YY HH:mm:ss"), nombre: "lapiz3", descripcion: "lapiz de caracteristicas 3", codigo: "ASD323", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 220, stock: 12},
-        { id: 5, timestamp: moment().format("D.M.YY HH:mm:ss"), nombre: "lapiz5", descripcion: "lapiz de caracteristicas 5", codigo: "ASD523", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 240, stock: 14},
-    ]
-}
+const carritoRute = "../database/carrito.txt"
 
 interface Product {
     id: number,
@@ -24,29 +16,72 @@ interface Product {
 }
 
 class Carrito {
-    findProduct (id: number | undefined = undefined) {
-        return carrito.productos.find(aProduct => aProduct.id == Number(id));
-    }
-    
-    getProducts (id: number | undefined = undefined) {
-        if (id) {
-            return carrito.productos.find(aProduct => aProduct.id == Number(id));
+    async findProduct (id: number | undefined = undefined) {
+        try {
+            const ruta = path.resolve(__dirname, carritoRute);
+            const data = await fs.readFile(ruta, "utf-8");
+            const carrito = JSON.parse(data);
+
+            return carrito.productos.find((aProduct: any) => aProduct.id == Number(id));
+        
+        } catch {
+            return console.log("no se encontro el archivo");
         }
-        return carrito.productos
     }
     
-    addProduct (newProduct: any){
-        carrito.productos.push(newProduct);
+    async getProducts (id: number | undefined = undefined) {
+        try {
+            const ruta = path.resolve(__dirname, carritoRute);
+            const data = await fs.readFile(ruta, "utf-8");
+            const carrito = JSON.parse(data);
 
-        return newProduct;
+            if (id) {
+                return carrito.productos.find((aProduct: any) => aProduct.id == Number(id));
+            }
+
+            return carrito.productos
+
+        } catch {
+            return console.log("no se encontro el archivo");
+        }
+    }
+    
+    async addProduct (newProduct: any){
+        try {
+            const ruta = path.resolve(__dirname, carritoRute);
+            const data = await fs.readFile(ruta, "utf-8");
+            const carrito = JSON.parse(data);
+            
+            carrito.productos.push(newProduct);
+
+            await fs.writeFile(ruta, JSON.stringify(carrito, null, "\t"));
+            console.log("El producto fue agregado al carrito!")
+            
+            return newProduct;
+
+        } catch {
+            return console.log("no se encontro el archivo");
+        }
     }
 
-    deleteProduct(id: number) {
-        const deletedProduct = carrito.productos.filter(aProduct => aProduct.id == Number(id));
-        carrito.productos = carrito.productos.filter(aProduct => aProduct.id !== Number(id));
-        return deletedProduct;
+    async deleteProduct(id: number) {
+        try {
+            const ruta = path.resolve(__dirname, carritoRute);
+            const data = await fs.readFile(ruta, "utf-8");
+            const carrito = JSON.parse(data);
+            
+            const deletedProduct = carrito.productos.filter((aProduct:any)=> aProduct.id == Number(id));
+            carrito.productos = carrito.productos.filter((aProduct:any) => aProduct.id !== Number(id));
+            
+            await fs.writeFile(ruta, JSON.stringify(carrito, null, "\t"));
+            console.log("El producto fue eliminado del carrito!")
+            
+            return deletedProduct;
+
+        } catch {
+            return console.log("no se encontro el archivo");
+        }
     }
 }
 
 export const carritoPersistencia = new Carrito ();
-
