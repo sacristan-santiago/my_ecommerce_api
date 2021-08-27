@@ -1,17 +1,24 @@
+import moment from "moment";
+
 let carrito = {
     id: 1, 
-    timestamp: Date.now(),
+    timestamp: moment().format("D.M.YY HH:mm:ss"),
     productos: [
-        {id: 2, nombre: "lapiz2", precio: 210},
-        {id: 3, nombre: "lapiz3", precio: 220},
-        {id: 5, nombre: "lapiz5", precio: 240},
+        { id: 2, timestamp: moment().format("D.M.YY HH:mm:ss"), nombre: "lapiz2", descripcion: "lapiz de caracteristicas 2", codigo: "ASD223", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 210, stock: 11},
+        { id: 3, timestamp: moment().format("D.M.YY HH:mm:ss"), nombre: "lapiz3", descripcion: "lapiz de caracteristicas 3", codigo: "ASD323", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 220, stock: 12},
+        { id: 5, timestamp: moment().format("D.M.YY HH:mm:ss"), nombre: "lapiz5", descripcion: "lapiz de caracteristicas 5", codigo: "ASD523", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 240, stock: 14},
     ]
 }
 
 interface Product {
     id: number,
+    timestamp: string
     nombre: string, 
-    precio: number 
+    descripcion: string,
+    codigo: string,
+    foto: string,
+    precio: number,
+    stock: number,
 }
 
 class Carrito {

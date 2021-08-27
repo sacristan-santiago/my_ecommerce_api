@@ -25,14 +25,13 @@ class Producto {
     }
 
     checkProducts (req: Request, res: Response, next: NextFunction) {
-        const {nombre, precio} = req.body;
+        const {nombre, precio, descripcion, codigo, foto, stock} = req.body;
 
-        if (!nombre || !precio || typeof nombre !== "string" || isNaN(precio)) {
+        if (!nombre || !precio || typeof nombre !== "string" || isNaN(precio) || !descripcion || !codigo || !foto || !stock) {
             return res.status(400).json({
                 msg: "Campos del body invalidos",
             })
         }
-
         next(); 
     }
     

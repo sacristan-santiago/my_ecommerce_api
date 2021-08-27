@@ -8,7 +8,7 @@ router.get("/listar", carritoController.getProductosCarrito);
 
 router.get("/listar/:id", carritoController.getProductosCarrito);
 
-router.post("/guardar/:id", carritoController.addProductoCarrito);
+router.post("/guardar/:id", carritoController.addProductoCarrito);  
 
 router.delete("/borrar/:id", carritoController.deleteProductoCarrito);
 
