@@ -2,12 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productsPersistencia = void 0;
 let productos = [
-    { id: 1, nombre: "lapiz", precio: 200 },
+    { id: 1, nombre: "lapiz1", precio: 200 },
     { id: 2, nombre: "lapiz2", precio: 210 },
     { id: 3, nombre: "lapiz3", precio: 220 },
+    { id: 4, nombre: "lapiz4", precio: 230 },
+    { id: 5, nombre: "lapiz5", precio: 240 },
 ];
 class Productos {
-    find(id) {
+    find(id = undefined) {
         return productos.find(aProduct => aProduct.id == Number(id));
     }
     get(id = undefined) {

@@ -1,17 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const carrito_1 = require("../controllers/carrito");
 const router = express_1.Router();
-router.get("/", (req, res) => {
-    res.json("GET A CARRITO");
-});
-router.get("/", (req, res) => {
-    res.json("POST A CARRITO");
-});
-router.get("/", (req, res) => {
-    res.json("PUT A CARRITO");
-});
-router.get("/", (req, res) => {
-    res.json("DELETE A CARRITO");
-});
+router.get("/listar", carrito_1.carritoController.getProductosCarrito);
+router.get("/listar/:id", carrito_1.carritoController.getProductosCarrito);
+router.post("/guardar/:id", carrito_1.carritoController.addProductoCarrito);
+router.delete("/borrar/:id", carrito_1.carritoController.deleteProductoCarrito);
 exports.default = router;
