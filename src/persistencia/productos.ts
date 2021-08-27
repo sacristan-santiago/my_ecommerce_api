@@ -1,12 +1,8 @@
 import moment from "moment";
+import fs from 'fs/promises';
+import path from 'path';
 
-let productos = [
-    { id: 1, timestamp: moment().format("D.M.YY HH:mm:ss"), nombre: "lapiz1", descripcion: "lapiz de caracteristicas 1", codigo: "ASD123", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 200, stock: 10},
-    { id: 2, timestamp: moment().format("D.M.YY HH:mm:ss"), nombre: "lapiz2", descripcion: "lapiz de caracteristicas 2", codigo: "ASD223", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 210, stock: 11},
-    { id: 3, timestamp: moment().format("D.M.YY HH:mm:ss"), nombre: "lapiz3", descripcion: "lapiz de caracteristicas 3", codigo: "ASD323", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 220, stock: 12},
-    { id: 4, timestamp: moment().format("D.M.YY HH:mm:ss"), nombre: "lapiz4", descripcion: "lapiz de caracteristicas 4", codigo: "ASD423", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 230, stock: 13},
-    { id: 5, timestamp: moment().format("D.M.YY HH:mm:ss"), nombre: "lapiz5", descripcion: "lapiz de caracteristicas 5", codigo: "ASD523", foto: "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png", precio: 240, stock: 14},
-]
+const productosRute = "../database/productos.txt"
 
 interface addProduct {
             nombre: string,
@@ -18,26 +14,47 @@ interface addProduct {
 }
 
 interface Product {
-    id: number,
+    id: number | undefined,
+    timestamp: string
     nombre: string, 
-    precio: number
+    descripcion: string,
+    codigo: string,
+    foto: string,
+    precio: number,
+    stock: number,
 }
 
 class Productos {
-    find (id: number | undefined = undefined) {
-        return productos.find(aProduct => aProduct.id == Number(id));
-    }
-    
-    get (id: number | undefined = undefined) {
-        if (id) {
-            return productos.find(aProduct => aProduct.id == Number(id));
+    async find (id: number | undefined = undefined) {
+        try {
+            const ruta = path.resolve(__dirname, productosRute);
+            const data = await fs.readFile(ruta, "utf-8");
+            const productos = JSON.parse(data);
+            return productos.find((aProduct: any) => aProduct.id == Number(id))
+        } catch {
+            return console.log([]);
         }
-        return productos
     }
     
-    add (data: addProduct){
-        const newItem = {
-            id: productos.length + 1,
+    async get (id: number | undefined = undefined) {
+        try {
+            const ruta = path.resolve(__dirname, productosRute);
+            const data = await fs.readFile(ruta, "utf-8");
+            const productos = JSON.parse(data);
+            
+            if (id) {
+                return productos.find((aProduct: any) => aProduct.id == Number(id));
+            }
+            // console.log(productos)
+            return productos
+        } catch {
+            return console.log([]);
+        }
+    }
+    
+    async add (data: addProduct){
+        const newItem: Product = {
+            id: undefined,
             timestamp: moment().format("D.M.YY HH:mm:ss"),
             nombre: data.nombre,
             descripcion: data.descripcion,
@@ -45,15 +62,24 @@ class Productos {
             foto: data.foto,
             precio: Number(data.precio),
             stock: Number(data.stock),
-
         }
-        
-        productos.push(newItem);
+        try {
+            const ruta = path.resolve(__dirname, productosRute);
+            const data = await fs.readFile(ruta, "utf-8");
+            const productos = JSON.parse(data);
 
+            newItem.id = productos.length +1;
+            productos.push(newItem);
+            await fs.writeFile(ruta, JSON.stringify(productos, null, "\t"));
+            console.log("El archivo se modifico!")
+        } catch (err) {
+            console.log('ERROR ==>', err);
+            throw new Error(err);
+        }
         return newItem;
     }
 
-    update (id: number, data: addProduct) {
+    async update (id: number, data: addProduct) {
         const replaceItem = {
             id: id,
             timestamp: moment().format("D.M.YY HH:mm:ss"),
@@ -65,21 +91,46 @@ class Productos {
             stock: Number(data.stock)
         }
 
-        productos = productos.map(aProduct => {
-            if (aProduct.id !== id ) {
-                return aProduct;
-            } else {
-                return replaceItem;
-            }
-        })
+        try {
+            const ruta = path.resolve(__dirname, productosRute);
+            const data = await fs.readFile(ruta, "utf-8");
+            let productos = JSON.parse(data);
+            
+            productos = productos.map((aProduct:any) => {
+                if (aProduct.id !== id ) {
+                    return aProduct;
+                } else {
+                    return replaceItem;
+                }
+            })
+            
+            await fs.writeFile(ruta, JSON.stringify(productos, null, "\t"));
+            console.log("El archivo se modifico!")
+        } catch (err) {
+            console.log('ERROR ==>', err);
+            throw new Error(err);
+        }
         
         return replaceItem; 
     }
 
-    delete(id: number) {
-        const deletedProduct = productos.filter(aProduct => aProduct.id == Number(id));
-        productos = productos.filter(aProduct => aProduct.id !== Number(id));
-        return deletedProduct;
+    async delete(id: number) {
+        try {
+            const ruta = path.resolve(__dirname, productosRute);
+            const data = await fs.readFile(ruta, "utf-8");
+            let productos = JSON.parse(data);
+
+            const deletedProduct = productos.filter((aProduct: any) => aProduct.id == Number(id));
+            productos = productos.filter((aProduct: any)=> aProduct.id !== Number(id));
+
+            await fs.writeFile(ruta, JSON.stringify(productos, null, "\t"));
+            console.log("El archivo se elimino!")
+
+            return deletedProduct;
+        } catch (err) {
+            console.log('ERROR ==>', err);
+            throw new Error(err);
+        }
     }
 }
 

@@ -1,4 +1,6 @@
 import moment from "moment";
+const fs =  require('fs/promises');
+const path = require('path');
 
 let carrito = {
     id: 1, 
@@ -33,7 +35,7 @@ class Carrito {
         return carrito.productos
     }
     
-    addProduct (newProduct: Product){
+    addProduct (newProduct: any){
         carrito.productos.push(newProduct);
 
         return newProduct;

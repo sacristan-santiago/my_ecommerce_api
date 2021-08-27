@@ -2,11 +2,11 @@ import {Request, Response, NextFunction} from "express";
 import {productsPersistencia} from "../persistencia/productos";
 
 class Producto {
-    getProducts (req: Request, res: Response) {
+    async getProducts (req: Request, res: Response) {
         const {id} = req.params;
         
         if (id) {
-            const producto = productsPersistencia.get(Number(id));
+            const producto = await productsPersistencia.get(Number(id));
 
             if (!producto) {
                 return res.status(404).json ({
@@ -15,12 +15,12 @@ class Producto {
             }
 
             return res.json({
-                data: producto,
+                producto: producto,
             })
         }
 
         res.json({
-            data: productsPersistencia.get(),
+            productos: await productsPersistencia.get(),
         })
     }
 
@@ -36,8 +36,8 @@ class Producto {
     }
     
 
-    addProducts (req: Request, res: Response) {
-        const newItem = productsPersistencia.add(req.body);
+    async addProducts (req: Request, res: Response) {
+        const newItem = await productsPersistencia.add(req.body);
 
         res.json({
             msg: "Producto agregado con exito",
@@ -45,10 +45,9 @@ class Producto {
         })
     }
 
-    updateProducts (req: Request, res: Response) {
+    async updateProducts (req: Request, res: Response) {
         const id = Number(req.params.id);
-
-        const producto = productsPersistencia.find(id)
+        const producto = await productsPersistencia.find(id)
 
         if (!producto) {
             return res.status(404).json ({
@@ -58,11 +57,11 @@ class Producto {
 
         res.json({
             msg: "producto actualizado",
-            data: productsPersistencia.update(id, req.body)
+            data: await productsPersistencia.update(id, req.body)
         })
     }
 
-    deleteProducts (req: Request, res: Response) {
+    async deleteProducts (req: Request, res: Response) {
         const {id} = req.params;
 
         if(!id) {
@@ -71,7 +70,7 @@ class Producto {
             })
         }
 
-        const producto = productsPersistencia.find(Number(id));
+        const producto = await productsPersistencia.find(Number(id));
 
         if(!producto) {
             return res.status(400).json ({
@@ -81,7 +80,7 @@ class Producto {
         
         res.json({
             msg: "Producto borrado",
-            data: productsPersistencia.delete(Number(id)),
+            data: await productsPersistencia.delete(Number(id)),
         })
     }
 }

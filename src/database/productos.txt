@@ -1,0 +1,62 @@
+[
+	{
+		"id": 1,
+		"timestamp": "27.8.21 15:03:32",
+		"nombre": "lapiz1",
+		"descripcion": "lapiz de caracteristicas 1",
+		"codigo": "ASD123",
+		"foto": "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png",
+		"precio": 200,
+		"stock": 10
+	},
+	{
+		"id": 2,
+		"timestamp": "27.8.21 15:03:32",
+		"nombre": "lapiz2",
+		"descripcion": "lapiz de caracteristicas 2",
+		"codigo": "ASD223",
+		"foto": "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png",
+		"precio": 210,
+		"stock": 11
+	},
+	{
+		"id": 3,
+		"timestamp": "27.8.21 17:01:53",
+		"nombre": "lapiz3",
+		"descripcion": "lapiz de caracteristicas 3",
+		"codigo": "ASD623",
+		"foto": "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png",
+		"precio": 200,
+		"stock": 10
+	},
+	{
+		"id": 4,
+		"timestamp": "27.8.21 15:03:32",
+		"nombre": "lapiz4",
+		"descripcion": "lapiz de caracteristicas 4",
+		"codigo": "ASD423",
+		"foto": "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png",
+		"precio": 230,
+		"stock": 13
+	},
+	{
+		"id": 5,
+		"timestamp": "27.8.21 15:03:32",
+		"nombre": "lapiz5",
+		"descripcion": "lapiz de caracteristicas 5",
+		"codigo": "ASD523",
+		"foto": "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png",
+		"precio": 240,
+		"stock": 14
+	},
+	{
+		"id": 6,
+		"timestamp": "27.8.21 17:24:25",
+		"nombre": "lapiz6",
+		"descripcion": "lapiz de caracteristicas 6",
+		"codigo": "ASD623",
+		"foto": "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png",
+		"precio": 200,
+		"stock": 10
+	}
+]

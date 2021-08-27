@@ -5,6 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.carritoPersistencia = void 0;
 const moment_1 = __importDefault(require("moment"));
+const fs = require('fs/promises');
+const path = require('path');
 let carrito = {
     id: 1,
     timestamp: moment_1.default().format("D.M.YY HH:mm:ss"),
