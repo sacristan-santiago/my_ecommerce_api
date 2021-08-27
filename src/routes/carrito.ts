@@ -1,20 +1,15 @@
 import {Router} from "express";
+import { carritoController } from "../controllers/carrito";
+import { checkAdmin } from "../middleware/admin";
 
 const router = Router();
 
-router.get("/", (req, res)=> {
-    res.json("GET A CARRITO");
-})
+router.get("/listar", carritoController.getProductosCarrito);
 
-router.get("/", (req, res)=> {
-    res.json("POST A CARRITO");
-})
+router.get("/listar/:id", carritoController.getProductosCarrito);
 
-router.get("/", (req, res)=> {
-    res.json("PUT A CARRITO");
-})
+router.post("/guardar/:id", carritoController.addProductoCarrito);
 
-router.get("/", (req, res)=> {
-    res.json("DELETE A CARRITO");
-})
+router.delete("/borrar/:id", carritoController.deleteProductoCarrito);
+
 export default router; 

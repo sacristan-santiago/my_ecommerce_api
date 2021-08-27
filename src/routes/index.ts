@@ -4,7 +4,7 @@ import carritoRouter from "./carrito";
 
 const router = Router();
 
-router.use("/products", productsRouter);
-router.use("/cart", carritoRouter);
+router.use("/productos", productsRouter);
+router.use("/carrito", carritoRouter);
 
 export default router; 

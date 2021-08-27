@@ -1,7 +1,9 @@
 let productos = [
-    {id: 1, nombre: "lapiz", precio: 200},
+    {id: 1, nombre: "lapiz1", precio: 200},
     {id: 2, nombre: "lapiz2", precio: 210},
     {id: 3, nombre: "lapiz3", precio: 220},
+    {id: 4, nombre: "lapiz4", precio: 230},
+    {id: 5, nombre: "lapiz5", precio: 240},
 ]
 
 interface addProduct {
@@ -16,7 +18,7 @@ interface Product {
 }
 
 class Productos {
-    find (id: number) {
+    find (id: number | undefined = undefined) {
         return productos.find(aProduct => aProduct.id == Number(id));
     }
     
