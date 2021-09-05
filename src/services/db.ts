@@ -43,7 +43,7 @@ class CreateDB {
             productosTable.string('descripcion').notNullable();
             productosTable.string('codigo').notNullable();
             productosTable.string('foto');
-            productosTable.decimal('precio', 4, 2);
+            productosTable.decimal('precio', 5, 2);
             productosTable.integer('stock').notNullable();
           })
           .then(() => console.log("DONE"))
