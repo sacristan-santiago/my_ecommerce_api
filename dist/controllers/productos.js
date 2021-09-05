@@ -16,8 +16,8 @@ class Producto {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             if (id) {
-                const producto = yield productos_1.productsPersistencia.get(Number(id));
-                if (!producto) {
+                const producto = yield productos_1.ProductoPersistencia.get(Number(id));
+                if (!producto[0]) {
                     return res.status(404).json({
                         msg: "Producto no encontrado",
                     });
@@ -27,7 +27,7 @@ class Producto {
                 });
             }
             res.json({
-                productos: yield productos_1.productsPersistencia.get(),
+                productos: yield productos_1.ProductoPersistencia.getAll(),
             });
         });
     }
@@ -42,7 +42,7 @@ class Producto {
     }
     addProducts(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newItem = yield productos_1.productsPersistencia.add(req.body);
+            const newItem = yield productos_1.ProductoPersistencia.add(req.body);
             res.json({
                 msg: "Producto agregado con exito",
                 data: newItem
@@ -52,15 +52,15 @@ class Producto {
     updateProducts(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = Number(req.params.id);
-            const producto = yield productos_1.productsPersistencia.find(id);
-            if (!producto) {
+            const producto = yield productos_1.ProductoPersistencia.get(id);
+            if (!producto[0]) {
                 return res.status(404).json({
                     msg: "Producto no encontrado",
                 });
             }
             res.json({
                 msg: "producto actualizado",
-                data: yield productos_1.productsPersistencia.update(id, req.body)
+                data: yield productos_1.ProductoPersistencia.update(id, req.body)
             });
         });
     }
@@ -72,15 +72,15 @@ class Producto {
                     msg: "es necesario definir un id"
                 });
             }
-            const producto = yield productos_1.productsPersistencia.find(Number(id));
-            if (!producto) {
+            const producto = yield productos_1.ProductoPersistencia.get(Number(id));
+            if (!producto[0]) {
                 return res.status(400).json({
                     msg: "producto no encontrado"
                 });
             }
             res.json({
                 msg: "Producto borrado",
-                data: yield productos_1.productsPersistencia.delete(Number(id)),
+                data: yield productos_1.ProductoPersistencia.delete(Number(id)),
             });
         });
     }

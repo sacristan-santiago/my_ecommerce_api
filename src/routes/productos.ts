@@ -4,14 +4,14 @@ import { checkAdmin } from "../middleware/admin";
 
 const router = Router();
 
-router.get("/listar", productsController.getProducts);
+router.get("/", productsController.getProducts);
 
-router.get("/listar/:id", productsController.getProducts);
+router.get("/:id", productsController.getProducts);
 
-router.post("/agregar", checkAdmin, productsController.checkProducts, productsController.addProducts);
+router.post("/", checkAdmin, productsController.checkProducts, productsController.addProducts);
 
-router.put("/actualizar/:id", checkAdmin, productsController.checkProducts, productsController.updateProducts);
+router.put("/:id", checkAdmin, productsController.checkProducts, productsController.updateProducts);
 
-router.delete("/borrar/:id", checkAdmin, productsController.deleteProducts);
+router.delete("/:id", checkAdmin, productsController.deleteProducts);
 
 export default router; 

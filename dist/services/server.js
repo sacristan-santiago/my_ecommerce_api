@@ -26,10 +26,22 @@ const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const http = __importStar(require("http"));
 const index_1 = __importDefault(require("../routes/index"));
+const express_handlebars_1 = __importDefault(require("express-handlebars"));
 const app = express_1.default();
 const publicFolder = path_1.default.resolve(__dirname, "../../public");
 app.use(express_1.default.static(publicFolder));
-const myServer = new http.Server(app);
 app.use(express_1.default.json());
 app.use("/api", index_1.default);
-exports.default = myServer;
+//CONFIGURANDO HANDLEBARS//
+const layoutFolderPath = path_1.default.resolve(__dirname, '../../views/layouts');
+const defaultLayoutPath = path_1.default.resolve(__dirname, "../../views/layouts/index.hbs");
+const partialsFolderPath = path_1.default.resolve(__dirname, "../../views/partials");
+app.set("view engine", "hbs");
+app.engine("hbs", express_handlebars_1.default({
+    layoutsDir: layoutFolderPath,
+    defaultLayout: defaultLayoutPath,
+    partialsDir: partialsFolderPath,
+    extname: "hbs",
+}));
+const myHTTPServer = new http.Server(app);
+exports.default = myHTTPServer;

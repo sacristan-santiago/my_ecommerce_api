@@ -1,137 +1,40 @@
-import moment from "moment";
-import fs from 'fs/promises';
-import path from 'path';
-
-const productosRute = "../database/productos.txt"
+import { myMariaDB } from "../services/db";
 
 interface addProduct {
-            nombre: string,
-            descripcion: string,
-            codigo: string,
-            foto: string,
-            precio: string,
-            stock: string,
-}
-
-interface Product {
-    id: number | undefined,
-    timestamp: string
-    nombre: string, 
+    nombre: string,
     descripcion: string,
     codigo: string,
     foto: string,
-    precio: number,
     stock: number,
+    precio: number,
 }
 
-class Productos {
-    async find (id: number | undefined = undefined) {
-        try {
-            const ruta = path.resolve(__dirname, productosRute);
-            const data = await fs.readFile(ruta, "utf-8");
-            const productos = JSON.parse(data);
-            return productos.find((aProduct: any) => aProduct.id == Number(id))
-        } catch {
-            return console.log([]);
-        }
-    }
-    
-    async get (id: number | undefined = undefined) {
-        try {
-            const ruta = path.resolve(__dirname, productosRute);
-            const data = await fs.readFile(ruta, "utf-8");
-            const productos = JSON.parse(data);
-            
-            if (id) {
-                return productos.find((aProduct: any) => aProduct.id == Number(id));
-            }
-            // console.log(productos)
-            return productos
-        } catch {
-            return console.log([]);
-        }
-    }
-    
-    async add (data: addProduct){
-        const newItem: Product = {
-            id: undefined,
-            timestamp: moment().format("D.M.YY HH:mm:ss"),
-            nombre: data.nombre,
-            descripcion: data.descripcion,
-            codigo: data.codigo,
-            foto: data.foto,
-            precio: Number(data.precio),
-            stock: Number(data.stock),
-        }
-        try {
-            const ruta = path.resolve(__dirname, productosRute);
-            const data = await fs.readFile(ruta, "utf-8");
-            const productos = JSON.parse(data);
-
-            newItem.id = productos.length +1;
-            productos.push(newItem);
-            await fs.writeFile(ruta, JSON.stringify(productos, null, "\t"));
-            console.log("El archivo se modifico!")
-        } catch (err) {
-            console.log('ERROR ==>', err);
-            throw new Error(err);
-        }
-        return newItem;
+class ProductosPersistencia {
+    async getAll () {
+        return myMariaDB.from("productos").select();
     }
 
-    async update (id: number, data: addProduct) {
-        const replaceItem = {
-            id: id,
-            timestamp: moment().format("D.M.YY HH:mm:ss"),
-            nombre: data.nombre,
-            descripcion: data.descripcion,
-            codigo: data.codigo,
-            foto: data.foto,
-            precio: Number(data.precio),
-            stock: Number(data.stock)
-        }
+    async get (id: number) {
+        return myMariaDB.from("productos").where({id: id}).select()
+    }
 
-        try {
-            const ruta = path.resolve(__dirname, productosRute);
-            const data = await fs.readFile(ruta, "utf-8");
-            let productos = JSON.parse(data);
-            
-            productos = productos.map((aProduct:any) => {
-                if (aProduct.id !== id ) {
-                    return aProduct;
-                } else {
-                    return replaceItem;
-                }
-            })
-            
-            await fs.writeFile(ruta, JSON.stringify(productos, null, "\t"));
-            console.log("El archivo se modifico!")
-        } catch (err) {
-            console.log('ERROR ==>', err);
-            throw new Error(err);
-        }
-        
-        return replaceItem; 
+
+    async add(data: addProduct) {
+        return myMariaDB.from("productos").insert(data);
+    }
+
+    async update(id: number, data: addProduct) {
+        await myMariaDB.from("productos").where({id: id}).update(data)
+        //returning updated product
+        return myMariaDB.from("productos").where({id: id}).select()
     }
 
     async delete(id: number) {
-        try {
-            const ruta = path.resolve(__dirname, productosRute);
-            const data = await fs.readFile(ruta, "utf-8");
-            let productos = JSON.parse(data);
-
-            const deletedProduct = productos.filter((aProduct: any) => aProduct.id == Number(id));
-            productos = productos.filter((aProduct: any)=> aProduct.id !== Number(id));
-
-            await fs.writeFile(ruta, JSON.stringify(productos, null, "\t"));
-            console.log("El archivo se elimino!")
-
-            return deletedProduct;
-        } catch (err) {
-            console.log('ERROR ==>', err);
-            throw new Error(err);
-        }
+        const deleted = await myMariaDB.from("productos").where({id: id}).select()
+        await myMariaDB.from("productos").where({id: id}).del();
+        //returning deleted product
+        return deleted;
     }
 }
 
-export const productsPersistencia = new Productos ();
+export const ProductoPersistencia = new ProductosPersistencia;

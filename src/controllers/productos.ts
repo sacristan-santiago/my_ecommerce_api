@@ -1,14 +1,13 @@
 import {Request, Response, NextFunction} from "express";
-import {productsPersistencia} from "../persistencia/productos";
+import {ProductoPersistencia} from "../persistencia/productos";
 
 class Producto {
     async getProducts (req: Request, res: Response) {
         const {id} = req.params;
         
         if (id) {
-            const producto = await productsPersistencia.get(Number(id));
-
-            if (!producto) {
+            const producto = await ProductoPersistencia.get(Number(id));
+            if (!producto[0]) {
                 return res.status(404).json ({
                     msg: "Producto no encontrado",
                 })
@@ -20,7 +19,7 @@ class Producto {
         }
 
         res.json({
-            productos: await productsPersistencia.get(),
+            productos: await ProductoPersistencia.getAll(),
         })
     }
 
@@ -37,7 +36,7 @@ class Producto {
     
 
     async addProducts (req: Request, res: Response) {
-        const newItem = await productsPersistencia.add(req.body);
+        const newItem = await ProductoPersistencia.add(req.body);
 
         res.json({
             msg: "Producto agregado con exito",
@@ -47,9 +46,9 @@ class Producto {
 
     async updateProducts (req: Request, res: Response) {
         const id = Number(req.params.id);
-        const producto = await productsPersistencia.find(id)
+        const producto = await ProductoPersistencia.get(id);
 
-        if (!producto) {
+        if (!producto[0]) {
             return res.status(404).json ({
                 msg: "Producto no encontrado",
             })
@@ -57,7 +56,7 @@ class Producto {
 
         res.json({
             msg: "producto actualizado",
-            data: await productsPersistencia.update(id, req.body)
+            data: await ProductoPersistencia.update(id, req.body)
         })
     }
 
@@ -70,9 +69,9 @@ class Producto {
             })
         }
 
-        const producto = await productsPersistencia.find(Number(id));
+        const producto = await ProductoPersistencia.get(Number(id))
 
-        if(!producto) {
+        if(!producto[0]) {
             return res.status(400).json ({
                 msg: "producto no encontrado"
             }) 
@@ -80,7 +79,7 @@ class Producto {
         
         res.json({
             msg: "Producto borrado",
-            data: await productsPersistencia.delete(Number(id)),
+            data: await ProductoPersistencia.delete(Number(id)),
         })
     }
 }
