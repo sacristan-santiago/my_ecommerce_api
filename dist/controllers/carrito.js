@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.carritoController = void 0;
 const carrito_1 = require("../persistencia/carrito");
-const productosOld_1 = require("../persistencia/productosOld");
+const productosFS_1 = require("../persistencia/productosFS");
 class Carrito {
     getProductosCarrito(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -41,7 +41,7 @@ class Carrito {
                 });
             }
             //AGREGO PRODUCTO AL CARRITO DESDE LA PERSISTENCIA DE PRODUCTOS
-            const newItem = yield productosOld_1.productsPersistencia.find(id);
+            const newItem = yield productosFS_1.productsPersistencia.find(id);
             if (!newItem) {
                 return res.status(404).json({
                     msg: "Producto no encontrado en base datos de productos",

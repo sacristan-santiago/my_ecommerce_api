@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from "express";
 import {carritoPersistencia} from "../persistencia/carrito";
-import {productsPersistencia} from "../persistencia/productosOld"
+import {productsPersistencia} from "../persistencia/productosFS"
 
 class Carrito {
     async getProductosCarrito (req: Request, res: Response) {

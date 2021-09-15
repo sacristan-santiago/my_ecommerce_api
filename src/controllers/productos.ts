@@ -1,12 +1,14 @@
 import {Request, Response, NextFunction} from "express";
-import {ProductoPersistencia} from "../persistencia/productos";
+import {ProductoPersistencia} from "../persistencia/productosMariaDB";
+import {ProductsPersistencia} from "../persistencia/productosMongoose"
+
 
 class Producto {
     async getProducts (req: Request, res: Response) {
         const {id} = req.params;
         
         if (id) {
-            const producto = await ProductoPersistencia.get(Number(id));
+            const producto = await ProductsPersistencia.get(Number(id));
             if (!producto[0]) {
                 return res.status(404).json ({
                     msg: "Producto no encontrado",
@@ -19,7 +21,7 @@ class Producto {
         }
 
         res.json({
-            productos: await ProductoPersistencia.getAll(),
+            productos: await ProductsPersistencia.getAll(),
         })
     }
 
@@ -36,7 +38,7 @@ class Producto {
     
 
     async addProducts (req: Request, res: Response) {
-        const newItem = await ProductoPersistencia.add(req.body);
+        const newItem = await ProductsPersistencia.add(req.body);
 
         res.json({
             msg: "Producto agregado con exito",
@@ -46,7 +48,7 @@ class Producto {
 
     async updateProducts (req: Request, res: Response) {
         const id = Number(req.params.id);
-        const producto = await ProductoPersistencia.get(id);
+        const producto = await ProductsPersistencia.get(id);
 
         if (!producto[0]) {
             return res.status(404).json ({
@@ -56,7 +58,7 @@ class Producto {
 
         res.json({
             msg: "producto actualizado",
-            data: await ProductoPersistencia.update(id, req.body)
+            data: await ProductsPersistencia.update(id, req.body)
         })
     }
 
@@ -69,7 +71,7 @@ class Producto {
             })
         }
 
-        const producto = await ProductoPersistencia.get(Number(id))
+        const producto = await ProductsPersistencia.get(Number(id))
 
         if(!producto[0]) {
             return res.status(400).json ({
@@ -79,7 +81,7 @@ class Producto {
         
         res.json({
             msg: "Producto borrado",
-            data: await ProductoPersistencia.delete(Number(id)),
+            data: await ProductsPersistencia.delete(Number(id)),
         })
     }
 }

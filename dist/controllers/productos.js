@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productsController = void 0;
-const productos_1 = require("../persistencia/productos");
+const productosMongoose_1 = require("../persistencia/productosMongoose");
 class Producto {
     getProducts(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             if (id) {
-                const producto = yield productos_1.ProductoPersistencia.get(Number(id));
+                const producto = yield productosMongoose_1.ProductsPersistencia.get(Number(id));
                 if (!producto[0]) {
                     return res.status(404).json({
                         msg: "Producto no encontrado",
@@ -27,7 +27,7 @@ class Producto {
                 });
             }
             res.json({
-                productos: yield productos_1.ProductoPersistencia.getAll(),
+                productos: yield productosMongoose_1.ProductsPersistencia.getAll(),
             });
         });
     }
@@ -42,7 +42,7 @@ class Producto {
     }
     addProducts(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newItem = yield productos_1.ProductoPersistencia.add(req.body);
+            const newItem = yield productosMongoose_1.ProductsPersistencia.add(req.body);
             res.json({
                 msg: "Producto agregado con exito",
                 data: newItem
@@ -52,7 +52,7 @@ class Producto {
     updateProducts(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = Number(req.params.id);
-            const producto = yield productos_1.ProductoPersistencia.get(id);
+            const producto = yield productosMongoose_1.ProductsPersistencia.get(id);
             if (!producto[0]) {
                 return res.status(404).json({
                     msg: "Producto no encontrado",
@@ -60,7 +60,7 @@ class Producto {
             }
             res.json({
                 msg: "producto actualizado",
-                data: yield productos_1.ProductoPersistencia.update(id, req.body)
+                data: yield productosMongoose_1.ProductsPersistencia.update(id, req.body)
             });
         });
     }
@@ -72,7 +72,7 @@ class Producto {
                     msg: "es necesario definir un id"
                 });
             }
-            const producto = yield productos_1.ProductoPersistencia.get(Number(id));
+            const producto = yield productosMongoose_1.ProductsPersistencia.get(Number(id));
             if (!producto[0]) {
                 return res.status(400).json({
                     msg: "producto no encontrado"
@@ -80,7 +80,7 @@ class Producto {
             }
             res.json({
                 msg: "Producto borrado",
-                data: yield productos_1.ProductoPersistencia.delete(Number(id)),
+                data: yield productosMongoose_1.ProductsPersistencia.delete(Number(id)),
             });
         });
     }

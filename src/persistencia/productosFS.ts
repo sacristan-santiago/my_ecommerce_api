@@ -72,7 +72,7 @@ class Productos {
             productos.push(newItem);
             await fs.writeFile(ruta, JSON.stringify(productos, null, "\t"));
             console.log("El archivo se modifico!")
-        } catch (err) {
+        } catch (err:any) {
             console.log('ERROR ==>', err);
             throw new Error(err);
         }
@@ -106,7 +106,7 @@ class Productos {
             
             await fs.writeFile(ruta, JSON.stringify(productos, null, "\t"));
             console.log("El archivo se modifico!")
-        } catch (err) {
+        } catch (err:any) {
             console.log('ERROR ==>', err);
             throw new Error(err);
         }
@@ -127,7 +127,7 @@ class Productos {
             console.log("El archivo se elimino!")
 
             return deletedProduct;
-        } catch (err) {
+        } catch (err:any) {
             console.log('ERROR ==>', err);
             throw new Error(err);
         }

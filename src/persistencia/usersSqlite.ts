@@ -45,4 +45,4 @@ class UsersPersistencia{
     }
 }
 
-export const usersPersistencia = new UsersPersistencia
+export const userPersistencia = new UsersPersistencia

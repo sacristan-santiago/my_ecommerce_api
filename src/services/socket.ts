@@ -1,6 +1,6 @@
 import {Server, Socket} from "socket.io";
 import {formatMessage} from "../utils/messages";
-import { usersPersistencia } from "../persistencia/users";
+import { usersPersistencia } from "../persistencia/usersMongoose";
 
 // //usando socket.io
 // const myWSServer =  new Server(myServer);
@@ -51,6 +51,7 @@ class SocketServer {
 
                     //Escuchar mensajes en el chat
                     socket.on("chatMessage", async (msg: string) => {
+                        await usersPersistencia.saveMessage(socket.id, msg)
                         let user: any = await usersPersistencia.getCurrentUser(socket.id).catch((e)=>console.log(e))
                         user = user[0]
                         this.myWSServer.to(user.room).emit("message", formatMessage(user.username, msg));
@@ -58,7 +59,7 @@ class SocketServer {
 
                     //Run cuando un cliente se desconecta
                     socket.on("disconnect", async () => {
-                        const user = await usersPersistencia.userLeave(socket.id).catch((e)=>console.log(e));
+                        const user: any = await usersPersistencia.userLeave(socket.id).catch((e)=>console.log(e));
                         
                         if (user) {
                             this.myWSServer.to(user.room).emit("message", formatMessage(botName, `${user.username} ha abandonado el chat`));

@@ -18,7 +18,6 @@ class ProductosPersistencia {
         return myMariaDB.from("productos").where({id: id}).select()
     }
 
-
     async add(data: addProduct) {
         return myMariaDB.from("productos").insert(data);
     }
