@@ -1,4 +1,5 @@
-import {myMariaDB} from "../../../services/mysqlDB"
+import {myMariaDB} from "../../../services/mysqlDB";
+import {ProductQuery, Product} from "../products.interface"
 
 interface addProduct {
     nombre: string,
@@ -35,5 +36,42 @@ export class ProductosMYSQLDAO {
         await myMariaDB.from("productos").where({id: id}).del();
         //returning deleted product
         return deleted;
+    }
+
+    async query(options: ProductQuery) {
+        try {
+            let productos = await myMariaDB.from("productos").select();
+
+            type Conditions = (aProduct: Product) => boolean;
+            const query: Conditions[] = [];
+            
+            if (options.nombre)
+              query.push((aProduct: Product) => aProduct.nombre == options.nombre);
+        
+            if (options.codigo)
+              query.push((aProduct: Product) => aProduct.codigo == options.codigo);
+
+            if (options.precioMin) {
+                query.push((aProduct: Product) => aProduct.precio >= Number(options.precioMin));
+            }
+
+            if (options.precioMax) {
+                query.push((aProduct: Product) => aProduct.precio <= Number(options.precioMax));
+            }
+
+            if (options.stockMin) {
+                query.push((aProduct: Product) => aProduct.stock >= Number(options.stockMin));
+            }
+
+            if (options.stockMax) {
+                query.push((aProduct: Product) => aProduct.stock <= Number(options.stockMax));
+            }
+              
+            return productos.filter((aProduct: Product) => query.every((x) => x(aProduct)));
+        
+        } catch (err) {
+            console.log("ERROR");
+            console.log(err);
+        }
     }
 }

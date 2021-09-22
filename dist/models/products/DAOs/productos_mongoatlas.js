@@ -50,5 +50,34 @@ class ProductosATLASMONGODAO {
             return deleted;
         });
     }
+    query(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let productos = yield productos_1.productosmodel.find({});
+                const query = [];
+                if (options.nombre)
+                    query.push((aProduct) => aProduct.nombre == options.nombre);
+                if (options.codigo)
+                    query.push((aProduct) => aProduct.codigo == options.codigo);
+                if (options.precioMin) {
+                    query.push((aProduct) => aProduct.precio >= Number(options.precioMin));
+                }
+                if (options.precioMax) {
+                    query.push((aProduct) => aProduct.precio <= Number(options.precioMax));
+                }
+                if (options.stockMin) {
+                    query.push((aProduct) => aProduct.stock >= Number(options.stockMin));
+                }
+                if (options.stockMax) {
+                    query.push((aProduct) => aProduct.stock <= Number(options.stockMax));
+                }
+                return productos.filter((aProduct) => query.every((x) => x(aProduct)));
+            }
+            catch (err) {
+                console.log("ERROR");
+                console.log(err);
+            }
+        });
+    }
 }
 exports.ProductosATLASMONGODAO = ProductosATLASMONGODAO;

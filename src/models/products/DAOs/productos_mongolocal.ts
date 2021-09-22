@@ -1,5 +1,6 @@
 import {productosmodel} from "../../../schemas/productos";
-import  {countersmodel} from "../../../schemas/counters";
+import {countersmodel} from "../../../schemas/counters";
+import {ProductQuery, MongoProduct} from "../products.interface";
 
 interface addProduct {
     uID: number,
@@ -47,5 +48,42 @@ export class ProductosLOCALMONGODAO {
         await productosmodel.deleteOne({uID: id});
         //returning deleted product
         return deleted;
+    }
+    
+    async query(options: ProductQuery) {
+        try {
+            let productos = await productosmodel.find({});
+
+            type Conditions = (aProduct: MongoProduct) => boolean;
+            const query: Conditions[] = [];
+            
+            if (options.nombre)
+              query.push((aProduct: MongoProduct) => aProduct.nombre == options.nombre);
+        
+            if (options.codigo)
+              query.push((aProduct: MongoProduct) => aProduct.codigo == options.codigo);
+
+            if (options.precioMin) {
+                query.push((aProduct: MongoProduct) => aProduct.precio >= Number(options.precioMin));
+            }
+
+            if (options.precioMax) {
+                query.push((aProduct: MongoProduct) => aProduct.precio <= Number(options.precioMax));
+            }
+
+            if (options.stockMin) {
+                query.push((aProduct: MongoProduct) => aProduct.stock >= Number(options.stockMin));
+            }
+
+            if (options.stockMax) {
+                query.push((aProduct: MongoProduct) => aProduct.stock <= Number(options.stockMax));
+            }
+              
+            return productos.filter((aProduct: any) => query.every((x) => x(aProduct)));
+        
+        } catch (err) {
+            console.log("ERROR");
+            console.log(err);
+        }
     } 
 }

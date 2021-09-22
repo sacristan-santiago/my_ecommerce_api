@@ -1,7 +1,7 @@
 import {Product, newProduct }  from '../models/products/products.interface';
 import { NoticiasFactoryDAO } from '../models/products/products.factory';
 import { TipoPersistencia } from '../models/products/products.factory';
-// import { ProductQuery } from '../models/products/products.interface';
+import { ProductQuery } from '../models/products/products.interface';
 
 /**
  * Con esta variable elegimos el tipo de persistencia
@@ -36,9 +36,9 @@ class prodAPI {
     return await this.productos.delete(id);
   }
 
-  // async query(options: ProductQuery) {
-  //   return await this.productos.query(options);
-  // }
+  async query(options: ProductQuery) {
+    return await this.productos.query(options);
+  }
 }
 
 export const productsAPI = new prodAPI();

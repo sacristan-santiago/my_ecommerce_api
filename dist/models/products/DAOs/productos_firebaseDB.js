@@ -11,24 +11,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductosFIREBASEDAO = void 0;
 var admin = require("firebase-admin");
+const productos_1 = require("../../../utils/productos");
 class ProductosFIREBASEDAO {
-    get(id) {
+    get(_id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const firebaseDB = admin.firestore();
-                if (id) {
-                    let resultado = yield firebaseDB.collection("productos").doc(id).get();
-                    return ({
-                        id: resultado.id,
-                        data: resultado.data()
-                    });
+                if (_id) {
+                    let resultado = yield firebaseDB.collection("productos").doc(_id).get();
+                    const data = resultado.data();
+                    data.id = resultado.id;
+                    return productos_1.dataOrdered(data);
                 }
                 let resultado = yield firebaseDB.collection("productos").get();
                 let docs = resultado.docs;
-                const output = docs.map((aDoc) => ({
-                    id: aDoc.id,
-                    data: aDoc.data()
-                }));
+                const output = docs.map((aDoc) => {
+                    const data = aDoc.data();
+                    data.id = aDoc.id;
+                    return productos_1.dataOrdered(data);
+                });
                 return output;
             }
             catch (err) {
@@ -78,6 +79,42 @@ class ProductosFIREBASEDAO {
                 //a ese documento le metemos data en formato json
                 console.log("Se elimino un documento!");
                 return deletedDocument;
+            }
+            catch (err) {
+                console.log("ERROR");
+                console.log(err);
+            }
+        });
+    }
+    query(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const firebaseDB = admin.firestore();
+                let data = yield firebaseDB.collection("productos").get();
+                let docs = data.docs;
+                let productos = docs.map((aDoc) => {
+                    const data = aDoc.data();
+                    data.id = aDoc.id;
+                    return productos_1.dataOrdered(data);
+                });
+                const query = [];
+                if (options.nombre)
+                    query.push((aProduct) => aProduct.nombre == options.nombre);
+                if (options.codigo)
+                    query.push((aProduct) => aProduct.codigo == options.codigo);
+                if (options.precioMin) {
+                    query.push((aProduct) => aProduct.precio >= Number(options.precioMin));
+                }
+                if (options.precioMax) {
+                    query.push((aProduct) => aProduct.precio <= Number(options.precioMax));
+                }
+                if (options.stockMin) {
+                    query.push((aProduct) => aProduct.stock >= Number(options.stockMin));
+                }
+                if (options.stockMax) {
+                    query.push((aProduct) => aProduct.stock <= Number(options.stockMax));
+                }
+                return productos.filter((aProduct) => query.every((x) => x(aProduct)));
             }
             catch (err) {
                 console.log("ERROR");

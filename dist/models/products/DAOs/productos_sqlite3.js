@@ -43,5 +43,34 @@ class ProductosSQLITE3DAO {
             return deleted;
         });
     }
+    query(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let productos = yield mysqlDB_1.sqliteDB.from("productos").select();
+                const query = [];
+                if (options.nombre)
+                    query.push((aProduct) => aProduct.nombre == options.nombre);
+                if (options.codigo)
+                    query.push((aProduct) => aProduct.codigo == options.codigo);
+                if (options.precioMin) {
+                    query.push((aProduct) => aProduct.precio >= Number(options.precioMin));
+                }
+                if (options.precioMax) {
+                    query.push((aProduct) => aProduct.precio <= Number(options.precioMax));
+                }
+                if (options.stockMin) {
+                    query.push((aProduct) => aProduct.stock >= Number(options.stockMin));
+                }
+                if (options.stockMax) {
+                    query.push((aProduct) => aProduct.stock <= Number(options.stockMax));
+                }
+                return productos.filter((aProduct) => query.every((x) => x(aProduct)));
+            }
+            catch (err) {
+                console.log("ERROR");
+                console.log(err);
+            }
+        });
+    }
 }
 exports.ProductosSQLITE3DAO = ProductosSQLITE3DAO;

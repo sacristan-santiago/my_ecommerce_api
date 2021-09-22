@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.productsAPI = void 0;
 const products_factory_1 = require("../models/products/products.factory");
 const products_factory_2 = require("../models/products/products.factory");
-// import { ProductQuery } from '../models/products/products.interface';
 /**
  * Con esta variable elegimos el tipo de persistencia
  */
@@ -43,6 +42,11 @@ class prodAPI {
     deleteProduct(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.productos.delete(id);
+        });
+    }
+    query(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.productos.query(options);
         });
     }
 }

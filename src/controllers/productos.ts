@@ -1,12 +1,14 @@
 import {Request, Response, NextFunction} from "express";
 import {ProductoPersistencia} from "../persistencia/productosMariaDB";
 import {ProductsPersistencia} from "../persistencia/productosMongoose";
-import {productsAPI} from "../apis/productos"
+import {productsAPI} from "../apis/productos";
+import {ProductQuery} from "../models/products/products.interface";
 
 
 class Producto {
     async getProducts (req: Request, res: Response) {
         const {id} = req.params;
+        const {nombre, codigo, precioMin, precioMax, stockMin, stockMax} = req.query;
         
         if (id) {
             const producto = await productsAPI.getProducts(id);
@@ -21,6 +23,21 @@ class Producto {
             })
         }
 
+        const query: ProductQuery = {};
+
+        if (nombre) query.nombre = nombre.toString();
+        if (codigo) query.codigo = codigo.toString();
+        if (precioMin) query.precioMin = Number(precioMin);
+        if (precioMax) query.precioMax = Number(precioMax);
+        if (stockMin) query.stockMin = Number(stockMin);
+        if (stockMax) query.stockMax = Number(stockMax);
+
+        if (Object.keys(query).length) {
+            return res.json({
+                data: await productsAPI.query(query)
+            })
+        };
+        
         res.json({
             productos: await productsAPI.getProducts(),
         })

@@ -1,6 +1,6 @@
 import moment from "moment";
 import fs from 'fs/promises';
-import {Product, newProduct }  from '../products.interface';
+import {Product, newProduct, ProductQuery }  from '../products.interface';
 
 export class ProductosFSDAO {
     private rutaArchivo: string;
@@ -113,4 +113,42 @@ export class ProductosFSDAO {
             throw new Error(err);
         }
     }
+
+    async query(options: ProductQuery) {
+        try {
+            const data = await fs.readFile(this.rutaArchivo, "utf-8");
+            let productos = JSON.parse(data);
+
+            type Conditions = (aProduct: Product) => boolean;
+            const query: Conditions[] = [];
+            
+            if (options.nombre)
+              query.push((aProduct: Product) => aProduct.nombre == options.nombre);
+        
+            if (options.codigo)
+              query.push((aProduct: Product) => aProduct.codigo == options.codigo);
+
+            if (options.precioMin) {
+                query.push((aProduct: Product) => aProduct.precio >= Number(options.precioMin));
+            }
+
+            if (options.precioMax) {
+                query.push((aProduct: Product) => aProduct.precio <= Number(options.precioMax));
+            }
+
+            if (options.stockMin) {
+                query.push((aProduct: Product) => aProduct.stock >= Number(options.stockMin));
+            }
+
+            if (options.stockMax) {
+                query.push((aProduct: Product) => aProduct.stock <= Number(options.stockMax));
+            }
+              
+            return productos.filter((aProduct: Product) => query.every((x) => x(aProduct)));
+        
+        } catch (err) {
+            console.log("ERROR");
+            console.log(err);
+        }
+      }
 }

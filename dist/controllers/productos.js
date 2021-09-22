@@ -15,6 +15,7 @@ class Producto {
     getProducts(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
+            const { nombre, codigo, precioMin, precioMax, stockMin, stockMax } = req.query;
             if (id) {
                 const producto = yield productos_1.productsAPI.getProducts(id);
                 if (!producto) {
@@ -26,6 +27,25 @@ class Producto {
                     producto: producto,
                 });
             }
+            const query = {};
+            if (nombre)
+                query.nombre = nombre.toString();
+            if (codigo)
+                query.codigo = codigo.toString();
+            if (precioMin)
+                query.precioMin = Number(precioMin);
+            if (precioMax)
+                query.precioMax = Number(precioMax);
+            if (stockMin)
+                query.stockMin = Number(stockMin);
+            if (stockMax)
+                query.stockMax = Number(stockMax);
+            if (Object.keys(query).length) {
+                return res.json({
+                    data: yield productos_1.productsAPI.query(query)
+                });
+            }
+            ;
             res.json({
                 productos: yield productos_1.productsAPI.getProducts(),
             });

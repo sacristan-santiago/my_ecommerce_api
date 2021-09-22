@@ -18,7 +18,7 @@ myHTTPServer.listen(puerto, () => console.log(`Server up en puerto ${puerto}`));
 // const myWSServer = socketService.initWsService(myHTTPServer);
 
 //Inicio mongooseDB
-// mongooseService.init();
+//mongooseService.init();
 
 //Inicio mongooseDB
 // altasService.init();
