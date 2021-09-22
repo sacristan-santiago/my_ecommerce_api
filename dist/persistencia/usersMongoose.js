@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersPersistencia = void 0;
-const users_1 = require("../models/users");
+const users_1 = require("../schemas/users");
 class ProductosPersistencia {
     userJoin(id, username, room) {
         return __awaiter(this, void 0, void 0, function* () {

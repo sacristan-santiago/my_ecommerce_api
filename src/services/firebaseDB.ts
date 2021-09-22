@@ -1,16 +1,17 @@
-import mongoose from "mongoose";
-import {productosmodel} from "../schemas/productos";
-import  {countersmodel} from "../schemas/counters";
+var admin = require("firebase-admin");
+var serviceAccount = require("./firebase.json");
 
-class mongoooseDB {
-    async init () {
-        try {
-            const URL = 'mongodb://localhost/ecommerce';
-            
-            /******************PRODUCTOS DB******************/    
+class firebaseDB {
+    async init() {
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount)
+        });
+          
+        const firebaseDB = admin.firestore();
+        const productsCollection = await firebaseDB.collection("productos").get()
+        if ((productsCollection.empty)) {
             const products = [
                 {
-                    uID: 1,
                     timestamp: new Date,
                     nombre: "PRODUCTO 1",
                     descripcion: "descripcion 1",
@@ -20,7 +21,6 @@ class mongoooseDB {
                     stock: 10
                 },
                 {
-                    uID: 2,
                     timestamp: new Date,
                     nombre: "PRODUCTO 2",
                     descripcion: "descripcion 2",
@@ -30,7 +30,6 @@ class mongoooseDB {
                     stock: 10
                 },
                 {
-                    uID: 3,
                     timestamp: new Date,
                     nombre: "PRODUCTO 3",
                     descripcion: "descripcion 3",
@@ -40,7 +39,6 @@ class mongoooseDB {
                     stock: 10
                 },
                 {
-                    uID: 4,
                     timestamp: new Date,
                     nombre: "PRODUCTO 4",
                     descripcion: "descripcion 4",
@@ -49,29 +47,18 @@ class mongoooseDB {
                     precio: 10.23,
                     stock: 10
                 }
-              ]
-
-            await mongoose.connect(URL);
+            ]
             
-            // await productosmodel.collection.drop();
-            // await countersmodel.collection.drop();
-
-            //Create collection
-            if (!(await productosmodel.exists({}))) {
-                await productosmodel.insertMany(products);
-                const productosCounter = {
-                    _id: "productos counter identifier",
-                    count: 4,
-                    notes: "Increment COUNT using findAndModify to ensure that the COUNT field will be incremented atomically with the fetch of this document",
-                }
-                await new countersmodel(productosCounter).save();
-            }
-
-        } catch (e) {
-          console.log("Error: ", e);
+            //Agrego varios documentos al mismo tiempo
+            const batch = firebaseDB.batch();
+            products.forEach((doc) =>{
+                const docRef = firebaseDB.collection("productos").doc();
+                batch.set(docRef, doc)
+            })
+            batch.commit();
+            console.log("se crea firebase collection productos!")
         }
     }
 }
 
-export const mongooseService = new mongoooseDB;
-
+export const firebaseService = new firebaseDB;

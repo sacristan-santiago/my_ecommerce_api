@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from "express";
 import {ProductoPersistencia} from "../persistencia/productosMariaDB";
-import {ProductsPersistencia} from "../persistencia/productosMongoose"
+import {ProductsPersistencia} from "../persistencia/productosMongoose";
+import {productsAPI} from "../apis/productos"
 
 
 class Producto {
@@ -8,8 +9,8 @@ class Producto {
         const {id} = req.params;
         
         if (id) {
-            const producto = await ProductsPersistencia.get(Number(id));
-            if (!producto[0]) {
+            const producto = await productsAPI.getProducts(id);
+            if (!producto) {
                 return res.status(404).json ({
                     msg: "Producto no encontrado",
                 })
@@ -21,7 +22,7 @@ class Producto {
         }
 
         res.json({
-            productos: await ProductsPersistencia.getAll(),
+            productos: await productsAPI.getProducts(),
         })
     }
 
@@ -38,7 +39,7 @@ class Producto {
     
 
     async addProducts (req: Request, res: Response) {
-        const newItem = await ProductsPersistencia.add(req.body);
+        const newItem = await productsAPI.addProduct(req.body);
 
         res.json({
             msg: "Producto agregado con exito",
@@ -47,10 +48,10 @@ class Producto {
     }
 
     async updateProducts (req: Request, res: Response) {
-        const id = Number(req.params.id);
-        const producto = await ProductsPersistencia.get(id);
+        const id = req.params.id;
+        const producto = await productsAPI.getProducts(id);
 
-        if (!producto[0]) {
+        if (!producto) {
             return res.status(404).json ({
                 msg: "Producto no encontrado",
             })
@@ -58,7 +59,7 @@ class Producto {
 
         res.json({
             msg: "producto actualizado",
-            data: await ProductsPersistencia.update(id, req.body)
+            data: await productsAPI.updateProduct(id, req.body)
         })
     }
 
@@ -71,17 +72,16 @@ class Producto {
             })
         }
 
-        const producto = await ProductsPersistencia.get(Number(id))
-
-        if(!producto[0]) {
+        const producto = await productsAPI.getProducts(id)
+        
+        if(!producto) {
             return res.status(400).json ({
                 msg: "producto no encontrado"
             }) 
         }
-        
         res.json({
-            msg: "Producto borrado",
-            data: await ProductsPersistencia.delete(Number(id)),
+            msg: "El siguiente producto fue borrado",
+            data: await productsAPI.deleteProduct(id)
         })
     }
 }

@@ -1,18 +1,27 @@
 import myHTTPServer from "./services/server";
-import { DBService } from "./services/db";
+import { mysqlDBService } from "./services/mysqlDB";
 import { socketService } from "./services/socket";
 import { mongooseService } from "./services/mongooseDB";
+import { altasService } from "./services/atlasDB";
+import { firebaseService } from "./services/firebaseDB";
+
 
 const  puerto = process.env.PORT || 8080; 
 
-//Inicio Databases
-// DBService.init();
+// Inicio Database MySQL
+// mysqlDBService.init();
 
 //Inicio server HTTP
 myHTTPServer.listen(puerto, () => console.log(`Server up en puerto ${puerto}`));
 
 //Inicio Websocket server
-const myWSServer = socketService.initWsService(myHTTPServer);
+// const myWSServer = socketService.initWsService(myHTTPServer);
 
 //Inicio mongooseDB
-mongooseService.init();
+// mongooseService.init();
+
+//Inicio mongooseDB
+// altasService.init();
+
+//Inicio firebaseDB
+firebaseService.init();

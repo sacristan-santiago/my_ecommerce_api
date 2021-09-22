@@ -1,5 +1,5 @@
-import {productosmodel} from "../schemas/productos";
-import  {countersmodel} from "../schemas/counters";
+import {productosmodel} from "../../../schemas/productos";
+import  {countersmodel} from "../../../schemas/counters";
 
 interface addProduct {
     uID: number,
@@ -12,15 +12,14 @@ interface addProduct {
     precio: number,
 }
 
-class ProductosPersistencia {
-    // id: number;
-
-    async getAll() {
+export class ProductosLOCALMONGODAO {
+    
+    async get (id: number | undefined) {
+        if (id) {
+            return productosmodel.find({uID: id})
+        }
         return productosmodel.find({});
-    }
-
-    async get (id: number ) {
-        return productosmodel.find({uID: id})
+        
     }
 
     async add(data: addProduct) {
@@ -49,7 +48,4 @@ class ProductosPersistencia {
         //returning deleted product
         return deleted;
     } 
-
 }
-
-export const ProductsPersistencia = new ProductosPersistencia;

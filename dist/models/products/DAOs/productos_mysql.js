@@ -9,17 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductoPersistencia = void 0;
-const mysqlDB_1 = require("../services/mysqlDB");
-class ProductosPersistencia {
-    getAll() {
+exports.ProductosMYSQLDAO = void 0;
+const mysqlDB_1 = require("../../../services/mysqlDB");
+class ProductosMYSQLDAO {
+    get(_id) {
         return __awaiter(this, void 0, void 0, function* () {
+            const id = Number(_id);
+            if (id) {
+                return mysqlDB_1.myMariaDB.from("productos").where({ id: id }).select();
+            }
             return mysqlDB_1.myMariaDB.from("productos").select();
-        });
-    }
-    get(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return mysqlDB_1.myMariaDB.from("productos").where({ id: id }).select();
         });
     }
     add(data) {
@@ -27,15 +26,17 @@ class ProductosPersistencia {
             return mysqlDB_1.myMariaDB.from("productos").insert(data);
         });
     }
-    update(id, data) {
+    update(_id, data) {
         return __awaiter(this, void 0, void 0, function* () {
+            const id = Number(_id);
             yield mysqlDB_1.myMariaDB.from("productos").where({ id: id }).update(data);
             //returning updated product
             return mysqlDB_1.myMariaDB.from("productos").where({ id: id }).select();
         });
     }
-    delete(id) {
+    delete(_id) {
         return __awaiter(this, void 0, void 0, function* () {
+            const id = Number(_id);
             const deleted = yield mysqlDB_1.myMariaDB.from("productos").where({ id: id }).select();
             yield mysqlDB_1.myMariaDB.from("productos").where({ id: id }).del();
             //returning deleted product
@@ -43,4 +44,4 @@ class ProductosPersistencia {
         });
     }
 }
-exports.ProductoPersistencia = new ProductosPersistencia;
+exports.ProductosMYSQLDAO = ProductosMYSQLDAO;

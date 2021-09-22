@@ -10,14 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userPersistencia = void 0;
-const db_1 = require("../services/db");
+const mysqlDB_1 = require("../services/mysqlDB");
 class UsersPersistencia {
     userJoin(id, username, room) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const user = { id, username, room };
-                yield db_1.sqliteDB.from("chat").insert(user);
-                return db_1.sqliteDB.from("chat").where({ id: id }).select();
+                yield mysqlDB_1.sqliteDB.from("chat").insert(user);
+                return mysqlDB_1.sqliteDB.from("chat").where({ id: id }).select();
             }
             catch (e) {
                 console.log(e);
@@ -27,7 +27,7 @@ class UsersPersistencia {
     getCurrentUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return db_1.sqliteDB.from("chat").where({ id: id }).select();
+                return mysqlDB_1.sqliteDB.from("chat").where({ id: id }).select();
             }
             catch (e) {
                 console.log(e);
@@ -37,7 +37,7 @@ class UsersPersistencia {
     getRoomUser(room) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return db_1.sqliteDB.from("chat").where({ room: room }).select();
+                return mysqlDB_1.sqliteDB.from("chat").where({ room: room }).select();
             }
             catch (e) {
                 console.log(e);
@@ -47,8 +47,8 @@ class UsersPersistencia {
     userLeave(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const leavingUser = yield db_1.sqliteDB.from("chat").where({ id: id }).select();
-                yield db_1.sqliteDB.from("chat").where({ id: id }).del();
+                const leavingUser = yield mysqlDB_1.sqliteDB.from("chat").where({ id: id }).select();
+                yield mysqlDB_1.sqliteDB.from("chat").where({ id: id }).del();
                 return leavingUser[0];
             }
             catch (e) {

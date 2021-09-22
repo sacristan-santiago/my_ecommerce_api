@@ -4,14 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const server_1 = __importDefault(require("./services/server"));
-const socket_1 = require("./services/socket");
-const mongooseDB_1 = require("./services/mongooseDB");
+const firebaseDB_1 = require("./services/firebaseDB");
 const puerto = process.env.PORT || 8080;
-//Inicio Databases
-// DBService.init();
+// Inicio Database MySQL
+// mysqlDBService.init();
 //Inicio server HTTP
 server_1.default.listen(puerto, () => console.log(`Server up en puerto ${puerto}`));
 //Inicio Websocket server
-const myWSServer = socket_1.socketService.initWsService(server_1.default);
+// const myWSServer = socketService.initWsService(myHTTPServer);
 //Inicio mongooseDB
-mongooseDB_1.mongooseService.init();
+// mongooseService.init();
+//Inicio mongooseDB
+// altasService.init();
+//Inicio firebaseDB
+firebaseDB_1.firebaseService.init();

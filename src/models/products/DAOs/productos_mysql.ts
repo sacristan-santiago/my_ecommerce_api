@@ -1,4 +1,4 @@
-import { myMariaDB } from "../services/mysqlDB";
+import {myMariaDB} from "../../../services/mysqlDB"
 
 interface addProduct {
     nombre: string,
@@ -9,31 +9,31 @@ interface addProduct {
     precio: number,
 }
 
-class ProductosPersistencia {
-    async getAll () {
+export class ProductosMYSQLDAO {
+    async get (_id: string | undefined) {
+        const id: number  = Number(_id)
+        if (id) {
+            return myMariaDB.from("productos").where({id: id}).select()
+        }
         return myMariaDB.from("productos").select();
-    }
-
-    async get (id: number) {
-        return myMariaDB.from("productos").where({id: id}).select()
     }
 
     async add(data: addProduct) {
         return myMariaDB.from("productos").insert(data);
     }
 
-    async update(id: number, data: addProduct) {
+    async update(_id: string, data: addProduct) {
+        const id: number  = Number(_id)
         await myMariaDB.from("productos").where({id: id}).update(data)
         //returning updated product
         return myMariaDB.from("productos").where({id: id}).select()
     }
 
-    async delete(id: number) {
+    async delete(_id: string) {
+        const id: number  = Number(_id)
         const deleted = await myMariaDB.from("productos").where({id: id}).select()
         await myMariaDB.from("productos").where({id: id}).del();
         //returning deleted product
         return deleted;
     }
 }
-
-export const ProductoPersistencia = new ProductosPersistencia;

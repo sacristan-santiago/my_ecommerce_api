@@ -9,19 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductsPersistencia = void 0;
-const productos_1 = require("../schemas/productos");
-const counters_1 = require("../schemas/counters");
-class ProductosPersistencia {
-    // id: number;
-    getAll() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return productos_1.productosmodel.find({});
-        });
-    }
+exports.ProductosLOCALMONGODAO = void 0;
+const productos_1 = require("../../../schemas/productos");
+const counters_1 = require("../../../schemas/counters");
+class ProductosLOCALMONGODAO {
     get(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return productos_1.productosmodel.find({ uID: id });
+            if (id) {
+                return productos_1.productosmodel.find({ uID: id });
+            }
+            return productos_1.productosmodel.find({});
         });
     }
     add(data) {
@@ -54,4 +51,4 @@ class ProductosPersistencia {
         });
     }
 }
-exports.ProductsPersistencia = new ProductosPersistencia;
+exports.ProductosLOCALMONGODAO = ProductosLOCALMONGODAO;

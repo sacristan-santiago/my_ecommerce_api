@@ -8,23 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mongooseService = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-const productos_1 = require("../schemas/productos");
-const counters_1 = require("../schemas/counters");
-class mongoooseDB {
+exports.firebaseService = void 0;
+var admin = require("firebase-admin");
+var serviceAccount = require("./firebase.json");
+class firebaseDB {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const URL = 'mongodb://localhost/ecommerce';
-                /******************PRODUCTOS DB******************/
+            admin.initializeApp({
+                credential: admin.credential.cert(serviceAccount)
+            });
+            const firebaseDB = admin.firestore();
+            const productsCollection = yield firebaseDB.collection("productos").get();
+            if ((productsCollection.empty)) {
                 const products = [
                     {
-                        uID: 1,
                         timestamp: new Date,
                         nombre: "PRODUCTO 1",
                         descripcion: "descripcion 1",
@@ -34,7 +32,6 @@ class mongoooseDB {
                         stock: 10
                     },
                     {
-                        uID: 2,
                         timestamp: new Date,
                         nombre: "PRODUCTO 2",
                         descripcion: "descripcion 2",
@@ -44,7 +41,6 @@ class mongoooseDB {
                         stock: 10
                     },
                     {
-                        uID: 3,
                         timestamp: new Date,
                         nombre: "PRODUCTO 3",
                         descripcion: "descripcion 3",
@@ -54,7 +50,6 @@ class mongoooseDB {
                         stock: 10
                     },
                     {
-                        uID: 4,
                         timestamp: new Date,
                         nombre: "PRODUCTO 4",
                         descripcion: "descripcion 4",
@@ -64,24 +59,16 @@ class mongoooseDB {
                         stock: 10
                     }
                 ];
-                yield mongoose_1.default.connect(URL);
-                // await productosmodel.collection.drop();
-                // await countersmodel.collection.drop();
-                //Create collection
-                if (!(yield productos_1.productosmodel.exists({}))) {
-                    yield productos_1.productosmodel.insertMany(products);
-                    const productosCounter = {
-                        _id: "productos counter identifier",
-                        count: 4,
-                        notes: "Increment COUNT using findAndModify to ensure that the COUNT field will be incremented atomically with the fetch of this document",
-                    };
-                    yield new counters_1.countersmodel(productosCounter).save();
-                }
-            }
-            catch (e) {
-                console.log("Error: ", e);
+                //Agrego varios documentos al mismo tiempo
+                const batch = firebaseDB.batch();
+                products.forEach((doc) => {
+                    const docRef = firebaseDB.collection("productos").doc();
+                    batch.set(docRef, doc);
+                });
+                batch.commit();
+                console.log("se crea firebase collection productos!");
             }
         });
     }
 }
-exports.mongooseService = new mongoooseDB;
+exports.firebaseService = new firebaseDB;

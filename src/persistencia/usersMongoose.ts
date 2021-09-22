@@ -1,4 +1,4 @@
-import {usersmodel} from "../models/users";
+import {usersmodel} from "../schemas/users";
 
 interface User {
     uID: number, 

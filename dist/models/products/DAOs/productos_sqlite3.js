@@ -9,38 +9,39 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductoPersistencia = void 0;
-const mysqlDB_1 = require("../services/mysqlDB");
-class ProductosPersistencia {
-    getAll() {
+exports.ProductosSQLITE3DAO = void 0;
+const mysqlDB_1 = require("../../../services/mysqlDB");
+class ProductosSQLITE3DAO {
+    get(_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return mysqlDB_1.myMariaDB.from("productos").select();
-        });
-    }
-    get(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return mysqlDB_1.myMariaDB.from("productos").where({ id: id }).select();
+            const id = Number(_id);
+            if (id) {
+                return mysqlDB_1.sqliteDB.from("productos").where({ id: id }).select();
+            }
+            return mysqlDB_1.sqliteDB.from("productos").select();
         });
     }
     add(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            return mysqlDB_1.myMariaDB.from("productos").insert(data);
+            return mysqlDB_1.sqliteDB.from("productos").insert(data);
         });
     }
-    update(id, data) {
+    update(_id, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield mysqlDB_1.myMariaDB.from("productos").where({ id: id }).update(data);
+            const id = Number(_id);
+            yield mysqlDB_1.sqliteDB.from("productos").where({ id: id }).update(data);
             //returning updated product
-            return mysqlDB_1.myMariaDB.from("productos").where({ id: id }).select();
+            return mysqlDB_1.sqliteDB.from("productos").where({ id: id }).select();
         });
     }
-    delete(id) {
+    delete(_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const deleted = yield mysqlDB_1.myMariaDB.from("productos").where({ id: id }).select();
-            yield mysqlDB_1.myMariaDB.from("productos").where({ id: id }).del();
+            const id = Number(_id);
+            const deleted = yield mysqlDB_1.sqliteDB.from("productos").where({ id: id }).select();
+            yield mysqlDB_1.sqliteDB.from("productos").where({ id: id }).del();
             //returning deleted product
             return deleted;
         });
     }
 }
-exports.ProductoPersistencia = new ProductosPersistencia;
+exports.ProductosSQLITE3DAO = ProductosSQLITE3DAO;

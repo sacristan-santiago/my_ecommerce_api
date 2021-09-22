@@ -12,15 +12,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mongooseService = void 0;
+exports.altasService = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const productos_1 = require("../schemas/productos");
 const counters_1 = require("../schemas/counters");
-class mongoooseDB {
+class atlasDB {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const URL = 'mongodb://localhost/ecommerce';
+                const usuario = 'ssacrist';
+                const password = 'tomael10';
+                const dbName = 'ecommerce';
+                const clusterUrl = 'cluster0.z7epw.mongodb.net';
+                const myURI = `mongodb+srv://${usuario}:${password}@${clusterUrl}/${dbName}?retryWrites=true&w=majority`;
                 /******************PRODUCTOS DB******************/
                 const products = [
                     {
@@ -64,7 +68,7 @@ class mongoooseDB {
                         stock: 10
                     }
                 ];
-                yield mongoose_1.default.connect(URL);
+                yield mongoose_1.default.connect(myURI);
                 // await productosmodel.collection.drop();
                 // await countersmodel.collection.drop();
                 //Create collection
@@ -84,4 +88,4 @@ class mongoooseDB {
         });
     }
 }
-exports.mongooseService = new mongoooseDB;
+exports.altasService = new atlasDB;

@@ -1,4 +1,4 @@
-import { sqliteDB } from "../services/db";
+import { sqliteDB } from "../services/mysqlDB";
 
 interface User {
     id: number, 
