@@ -1,0 +1,36 @@
+{
+	"id": 1,
+	"timestamp": "23.9.21 13:35:42",
+	"productos": [
+		{
+			"id": "2",
+			"timestamp": "27.8.21 18:09:52",
+			"nombre": "lapiz2",
+			"descripcion": "lapiz de caracteristicas 2",
+			"codigo": "ASD223",
+			"foto": "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png",
+			"precio": 210,
+			"stock": 11
+		},
+		{
+			"id": "3",
+			"timestamp": "27.8.21 18:09:52",
+			"nombre": "lapiz3",
+			"descripcion": "lapiz de caracteristicas 3",
+			"codigo": "ASD323",
+			"foto": "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png",
+			"precio": 220,
+			"stock": 12
+		},
+		{
+			"id": "5",
+			"timestamp": "27.8.21 18:09:52",
+			"nombre": "lapiz5",
+			"descripcion": "lapiz de caracteristicas 5",
+			"codigo": "ASD523",
+			"foto": "https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png",
+			"precio": 240,
+			"stock": 14
+		}
+	]
+}

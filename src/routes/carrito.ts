@@ -4,12 +4,12 @@ import { checkAdmin } from "../middleware/admin";
 
 const router = Router();
 
-router.get("/listar", carritoController.getProductosCarrito);
+router.get("/", carritoController.getProductosCarrito);
 
-router.get("/listar/:id", carritoController.getProductosCarrito);
+router.get("/:id", carritoController.getProductosCarrito);
 
-router.post("/guardar/:id", carritoController.addProductoCarrito);  
+router.post("/:id", carritoController.addProductoCarrito);  
 
-router.delete("/borrar/:id", carritoController.deleteProductoCarrito);
+router.delete("/:id", carritoController.deleteProductoCarrito);
 
 export default router; 

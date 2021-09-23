@@ -1,19 +1,17 @@
-import {Product, newProduct }  from '../models/products/products.interface';
-import { NoticiasFactoryDAO } from '../models/products/products.factory';
+import {Product, newProduct, ProductQuery }  from '../models/products/products.interface';
+import { ProductosFactoryDAO } from '../models/products/products.factory';
 import { TipoPersistencia } from '../models/products/products.factory';
-import { ProductQuery } from '../models/products/products.interface';
-import Config from "../config";
 
 /**
  * Con esta variable elegimos el tipo de persistencia
  */
-export const tipoPersistencia = TipoPersistencia.Memoria;
+export const tipoPersistencia = TipoPersistencia.SQLITE3;
 
 class prodAPI {
   private productos: any;
 
   constructor() {
-    this.productos = NoticiasFactoryDAO.get(tipoPersistencia);
+    this.productos = ProductosFactoryDAO.get(tipoPersistencia);
   }
 
   async getProducts(id: string | undefined = undefined): Promise<Product[]> {

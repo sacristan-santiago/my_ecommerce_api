@@ -28,7 +28,7 @@ class CreateDB {
                 exports.sqliteDB.schema.
                     createTable('productos', (productosTable) => {
                     productosTable.increments();
-                    productosTable.timestamp('created_at').defaultTo(exports.myMariaDB.fn.now());
+                    productosTable.timestamp('timestamp').defaultTo(exports.myMariaDB.fn.now());
                     productosTable.string('nombre').notNullable();
                     productosTable.string('descripcion').notNullable();
                     productosTable.string('codigo').notNullable();
@@ -76,6 +76,45 @@ class CreateDB {
                 });
             }
         });
+        //CarritoDB MySQL_sqliteDB
+        exports.sqliteDB.schema.hasTable("carrito").then((exists) => {
+            if (!exists) {
+                console.log("No existe la tabla carrito, vamos a crearla");
+                exports.sqliteDB.schema.
+                    createTable('carrito', (carritoTable) => {
+                    carritoTable.increments();
+                    carritoTable.timestamp('timestamp').defaultTo(exports.myMariaDB.fn.now());
+                    carritoTable.string('nombre').notNullable();
+                    carritoTable.string('descripcion').notNullable();
+                    carritoTable.string('codigo').notNullable();
+                    carritoTable.string('foto');
+                    carritoTable.decimal('precio', 5, 2);
+                    carritoTable.integer('stock').notNullable();
+                })
+                    .then(() => console.log("DONE"));
+                const mockCarrito = [
+                    {
+                        nombre: "PRODUCTO 1",
+                        descripcion: "descripcion 1",
+                        codigo: "ASD123",
+                        foto: "URL1",
+                        precio: "10.23",
+                        stock: 10
+                    },
+                    {
+                        nombre: "PRODUCTO 4",
+                        descripcion: "descripcion 4",
+                        codigo: "ASD456",
+                        foto: "URL4",
+                        precio: "10.23",
+                        stock: 10
+                    }
+                ];
+                exports.sqliteDB('carrito').insert(mockCarrito).then(() => {
+                    console.log("productos carrito agregados");
+                });
+            }
+        });
         //ProductosDB MySQL_MariaDB
         exports.myMariaDB.schema.hasTable("productos").then((exists) => {
             if (!exists) {
@@ -83,7 +122,7 @@ class CreateDB {
                 exports.myMariaDB.schema.
                     createTable('productos', (productosTable) => {
                     productosTable.increments();
-                    productosTable.timestamp('created_at').defaultTo(exports.myMariaDB.fn.now());
+                    productosTable.timestamp('timestamp').defaultTo(exports.myMariaDB.fn.now());
                     productosTable.string('nombre').notNullable();
                     productosTable.string('descripcion').notNullable();
                     productosTable.string('codigo').notNullable();
@@ -128,6 +167,47 @@ class CreateDB {
                 ];
                 exports.myMariaDB('productos').insert(productosList).then(() => {
                     console.log("productos agregados");
+                });
+            }
+        });
+        //CarritoDB MySQL_myMariaDB
+        exports.myMariaDB.schema.hasTable("carrito").then((exists) => {
+            if (!exists) {
+                console.log("No existe la tabla carrito, vamos a crearla");
+                exports.myMariaDB.schema.
+                    createTable('carrito', (carritoTable) => {
+                    carritoTable.integer('id').notNullable();
+                    carritoTable.timestamp('timestamp').defaultTo(exports.myMariaDB.fn.now());
+                    carritoTable.string('nombre').notNullable();
+                    carritoTable.string('descripcion').notNullable();
+                    carritoTable.string('codigo').notNullable();
+                    carritoTable.string('foto');
+                    carritoTable.decimal('precio', 5, 2);
+                    carritoTable.integer('stock').notNullable();
+                })
+                    .then(() => console.log("DONE"));
+                const mockCarrito = [
+                    {
+                        id: 1,
+                        nombre: "PRODUCTO 1",
+                        descripcion: "descripcion 1",
+                        codigo: "ASD123",
+                        foto: "URL1",
+                        precio: "10.23",
+                        stock: 10
+                    },
+                    {
+                        id: 4,
+                        nombre: "PRODUCTO 4",
+                        descripcion: "descripcion 4",
+                        codigo: "ASD456",
+                        foto: "URL4",
+                        precio: "10.23",
+                        stock: 10
+                    }
+                ];
+                exports.myMariaDB('carrito').insert(mockCarrito).then(() => {
+                    console.log("productos carrito agregados");
                 });
             }
         });

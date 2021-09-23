@@ -9,45 +9,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.productsAPI = exports.tipoPersistencia = void 0;
-const products_factory_1 = require("../models/products/products.factory");
-const products_factory_2 = require("../models/products/products.factory");
-/**
- * Con esta variable elegimos el tipo de persistencia
- */
-exports.tipoPersistencia = products_factory_2.TipoPersistencia.SQLITE3;
-class prodAPI {
+exports.carritoAPI = void 0;
+const carrito_factory_1 = require("../models/carrito/carrito.factory");
+const productos_1 = require("./productos");
+class CarritoAPI {
     constructor() {
-        this.productos = products_factory_1.ProductosFactoryDAO.get(exports.tipoPersistencia);
+        this.carrito = carrito_factory_1.CarritoFactoryDAO.get(productos_1.tipoPersistencia);
+    }
+    findProduct(id = undefined) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.carrito.findProduct(id);
+        });
     }
     getProducts(id = undefined) {
         return __awaiter(this, void 0, void 0, function* () {
             if (id)
-                return this.productos.get(id);
-            return this.productos.get();
+                return this.carrito.getProducts(id);
+            return this.carrito.getProducts();
         });
     }
-    addProduct(productData) {
+    addProduct(newItem) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newProduct = yield this.productos.add(productData);
+            const newProduct = yield this.carrito.addProduct(newItem);
             return newProduct;
-        });
-    }
-    updateProduct(id, productData) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const updatedProduct = yield this.productos.update(id, productData);
-            return updatedProduct;
         });
     }
     deleteProduct(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.productos.delete(id);
-        });
-    }
-    query(options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.productos.query(options);
+            return yield this.carrito.deleteProduct(id);
         });
     }
 }
-exports.productsAPI = new prodAPI();
+exports.carritoAPI = new CarritoAPI();

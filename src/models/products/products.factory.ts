@@ -19,36 +19,36 @@ export enum TipoPersistencia {
   Firebase = 'FIREBASE',
 }
 
-export class NoticiasFactoryDAO {
+export class ProductosFactoryDAO {
   static get(tipo: TipoPersistencia) {
     switch (tipo) {
       case TipoPersistencia.FileSystem:
-        console.log('RETORNANDO INSTANCIA CLASE FS');
+        console.log('RETORNANDO INSTANCIA CLASE PRODUCTOS FS');
         const filePath = path.resolve(__dirname, './DAOs/productos.json');
         return new ProductosFSDAO(filePath);
 
       case TipoPersistencia.MYSQL:
-        console.log('RETORNANDO INSTANCIA CLASE MYSQL');
+        console.log('RETORNANDO INSTANCIA CLASE PRODUCTOS MYSQL');
         return new ProductosMYSQLDAO;
 
       case TipoPersistencia.SQLITE3:
-        console.log('RETORNANDO INSTANCIA CLASE SQLITE3');
+        console.log('RETORNANDO INSTANCIA CLASE PRODUCTOS SQLITE3');
         return new ProductosSQLITE3DAO;
 
       case TipoPersistencia.LocalMongo:
-        console.log('RETORNANDO INSTANCIA CLASE MONGO LOCAL');
+        console.log('RETORNANDO INSTANCIA CLASE PRODUCTOS MONGO LOCAL');
         return new ProductosLOCALMONGODAO;
 
       case TipoPersistencia.MongoAtlas:
-        console.log('RETORNANDO INSTANCIA CLASE MONGO ATLAS');
+        console.log('RETORNANDO INSTANCIA CLASE PRODUCTOS MONGO ATLAS');
         return new ProductosATLASMONGODAO;
       
       case TipoPersistencia.Firebase:
-        console.log('RETORNANDO INSTANCIA CLASE FIREBASE');
+        console.log('RETORNANDO INSTANCIA CLASE PRODUCTOS FIREBASE');
         return new ProductosFIREBASEDAO;
         
       default:
-        console.log('RETORNANDO INSTANCIA CLASE MEMORIA');
+        console.log('RETORNANDO INSTANCIA CLASE PRODUCTOS MEMORIA');
         return new ProductosMemDAO();
     }
   }
