@@ -9,16 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.productsAPI = void 0;
+exports.productsAPI = exports.tipoPersistencia = void 0;
 const products_factory_1 = require("../models/products/products.factory");
 const products_factory_2 = require("../models/products/products.factory");
 /**
  * Con esta variable elegimos el tipo de persistencia
  */
-const tipo = products_factory_2.TipoPersistencia.Firebase;
+exports.tipoPersistencia = products_factory_2.TipoPersistencia.Memoria;
 class prodAPI {
     constructor() {
-        this.productos = products_factory_1.NoticiasFactoryDAO.get(tipo);
+        this.productos = products_factory_1.NoticiasFactoryDAO.get(exports.tipoPersistencia);
     }
     getProducts(id = undefined) {
         return __awaiter(this, void 0, void 0, function* () {

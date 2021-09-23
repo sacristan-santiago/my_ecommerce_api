@@ -39,7 +39,7 @@ class ProductosFSDAO {
                 if (id) {
                     return productos.find((aProduct) => aProduct.id == id);
                 }
-                // console.log(productos)
+                //console.log(productos)
                 return productos;
             }
             catch (_a) {

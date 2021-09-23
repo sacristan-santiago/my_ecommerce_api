@@ -16,14 +16,15 @@ exports.altasService = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const productos_1 = require("../schemas/productos");
 const counters_1 = require("../schemas/counters");
+const config_1 = __importDefault(require("../config"));
 class atlasDB {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const usuario = 'ssacrist';
-                const password = 'tomael10';
-                const dbName = 'ecommerce';
-                const clusterUrl = 'cluster0.z7epw.mongodb.net';
+                const usuario = config_1.default.MONGO_ATLAS_USER;
+                const password = config_1.default.MONGO_ATLAS_PASSWORD;
+                const dbName = config_1.default.MONGO_ATLAS_DBNAME;
+                const clusterUrl = config_1.default.MONGO_ATLAS_CLUSTER;
                 const myURI = `mongodb+srv://${usuario}:${password}@${clusterUrl}/${dbName}?retryWrites=true&w=majority`;
                 /******************PRODUCTOS DB******************/
                 const products = [

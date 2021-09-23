@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
 import {productosmodel} from "../schemas/productos";
 import {countersmodel} from "../schemas/counters";
+import Config from "../config";
 
 class atlasDB {
     async init () {
         try {
-            const usuario = 'ssacrist';
-            const password = 'tomael10';
-            const dbName = 'ecommerce';
-            const clusterUrl = 'cluster0.z7epw.mongodb.net'
+            const usuario = Config.MONGO_ATLAS_USER;
+            const password = Config.MONGO_ATLAS_PASSWORD;
+            const dbName = Config.MONGO_ATLAS_DBNAME;
+            const clusterUrl = Config.MONGO_ATLAS_CLUSTER
             const myURI = `mongodb+srv://${usuario}:${password}@${clusterUrl}/${dbName}?retryWrites=true&w=majority`
                         
             /******************PRODUCTOS DB******************/    

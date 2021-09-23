@@ -10,6 +10,7 @@ const productos_sqlite3_1 = require("./DAOs/productos_sqlite3");
 const productos_mongolocal_1 = require("./DAOs/productos_mongolocal");
 const productos_mongoatlas_1 = require("./DAOs/productos_mongoatlas");
 const productos_firebaseDB_1 = require("./DAOs/productos_firebaseDB");
+const productos_memory_1 = require("./DAOs/productos_memory");
 const path_1 = __importDefault(require("path"));
 var TipoPersistencia;
 (function (TipoPersistencia) {
@@ -43,9 +44,9 @@ class NoticiasFactoryDAO {
             case TipoPersistencia.Firebase:
                 console.log('RETORNANDO INSTANCIA CLASE FIREBASE');
                 return new productos_firebaseDB_1.ProductosFIREBASEDAO;
-            // default:
-            //   console.log('RETORNANDO INSTANCIA CLASE MEMORIA');
-            //   return new ProductosMemDAO();
+            default:
+                console.log('RETORNANDO INSTANCIA CLASE MEMORIA');
+                return new productos_memory_1.ProductosMemDAO();
         }
     }
 }

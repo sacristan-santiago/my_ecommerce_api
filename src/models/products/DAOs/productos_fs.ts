@@ -28,7 +28,7 @@ export class ProductosFSDAO {
             if (id) {
                 return productos.find((aProduct: any) => aProduct.id == id);
             }
-            // console.log(productos)
+            //console.log(productos)
             return productos
         } catch {
             return console.log([]);

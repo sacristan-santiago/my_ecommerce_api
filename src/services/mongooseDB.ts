@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 import {productosmodel} from "../schemas/productos";
 import  {countersmodel} from "../schemas/counters";
+import Config from "../config"
 
 class mongoooseDB {
     async init () {
         try {
-            const URL = 'mongodb://localhost/ecommerce';
+            const dbName = Config.MONGO_LOCAL_DBNAME;
+            const URL = `mongodb://localhost/${dbName}`;
             
             /******************PRODUCTOS DB******************/    
             const products = [

@@ -4,6 +4,8 @@ import { ProductosSQLITE3DAO } from './DAOs/productos_sqlite3';
 import { ProductosLOCALMONGODAO } from "./DAOs/productos_mongolocal";
 import { ProductosATLASMONGODAO } from "./DAOs/productos_mongoatlas";
 import { ProductosFIREBASEDAO } from './DAOs/productos_firebaseDB';
+import { ProductosMemDAO } from './DAOs/productos_memory';
+
 
 import path from 'path';
 
@@ -45,9 +47,9 @@ export class NoticiasFactoryDAO {
         console.log('RETORNANDO INSTANCIA CLASE FIREBASE');
         return new ProductosFIREBASEDAO;
         
-      // default:
-      //   console.log('RETORNANDO INSTANCIA CLASE MEMORIA');
-      //   return new ProductosMemDAO();
+      default:
+        console.log('RETORNANDO INSTANCIA CLASE MEMORIA');
+        return new ProductosMemDAO();
     }
   }
 }

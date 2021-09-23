@@ -19,9 +19,12 @@ class ProductosFIREBASEDAO {
                 const firebaseDB = admin.firestore();
                 if (_id) {
                     let resultado = yield firebaseDB.collection("productos").doc(_id).get();
-                    const data = resultado.data();
-                    data.id = resultado.id;
-                    return productos_1.dataOrdered(data);
+                    if (resultado.exists) {
+                        const data = resultado.data();
+                        data.id = resultado.id;
+                        return productos_1.dataOrdered(data);
+                    }
+                    return;
                 }
                 let resultado = yield firebaseDB.collection("productos").get();
                 let docs = resultado.docs;

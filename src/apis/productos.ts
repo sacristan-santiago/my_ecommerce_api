@@ -2,18 +2,18 @@ import {Product, newProduct }  from '../models/products/products.interface';
 import { NoticiasFactoryDAO } from '../models/products/products.factory';
 import { TipoPersistencia } from '../models/products/products.factory';
 import { ProductQuery } from '../models/products/products.interface';
+import Config from "../config";
 
 /**
  * Con esta variable elegimos el tipo de persistencia
  */
-const tipo = TipoPersistencia.Firebase;
+export const tipoPersistencia = TipoPersistencia.Memoria;
 
 class prodAPI {
   private productos: any;
-  
 
   constructor() {
-    this.productos = NoticiasFactoryDAO.get(tipo);
+    this.productos = NoticiasFactoryDAO.get(tipoPersistencia);
   }
 
   async getProducts(id: string | undefined = undefined): Promise<Product[]> {

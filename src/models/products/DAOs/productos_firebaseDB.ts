@@ -21,9 +21,12 @@ export class ProductosFIREBASEDAO {
 
             if (_id) {
                 let resultado = await firebaseDB.collection("productos").doc(_id).get();
-                const data: any = resultado.data();
-                data.id = resultado.id;
-                return dataOrdered(data);
+                if(resultado.exists) {
+                    const data: any = resultado.data();
+                    data.id = resultado.id;
+                    return dataOrdered(data);
+                }
+                return ;
             }
 
             let resultado = await firebaseDB.collection("productos").get();

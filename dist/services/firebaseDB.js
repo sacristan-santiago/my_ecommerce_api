@@ -8,15 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.firebaseService = void 0;
 var admin = require("firebase-admin");
 var serviceAccount = require("./firebase.json");
+const config_1 = __importDefault(require("../config"));
 class firebaseDB {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount)
+                credential: admin.credential.cert({
+                    privateKey: config_1.default.FIREBASE_PRIVATEKEY,
+                    projectId: config_1.default.FIREBASE_PROJECTID,
+                    clientEmail: config_1.default.FIREBASE_CLIENTEMAIL
+                })
             });
             const firebaseDB = admin.firestore();
             const productsCollection = yield firebaseDB.collection("productos").get();

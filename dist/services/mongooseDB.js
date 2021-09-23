@@ -16,11 +16,13 @@ exports.mongooseService = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const productos_1 = require("../schemas/productos");
 const counters_1 = require("../schemas/counters");
+const config_1 = __importDefault(require("../config"));
 class mongoooseDB {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const URL = 'mongodb://localhost/ecommerce';
+                const dbName = config_1.default.MONGO_LOCAL_DBNAME;
+                const URL = `mongodb://localhost/${dbName}`;
                 /******************PRODUCTOS DB******************/
                 const products = [
                     {

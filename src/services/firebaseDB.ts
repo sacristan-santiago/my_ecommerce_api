@@ -1,10 +1,15 @@
 var admin = require("firebase-admin");
 var serviceAccount = require("./firebase.json");
+import Config from "../config";
 
 class firebaseDB {
     async init() {
         admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount)
+            credential: admin.credential.cert({
+                privateKey: Config.FIREBASE_PRIVATEKEY,
+                projectId: Config.FIREBASE_PROJECTID,
+                clientEmail: Config.FIREBASE_CLIENTEMAIL
+            })
         });
           
         const firebaseDB = admin.firestore();
