@@ -5,7 +5,7 @@ import { TipoPersistencia } from '../models/products/products.factory';
 /**
  * Con esta variable elegimos el tipo de persistencia
  */
-export const tipoPersistencia = TipoPersistencia.SQLITE3;
+export const tipoPersistencia = TipoPersistencia.LocalMongo;
 
 class prodAPI {
   private productos: any;

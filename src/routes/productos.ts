@@ -14,4 +14,5 @@ router.put("/:id", checkAdmin, productsController.checkProducts, productsControl
 
 router.delete("/:id", checkAdmin, productsController.deleteProducts);
 
+
 export default router; 

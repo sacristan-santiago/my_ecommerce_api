@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const productosCollection = "productos";
 
-const ProductoSchema = new mongoose.Schema ({
+export const ProductoSchema = new mongoose.Schema ({
     uID: {type: Number, required: true},
     timestamp: {type: Date, required: true},
     nombre: {type: String, require: true, max: 100},

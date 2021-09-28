@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import {productosmodel} from "../schemas/productos";
-import  {countersmodel} from "../schemas/counters";
+import {countersmodel} from "../schemas/counters";
+import { carritomodel } from "../schemas/carrito";
 import Config from "../config"
 
 class mongoooseDB {
@@ -8,8 +9,13 @@ class mongoooseDB {
         try {
             const dbName = Config.MONGO_LOCAL_DBNAME;
             const URL = `mongodb://localhost/${dbName}`;
+
+            await mongoose.connect(URL);
             
-            /******************PRODUCTOS DB******************/    
+            // await productosmodel.collection.drop();
+            // await countersmodel.collection.drop();
+
+            /******************PRODUCTOS COLLECTION******************/    
             const products = [
                 {
                     uID: 1,
@@ -51,14 +57,9 @@ class mongoooseDB {
                     precio: 10.23,
                     stock: 10
                 }
-              ]
+                ]
 
-            await mongoose.connect(URL);
-            
-            // await productosmodel.collection.drop();
-            // await countersmodel.collection.drop();
-
-            //Create collection
+            //Create product collection
             if (!(await productosmodel.exists({}))) {
                 await productosmodel.insertMany(products);
                 const productosCounter = {
@@ -69,6 +70,44 @@ class mongoooseDB {
                 await new countersmodel(productosCounter).save();
             }
 
+            /******************PRODUCTOS COLLECTION******************/    
+            const carrito = {
+                uID: 1,
+                timestamp: new Date,
+                productos: [
+                    {
+                        uID: 1,
+                        timestamp: new Date,
+                        nombre: "PRODUCTO 1",
+                        descripcion: "descripcion 1",
+                        codigo: "ASD123",
+                        foto: "URL1",
+                        precio: 10.23,
+                        stock: 10
+                    },
+                    {
+                        uID: 4,
+                        timestamp: new Date,
+                        nombre: "PRODUCTO 4",
+                        descripcion: "descripcion 4",
+                        codigo: "ASD456",
+                        foto: "URL4",
+                        precio: 10.23,
+                        stock: 10
+                    }
+                ]
+            }
+                
+            //Create carrito collection
+            if (!(await carritomodel.exists({}))) {
+                await carritomodel.insertMany(carrito);
+                const carritoCounter = {
+                    _id: "carrito counter identifier",
+                    count: 1,
+                    notes: "Increment COUNT using findAndModify to ensure that the COUNT field will be incremented atomically with the fetch of this document",
+                }
+                await new countersmodel(carritoCounter).save();
+            }
         } catch (e) {
           console.log("Error: ", e);
         }
