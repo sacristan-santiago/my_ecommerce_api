@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/", productsController.getProducts);
 
-router.get("/:id", productsController.getProducts);
+// router.get("/:id", productsController.getProducts);
 
 router.post("/", checkAdmin, productsController.checkProducts, productsController.addProducts);
 
@@ -14,5 +14,6 @@ router.put("/:id", checkAdmin, productsController.checkProducts, productsControl
 
 router.delete("/:id", checkAdmin, productsController.deleteProducts);
 
+router.get("/vista-test", productsController.generateProducts);
 
 export default router; 

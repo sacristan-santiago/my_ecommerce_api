@@ -1,6 +1,4 @@
-import {Product, newProduct, ProductQuery }  from '../models/products/products.interface';
 import { CarritoFactoryDAO } from '../models/carrito/carrito.factory';
-import { TipoPersistencia } from '../models/products/products.factory';
 import { tipoPersistencia } from './productos';
 
 class CarritoAPI {

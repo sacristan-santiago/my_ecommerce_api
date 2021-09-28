@@ -101,6 +101,20 @@ class Producto {
             data: await productsAPI.deleteProduct(id)
         })
     }
+
+    async generateProducts(req: Request, res: Response) {
+        const quantity = req.query.quantity ? Number(req.query.quantity) : 50; 
+        
+            const productos = await productsAPI.generateProducts(quantity)
+            const dataDinamica = {
+                mostrarFormulario: false,
+                mostrarTable: true,
+                productos: productos,
+                mostrarLoggin: false,
+                mostrarChat: false,
+            }
+            res.render("main", dataDinamica)    
+    }
 }
 
 export const productsController = new Producto ();

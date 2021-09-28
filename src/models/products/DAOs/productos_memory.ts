@@ -1,10 +1,6 @@
-import {
-  newProduct,
-  Product,
-  ProductBaseClass,
-  ProductQuery,
-} from '../products.interface';
+import {newProduct, Product, ProductBaseClass, ProductQuery} from '../products.interface';
 import moment from "moment";
+import faker from "faker";
 
 export class ProductosMemDAO implements ProductBaseClass {
   private productos: Product[] = [];
@@ -143,5 +139,25 @@ export class ProductosMemDAO implements ProductBaseClass {
   }
 
     return this.productos.filter((aProduct) => query.every((x) => x(aProduct)));
+  }
+
+  async generate (id: number) {
+    const resultado = [];
+    
+    for (let i=1; i<=id; i++) {
+      const newProduct : Product = {
+        id: i.toString(),
+        timestamp: faker.date.past().toString(),
+        nombre: faker.commerce.productName(),
+        descripcion: faker.commerce.productAdjective() + " " + faker.commerce.product() + " made of " + faker.commerce.productMaterial(), 
+        codigo: faker.datatype.string(3) + faker.datatype.number(3),
+        foto: faker.image.imageUrl(100, 100, "business", true),
+        precio: faker.datatype.number({min: 1, max: 200}),
+        stock: faker.datatype.number({min: 1, max: 25}),
+      }
+      resultado.push(newProduct)
+    }
+    
+    return resultado;
   }
 }

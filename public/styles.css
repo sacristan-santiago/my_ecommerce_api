@@ -50,3 +50,8 @@ ul {
     display: inline;
 }
 
+/*****TABLES****/
+table {
+    width: 100%;
+    text-align: center;
+}

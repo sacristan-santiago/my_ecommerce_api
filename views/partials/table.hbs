@@ -1,15 +1,25 @@
 {{#if mostrarTable}}
     <table id="tabla" cellspacing="20px" cellpadding="25px" border="1px">
         <tr>
-            <th>Nombre del producto</th>
-            <th>Precio</th>
+            <th>ID</th>
+            <th>Timestamp</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Codigo</th>
             <th>Foto</th>
+            <th>Precio</th>
+            <th>Stock</th>
         </tr>
         {{#each productos}}
         <tr>
-            <td>{{title}}</td>
-            <td>{{price}}</td>
-            <td><img width="100px", height="100px" src="{{thumbnail}}" alt="fotito de producto"></td>
+            <td>{{id}}</td>
+            <td>{{timestamp}}</td>
+            <td>{{nombre}}</td>
+            <td>{{descripcion}}</td>
+            <td>{{codigo}}</td>
+            <td><img width="100px", height="100px" src="{{foto}}" alt="fotito de producto"></td>
+            <td>{{precio}}</td>
+            <td>{{stock}}</td>
         </tr>
         {{/each}}
     </table>

@@ -5,7 +5,7 @@ import { TipoPersistencia } from '../models/products/products.factory';
 /**
  * Con esta variable elegimos el tipo de persistencia
  */
-export const tipoPersistencia = TipoPersistencia.LocalMongo;
+export const tipoPersistencia = TipoPersistencia.Memoria;
 
 class prodAPI {
   private productos: any;
@@ -36,6 +36,11 @@ class prodAPI {
 
   async query(options: ProductQuery) {
     return await this.productos.query(options);
+  }
+
+  async generateProducts(quantity: number) {
+    
+    return await this.productos.generate(quantity);
   }
 }
 
