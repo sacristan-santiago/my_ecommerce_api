@@ -1,6 +1,26 @@
 Guia para usar la API:
 -----------------------------------------------------
 
+#API productos:
+
+  -GET: http://localhost:8080/api/productos/?id
+  
+  -POST: http://localhost:8080/api/productos
+  
+  -PUT: http://localhost:8080/api/productos/id
+  
+  -DELETE: http://localhost:8080/api/productos/id
+  
+-------------
+
+#API chat:
+
+  -GET: http://localhost:8080/api/chat
+
+-------------
+
+#PERSISTENCIA
+
 1. Para cambiar de persistencia ir a "./apis/productos.ts" y modificar la variable
 tipoPersistencia segun el enum:
 
@@ -30,16 +50,3 @@ tipoPersistencia segun el enum:
   MONGO_ATLAS_CLUSTER y MONGO_ATLAS_DBNAME. Ver envExample
 
   -firebase: crear un archivo .env en el root con las variables FIREBASE_PRIVATEKEY, FIREBASE_PROJECTID y FIREBASE_CLIENTEMAIL. Ver envExample
-
-
-#API productos:
-
-  -GET: http://localhost:8080/api/productos/?id
-  
-  -POST: http://localhost:8080/api/productos
-  
-  -PUT: http://localhost:8080/api/productos/id
-  
-  -DELETE: http://localhost:8080/api/productos/id
-  
--------------
