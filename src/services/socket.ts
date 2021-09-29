@@ -1,6 +1,8 @@
 import {Server, Socket} from "socket.io";
 import {formatMessage} from "../utils/messages";
-import { usersPersistencia } from "../persistencia/usersMongoose";
+import { usersPersistencia } from "../models/mensajes/DAOs/messages_mongolocal";
+import { Message } from "../models/mensajes/messages.interface";
+import util from "util"
 
 // //usando socket.io
 // const myWSServer =  new Server(myServer);
@@ -36,6 +38,10 @@ class SocketServer {
                     user = user[0];
                     socket.join(user.room);
 
+                    //Traigo mensajes MongolocalDB y emito en DOM
+                    let msges = await usersPersistencia.getAllMessages();
+                    socket.emit("receiveMessages", msges)
+
                     //Mensaje de bienvenida
                     socket.emit("message", formatMessage(botName,"Bienvenido a SantiChat!"));
                     
@@ -48,13 +54,11 @@ class SocketServer {
                         users: await usersPersistencia.getRoomUser(user.room),
                     })
 
-
                     //Escuchar mensajes en el chat
-                    socket.on("chatMessage", async (msg: string) => {
-                        await usersPersistencia.saveMessage(socket.id, msg)
-                        let user: any = await usersPersistencia.getCurrentUser(socket.id).catch((e)=>console.log(e))
-                        user = user[0]
-                        this.myWSServer.to(user.room).emit("message", formatMessage(user.username, msg));
+                    socket.on("chatMessage", async (msg: Message) => {
+                        await usersPersistencia.saveMessage(msg)
+
+                        this.myWSServer.to(user.room).emit("message", formatMessage(msg.author.email, msg.text));
                     })
 
                     //Run cuando un cliente se desconecta

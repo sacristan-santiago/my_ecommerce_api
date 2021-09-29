@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 import {productosmodel} from "../schemas/productos";
 import {countersmodel} from "../schemas/counters";
-import { carritomodel } from "../schemas/carrito";
+import {carritomodel} from "../schemas/carrito";
+import {messagemodel} from "../schemas/message";
 import Config from "../config"
 
 class mongoooseDB {
@@ -70,7 +71,7 @@ class mongoooseDB {
                 await new countersmodel(productosCounter).save();
             }
 
-            /******************PRODUCTOS COLLECTION******************/    
+            /******************CARRITO COLLECTION******************/    
             const carrito = {
                 uID: 1,
                 timestamp: new Date,
@@ -108,9 +109,34 @@ class mongoooseDB {
                 }
                 await new countersmodel(carritoCounter).save();
             }
+
+            /******************MENSAJES COLLECTION******************/    
+            const mensajes = [
+                {
+                    author: {
+                        email: "tomael@gmail.com",
+                        nombre: "Tomas",
+                        apellido: "Him",
+                        alias: "Tomael",
+                        edad: 28,
+                        avatar: "http//:tomaelpic",
+                    },
+                    text: "Hola chicos!",
+                    time: "1:52 am",
+                }
+            ]
+                
+            //Create carrito collection
+            if (!(await messagemodel.exists({}))) {
+                await messagemodel.insertMany(mensajes);
+                console.log("Creando mock de Mensajes")
+            }
+
+
         } catch (e) {
           console.log("Error: ", e);
         }
+
     }
 }
 

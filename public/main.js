@@ -52,26 +52,41 @@ const roomName = document.getElementById("room-name");
 const userList = document.getElementById("users");
 
 //username y room from URL 
-const {username, room} = Qs.parse(location.search, {
+const {username, room, nombre, apellido, alias, edad, avatar} = Qs.parse(location.search, {
     ignoreQueryPrefix: true,
 });
 
 //Entrar en una sala
-
 if (typeof username != "undefined") {
     socket.emit("joinRoom", {username, room});
 }
     
-
-
 //Tomar sala y usuarios
 socket.on("roomUsers", ({room, users})=> {
     outputRoomName(room);
     outputUsers(users);
 })
 
+socket.on("receiveMessages", msges => {
+    console.log(msges);
+    
+    const messagesIDs = Object.keys(msges.entities.message)
+
+    messagesIDs.forEach(id => {
+        const newMessage = {
+            text: msges.entities.message[id].text,
+            username: msges.entities.message[id].author,
+            time: msges.entities.message[id].time
+        }
+        outputMessage(newMessage)
+    });
+
+    //Scroll down
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+})
+
 socket.on("message", message => {
-    console.log(message);
+    
     outputMessage(message);
 
     //Scroll down
@@ -81,7 +96,19 @@ socket.on("message", message => {
 chatForm.addEventListener("submit", (e)=> {
     e.preventDefault();
 
-    const msg = e.target.elements.msg.value ; 
+    const msg = {
+        author: {
+            email: username,
+            nombre: nombre,
+            apellido: apellido,
+            alias: alias,
+            edad: edad,
+            avatar: avatar,
+        },
+        text: e.target.elements.msg.value,
+        time: moment().format("h:mm a"),
+    }
+
     socket.emit("chatMessage", msg)
     console.log(msg);
 
