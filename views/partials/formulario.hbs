@@ -1,6 +1,5 @@
 {{#if mostrarFormulario}}
-    {{!-- <form method="get" id="form"> --}}
-        <!--action="formulario/submit-form"--> 
+        <h1>Bienvenido {{username}}!</h1>
         <fieldset> 
             <legend>Ingresa tu producto</legend>
             <label for="title">Titulo: </label>
@@ -11,6 +10,9 @@
             <input type="text" id="thumbnail" name="thumbnail">
             <button onclick="sendProduct()">Enviar</button>
         </fieldset>
+        <form method="GET" action="./logout">
+            <button type="submit" class="btn">Log Out</button>
+        </form>
 
     {{!-- </form> --}}
 {{/if}}

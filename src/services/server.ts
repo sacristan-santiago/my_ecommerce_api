@@ -1,5 +1,6 @@
 import express from "express";
-import path from "path"
+import session from 'express-session';
+import path from "path";
 import * as http from "http";
 import apiRouter from "../routes/index";
 import handlebars from "express-handlebars";
@@ -10,7 +11,20 @@ const publicFolder = path.resolve(__dirname, "../../public");
 app.use(express.static(publicFolder));
 
 app.use(express.json());
-app.use("/api", apiRouter)
+app.use(express.urlencoded({extended: true}))
+
+const  oneMin = 1000 * 60; 
+app.use(
+  session({
+    secret: 'thisismysecrctekeyfhrgfgrfrty84fwir767',
+    saveUninitialized: true,
+    cookie: { maxAge: oneMin },
+    resave: true,
+  })
+);
+
+app.use("/api", apiRouter);
+
 
 //CONFIGURANDO HANDLEBARS//
 const layoutFolderPath = path.resolve(__dirname, '../../views/layouts');

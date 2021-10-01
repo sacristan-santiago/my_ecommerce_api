@@ -15,7 +15,7 @@ const products_factory_2 = require("../models/products/products.factory");
 /**
  * Con esta variable elegimos el tipo de persistencia
  */
-exports.tipoPersistencia = products_factory_2.TipoPersistencia.SQLITE3;
+exports.tipoPersistencia = products_factory_2.TipoPersistencia.LocalMongo;
 class prodAPI {
     constructor() {
         this.productos = products_factory_1.ProductosFactoryDAO.get(exports.tipoPersistencia);

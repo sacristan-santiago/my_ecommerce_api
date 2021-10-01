@@ -16,6 +16,8 @@ exports.mongooseService = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const productos_1 = require("../schemas/productos");
 const counters_1 = require("../schemas/counters");
+const carrito_1 = require("../schemas/carrito");
+const message_1 = require("../schemas/message");
 const config_1 = __importDefault(require("../config"));
 class mongoooseDB {
     init() {
@@ -23,7 +25,10 @@ class mongoooseDB {
             try {
                 const dbName = config_1.default.MONGO_LOCAL_DBNAME;
                 const URL = `mongodb://localhost/${dbName}`;
-                /******************PRODUCTOS DB******************/
+                yield mongoose_1.default.connect(URL);
+                // await productosmodel.collection.drop();
+                // await countersmodel.collection.drop();
+                /******************PRODUCTOS COLLECTION******************/
                 const products = [
                     {
                         uID: 1,
@@ -66,10 +71,7 @@ class mongoooseDB {
                         stock: 10
                     }
                 ];
-                yield mongoose_1.default.connect(URL);
-                // await productosmodel.collection.drop();
-                // await countersmodel.collection.drop();
-                //Create collection
+                //Create product collection
                 if (!(yield productos_1.productosmodel.exists({}))) {
                     yield productos_1.productosmodel.insertMany(products);
                     const productosCounter = {
@@ -78,6 +80,63 @@ class mongoooseDB {
                         notes: "Increment COUNT using findAndModify to ensure that the COUNT field will be incremented atomically with the fetch of this document",
                     };
                     yield new counters_1.countersmodel(productosCounter).save();
+                }
+                /******************CARRITO COLLECTION******************/
+                const carrito = {
+                    uID: 1,
+                    timestamp: new Date,
+                    productos: [
+                        {
+                            uID: 1,
+                            timestamp: new Date,
+                            nombre: "PRODUCTO 1",
+                            descripcion: "descripcion 1",
+                            codigo: "ASD123",
+                            foto: "URL1",
+                            precio: 10.23,
+                            stock: 10
+                        },
+                        {
+                            uID: 4,
+                            timestamp: new Date,
+                            nombre: "PRODUCTO 4",
+                            descripcion: "descripcion 4",
+                            codigo: "ASD456",
+                            foto: "URL4",
+                            precio: 10.23,
+                            stock: 10
+                        }
+                    ]
+                };
+                //Create carrito collection
+                if (!(yield carrito_1.carritomodel.exists({}))) {
+                    yield carrito_1.carritomodel.insertMany(carrito);
+                    const carritoCounter = {
+                        _id: "carrito counter identifier",
+                        count: 1,
+                        notes: "Increment COUNT using findAndModify to ensure that the COUNT field will be incremented atomically with the fetch of this document",
+                    };
+                    yield new counters_1.countersmodel(carritoCounter).save();
+                }
+                /******************MENSAJES COLLECTION******************/
+                const mensajes = [
+                    {
+                        author: {
+                            email: "tomael@gmail.com",
+                            nombre: "Tomas",
+                            apellido: "Him",
+                            alias: "Tomael",
+                            edad: 28,
+                            avatar: "http//:tomaelpic",
+                        },
+                        text: "Hola chicos!",
+                        time: "1:52 am",
+                    }
+                ];
+                //Create carrito collection
+                if (!(yield message_1.messagemodel.exists({}))) {
+                    yield message_1.messagemodel.insertMany(mensajes);
+                    console.log("Creando mock de Mensajes");
                 }
             }
             catch (e) {

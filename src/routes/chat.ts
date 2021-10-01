@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
         mostrarFormulario: false,
         mostrarTable: false,
         productos: productos,
-        mostrarLoggin: true,
+        mostrarChatini: true,
         mostrarChat: false,
     }
     res.render("main", dataDinamica)

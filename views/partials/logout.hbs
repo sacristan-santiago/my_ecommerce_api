@@ -1,0 +1,8 @@
+{{#if mostrarLogout}}
+    <h1>Hasta luego {{username}}!</h1>
+    <script>
+        setTimeout(function () {
+            window.location.href = "./login";
+        }, 5000);
+    </script>
+{{/if}}
