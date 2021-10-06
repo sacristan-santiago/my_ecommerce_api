@@ -16,19 +16,19 @@ const myUser = 'santi';
 const myPassword = 'rivercampeon';
 
 router.get('/', (req, res) => {
-    if (req.session.loggedIn) {
-      const dataDinamica = {
-        mostrarFormulario: true,
-        username: req.session.username,
-      }
-      res.render("main", dataDinamica)
+  if (req.session.loggedIn) {
+    const dataDinamica = {
+      mostrarFormulario: true,
+      username: req.session.username,
     }
-
+    res.render("main", dataDinamica)
+  } else  {
     const dataDinamica = {
       mostrarLogin: true
     }
     res.render("main", dataDinamica)
-});
+  }
+})
 
 router.post('/', (req, res) => {
   console.log(req.body)  

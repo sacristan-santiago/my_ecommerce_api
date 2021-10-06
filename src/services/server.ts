@@ -14,7 +14,7 @@ const dbName = Config.MONGO_ATLAS_DBNAME;
 const clusterUrl = Config.MONGO_ATLAS_CLUSTER
 const myURI = `mongodb+srv://${usuario}:${password}@${clusterUrl}/${dbName}?retryWrites=true&w=majority`
 
-const  oneMin = 1000 * 60; 
+const  oneMin = 1000 * 10; 
 const StoreOptions = {
   store: MongoStore.create({
     mongoUrl: myURI,
