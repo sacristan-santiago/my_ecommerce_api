@@ -1,5 +1,6 @@
 import express from "express";
 import session from 'express-session';
+import passport from "passport";
 import path from "path";
 import * as http from "http";
 import apiRouter from "../routes/index";
@@ -14,14 +15,14 @@ const dbName = Config.MONGO_ATLAS_DBNAME;
 const clusterUrl = Config.MONGO_ATLAS_CLUSTER
 const myURI = `mongodb+srv://${usuario}:${password}@${clusterUrl}/${dbName}?retryWrites=true&w=majority`
 
-const  oneMin = 1000 * 20; 
+const  oneMin = 1000 * 60; 
 const StoreOptions = {
   store: MongoStore.create({
     mongoUrl: myURI,
   }),
   secret: 'thisismysecrctekeyfhrgfgrfrty84fwir767',
   saveUninitialized: true,
-  cookie: { maxAge: oneMin },
+  cookie: { maxAge: oneMin*2 },
   resave: true,
 }
 
@@ -35,6 +36,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
 app.use(session(StoreOptions));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use("/api", apiRouter);
 

@@ -1,6 +1,6 @@
 import {Router} from "express";
 import { carritoController } from "../controllers/carrito";
-import { checkAdmin } from "../middleware/admin";
+import { checkAdmin } from "../middlewares/admin";
 
 const router = Router();
 
