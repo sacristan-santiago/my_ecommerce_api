@@ -1,5 +1,5 @@
 import {Router} from "express";
-import passport from "passport";
+import passport from "../middlewares/auth";
 import { isLoggedIn } from "../middlewares/auth";
 
 const router = Router();
@@ -11,7 +11,22 @@ declare module 'express-session' {
       admin: boolean,
       username: string
     }
-  }
+}
+
+type Photos = {
+  value: string;
+};
+
+type Emails = {
+  value: string;
+};
+
+interface User extends Express.User {
+  contador?: number;
+  displayName?: string;
+  photos?: Photos[];
+  emails?: Emails[];
+}
 
 router.get('/', isLoggedIn, (req, res) => {
   const dataDinamica = {
@@ -28,34 +43,43 @@ router.get('/login',  (req, res) => {
   res.render("main", dataDinamica)
 })
 
-router.post('/login', passport.authenticate("login", 
-{
-  successRedirect: './',
-  failureRedirect: './login'
-}));
+router.get("/auth/facebook", passport.authenticate("facebook", {scope: ["email"]}));
 
-router.get('/register', (req, res) => {
-  const dataDinamica = {
-    mostrarRegister: true,
+router.get(
+  '/auth/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/api/datos',
+    failureRedirect: '/api/fail',
+  })
+);
+
+router.get('/fail', (req, res) => {
+  res.render('main', {loginFail:true});
+});
+
+router.get('/datos', (req, res) => {
+  let foto = 'noPhoto';
+  let email = 'noEmail';
+
+  if (req.isAuthenticated()) {
+    const userData: User = req.user;
+
+    if (userData.photos) foto = userData.photos[0].value;
+
+    if (userData.emails) email = userData.emails[0].value;
+
+    const dataDinamica = {
+      mostrarUsuario: true,
+      nombre: userData.displayName,
+      foto,
+      email,
+    }
+    res.render("main", dataDinamica)
+
+  } else {
+    res.redirect('/api/login');
   }
-  res.render("main", dataDinamica)
-})
-
-router.post('/register', passport.authenticate("signup"), (req, res, next) => {
-  const dataDinamica = {
-    mostrarRegisterOk: true,
-  }
-  res.render("main", dataDinamica)
-})
-
-declare module 'express-session' {
-interface Session {
-    loggedIn: boolean,
-    contador: number,
-    admin: boolean,
-    username: string
-}
-}
+});
 
 router.get('/logout', (req, res) => {
     const dataDinamica = {
