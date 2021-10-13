@@ -6,20 +6,9 @@ import * as http from "http";
 import apiRouter from "../routes/index";
 import handlebars from "express-handlebars";
 import cookieParser from "cookie-parser";
-import MongoStore from "connect-mongo";
-import Config from "../config"
-
-const usuario = Config.MONGO_ATLAS_USER;
-const password = Config.MONGO_ATLAS_PASSWORD;
-const dbName = Config.MONGO_ATLAS_DBNAME;
-const clusterUrl = Config.MONGO_ATLAS_CLUSTER
-const myURI = `mongodb+srv://${usuario}:${password}@${clusterUrl}/${dbName}?retryWrites=true&w=majority`
 
 const  oneMin = 1000 * 60; 
-const StoreOptions = {
-  store: MongoStore.create({
-    mongoUrl: myURI,
-  }),
+const options = {
   secret: 'thisismysecrctekeyfhrgfgrfrty84fwir767',
   saveUninitialized: true,
   cookie: { maxAge: oneMin*2 },
@@ -35,7 +24,7 @@ app.use(express.static(publicFolder));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
-app.use(session(StoreOptions));
+app.use(session(options));
 app.use(passport.initialize());
 app.use(passport.session());
 

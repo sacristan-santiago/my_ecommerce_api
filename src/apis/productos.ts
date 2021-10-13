@@ -5,7 +5,7 @@ import { TipoPersistencia } from '../models/products/products.factory';
 /**
  * Con esta variable elegimos el tipo de persistencia
  */
-export const tipoPersistencia = TipoPersistencia.MongoAtlas;
+export const tipoPersistencia = TipoPersistencia.Memoria;
 
 class prodAPI {
   private productos: any;
