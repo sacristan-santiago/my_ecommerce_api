@@ -4,8 +4,14 @@ import { socketService } from "./services/socket";
 import { serverInit } from "./services/service.factory";
 import { tipoPersistencia } from "./apis/productos";
 
+const parametros = process.argv.slice(2)
 
-const  puerto = Config.PORT; 
+let puerto = Config.PORT;
+
+if (parametros.length != 0) {
+    puerto = Number(parametros[0])
+} 
+ 
 
 //Inicio server HTTP
 myHTTPServer.listen(puerto, () => console.log(`Server up en puerto ${puerto}`));

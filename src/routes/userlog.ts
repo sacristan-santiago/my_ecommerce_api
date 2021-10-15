@@ -1,7 +1,9 @@
 import {Router} from "express";
 import passport from "../middlewares/auth";
 import { isLoggedIn } from "../middlewares/auth";
-
+import { fork } from "child_process";
+import path from "path";
+ 
 const router = Router();
 
 declare module 'express-session' {
@@ -35,6 +37,19 @@ router.get('/', isLoggedIn, (req, res) => {
   res.render("main", dataDinamica)
 })
 
+router.get("/random", (req, res) => {
+  let cant: any
+  (req.query.cant) ? cant = Number(req.query.cant) : cant = 100000000;
+  const scriptPath = path.resolve(__dirname, '../utils/randomnumbers');
+
+  const computo = fork(scriptPath);
+  computo.send(cant);
+  computo.on("message", (obj) => {
+    res.json(obj)
+  })
+  
+})
+
 router.get('/login',  (req, res) => {
   const dataDinamica = {
     mostrarLogin: true,
@@ -45,8 +60,7 @@ router.get('/login',  (req, res) => {
 
 router.get("/auth/facebook", passport.authenticate("facebook", {scope: ["email"]}));
 
-router.get(
-  '/auth/facebook/callback',
+router.get('/auth/facebook/callback',
   passport.authenticate('facebook', {
     successRedirect: '/api/datos',
     failureRedirect: '/api/fail',

@@ -11,6 +11,15 @@ const strategyOptions: StrategyOption = {
   profileFields: ['id', 'displayName', 'photos', 'emails'],
 }
 
+const parametros = process.argv.slice(2)
+console.log(parametros)
+
+if (parametros.length > 2)  {
+    strategyOptions.clientID = parametros[1];
+    strategyOptions.clientSecret = parametros[2];
+    console.log("Se pasaron los parametros")
+}
+
 const loginFunc: VerifyFunction = async (
   accessToken,
   refreshToken,
