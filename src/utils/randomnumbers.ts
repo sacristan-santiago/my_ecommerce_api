@@ -1,6 +1,6 @@
 const random = () => Math.floor(Math.random()*(1000)+1)
  
-const generateObj = (cant: number) => {
+export const generateObj = (cant: number) => {
     let obj: any = {}
     for (let i = 0; i<cant ; i++) {
         const key = random().toString();

@@ -2,7 +2,9 @@ import {Router} from "express";
 import passport from "../middlewares/auth";
 import { isLoggedIn } from "../middlewares/auth";
 import { fork } from "child_process";
+import { generateObj } from "../utils/randomnumbers" 
 import path from "path";
+import {modo} from "../index"
  
 const router = Router();
 
@@ -37,18 +39,34 @@ router.get('/', isLoggedIn, (req, res) => {
   res.render("main", dataDinamica)
 })
 
+router.get('/hola', (req, res) => {
+  res.json({
+    pid: process.pid,
+    msg: 'HOLA',
+  });
+});
+
+
+
 router.get("/random", (req, res) => {
+  console.log(modo)
   let cant: any
   (req.query.cant) ? cant = Number(req.query.cant) : cant = 100000000;
-  const scriptPath = path.resolve(__dirname, '../utils/randomnumbers');
-
-  const computo = fork(scriptPath);
-  computo.send(cant);
-  computo.on("message", (obj) => {
-    res.json(obj)
-  })
+  
+  if (modo === "FORK") {
+    const scriptPath = path.resolve(__dirname, '../utils/randomnumbers');
+    const computo = fork(scriptPath);
+    computo.send(cant);
+    computo.on("message", (obj) => {
+      res.json(obj)
+    })
+  } else {
+    res.json(generateObj(cant))
+  }
   
 })
+
+
 
 router.get('/login',  (req, res) => {
   const dataDinamica = {

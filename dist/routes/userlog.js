@@ -7,7 +7,9 @@ const express_1 = require("express");
 const auth_1 = __importDefault(require("../middlewares/auth"));
 const auth_2 = require("../middlewares/auth");
 const child_process_1 = require("child_process");
+const randomnumbers_1 = require("../utils/randomnumbers");
 const path_1 = __importDefault(require("path"));
+const index_1 = require("../index");
 const router = express_1.Router();
 router.get('/', auth_2.isLoggedIn, (req, res) => {
     const dataDinamica = {
@@ -15,15 +17,27 @@ router.get('/', auth_2.isLoggedIn, (req, res) => {
     };
     res.render("main", dataDinamica);
 });
+router.get('/hola', (req, res) => {
+    res.json({
+        pid: process.pid,
+        msg: 'HOLA',
+    });
+});
 router.get("/random", (req, res) => {
+    console.log(index_1.modo);
     let cant;
     (req.query.cant) ? cant = Number(req.query.cant) : cant = 100000000;
-    const scriptPath = path_1.default.resolve(__dirname, '../utils/randomnumbers');
-    const computo = child_process_1.fork(scriptPath);
-    computo.send(cant);
-    computo.on("message", (obj) => {
-        res.json(obj);
-    });
+    if (index_1.modo === "FORK") {
+        const scriptPath = path_1.default.resolve(__dirname, '../utils/randomnumbers');
+        const computo = child_process_1.fork(scriptPath);
+        computo.send(cant);
+        computo.on("message", (obj) => {
+            res.json(obj);
+        });
+    }
+    else {
+        res.json(randomnumbers_1.generateObj(cant));
+    }
 });
 router.get('/login', (req, res) => {
     const dataDinamica = {

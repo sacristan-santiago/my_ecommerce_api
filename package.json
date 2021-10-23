@@ -9,7 +9,9 @@
     "dev": "nodemon",
     "seed:db": "npx knex seed:run --env development",
     "migrate:db": "npx knex migrate:latest --env development",
-    "rollback:db": "npx knex migrate:rollback --env development"
+    "rollback:db": "npx knex migrate:rollback --env development",
+    "prod-forever": "node_modules/.bin/forever start dist/index.js",
+    "prod-pm2": "node_modules/.bin/pm2 start dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +34,7 @@
   "dependencies": {
     "@types/node": "^16.11.0",
     "bcrypt": "^5.0.1",
+    "cluster": "^0.7.7",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
@@ -39,6 +42,7 @@
     "express-handlebars": "^5.3.3",
     "express-session": "^1.17.2",
     "firebase-admin": "^9.11.1",
+    "forever": "^4.0.1",
     "knex": "^0.95.10",
     "moment": "^2.29.1",
     "mongoose": "^6.0.5",
@@ -47,6 +51,7 @@
     "passport": "^0.5.0",
     "passport-facebook": "^3.0.0",
     "passport-local": "^1.0.0",
+    "pm2": "^5.1.2",
     "socket.io": "^4.1.3",
     "sqlite3": "^5.0.2"
   }

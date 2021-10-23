@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateObj = void 0;
 const random = () => Math.floor(Math.random() * (1000) + 1);
 const generateObj = (cant) => {
     let obj = {};
@@ -13,8 +15,9 @@ const generateObj = (cant) => {
     }
     return obj;
 };
+exports.generateObj = generateObj;
 process.on('message', (cant) => {
     if (process && process.send) {
-        process.send(generateObj(Number(cant)));
+        process.send(exports.generateObj(Number(cant)));
     }
 });

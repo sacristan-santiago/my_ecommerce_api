@@ -23,11 +23,9 @@ const strategyOptions = {
     profileFields: ['id', 'displayName', 'photos', 'emails'],
 };
 const parametros = process.argv.slice(2);
-console.log(parametros);
-if (parametros.length > 2) {
-    strategyOptions.clientID = parametros[1];
-    strategyOptions.clientSecret = parametros[2];
-    console.log("Se pasaron los parametros");
+if (parametros.length > 3) {
+    strategyOptions.clientID = parametros[2];
+    strategyOptions.clientSecret = parametros[3];
 }
 const loginFunc = (accessToken, refreshToken, profile, done) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('SALIO TODO BIEN');
