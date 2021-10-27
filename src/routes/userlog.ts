@@ -5,6 +5,7 @@ import { fork } from "child_process";
 import { generateObj } from "../utils/randomnumbers" 
 import path from "path";
 import {modo, puerto} from "../index"
+import { logger } from "../services/logger/logger";
  
 const router = Router();
 
@@ -47,7 +48,26 @@ router.get('/hola', (req, res) => {
   });
 });
 
+router.get('/warn', (req, res) => {
+  res.json({
+    msg: "Se emitio warn"
+  });
+  logger.warn("Se emite mensaje warn")
+});
 
+router.get('/info', (req, res) => {
+  res.json({
+    msg: "Se emitio info"
+  });
+  logger.info("Se emite mensaje info")
+});
+
+router.get('/error', (req, res) => {
+  res.json({
+    msg: "Se emitio error"
+  });
+  logger.error("Se emite mensaje error")
+});
 
 router.get("/random", (req, res) => {
   console.log(modo)
