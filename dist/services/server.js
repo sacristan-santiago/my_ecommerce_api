@@ -30,6 +30,7 @@ const http = __importStar(require("http"));
 const index_1 = __importDefault(require("../routes/index"));
 const express_handlebars_1 = __importDefault(require("express-handlebars"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const compression_1 = __importDefault(require("compression"));
 const oneMin = 1000 * 60;
 const options = {
     secret: 'thisismysecrctekeyfhrgfgrfrty84fwir767',
@@ -46,6 +47,7 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_session_1.default(options));
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
+app.use(compression_1.default());
 app.use("/api", index_1.default);
 //CONFIGURANDO HANDLEBARS//
 const layoutFolderPath = path_1.default.resolve(__dirname, '../../views/layouts');

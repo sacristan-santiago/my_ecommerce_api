@@ -19,6 +19,7 @@ router.get('/', auth_2.isLoggedIn, (req, res) => {
 });
 router.get('/hola', (req, res) => {
     res.json({
+        puerto: index_1.puerto,
         pid: process.pid,
         msg: 'HOLA',
     });

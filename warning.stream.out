@@ -1,0 +1,2 @@
+{"level":30,"time":1635301745877,"pid":11688,"hostname":"DESKTOP-SGN90K7","msg":"this will be written to /tmp/debug.stream.out and /tmp/info.stream.out"}
+{"level":60,"time":1635301745880,"pid":11688,"hostname":"DESKTOP-SGN90K7","msg":"this will be written to /tmp/debug.stream.out, /tmp/info.stream.out and /tmp/fatal.stream.out"}

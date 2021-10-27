@@ -6,6 +6,7 @@ import * as http from "http";
 import apiRouter from "../routes/index";
 import handlebars from "express-handlebars";
 import cookieParser from "cookie-parser";
+import compression from "compression"
 
 const  oneMin = 1000 * 60; 
 const options = {
@@ -27,6 +28,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(session(options));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(compression())
 
 
 app.use("/api", apiRouter);

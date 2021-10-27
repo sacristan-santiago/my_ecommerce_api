@@ -3,28 +3,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.modo = void 0;
+exports.modo = exports.puerto = void 0;
 const config_1 = __importDefault(require("./config"));
 const server_1 = __importDefault(require("./services/server"));
 const cluster_1 = __importDefault(require("cluster"));
 const os_1 = __importDefault(require("os"));
+const logger_1 = require("./services/logger/logger");
 const parametros = process.argv.slice(2);
-let puerto = config_1.default.PORT;
+exports.puerto = config_1.default.PORT;
 exports.modo = "FORK";
 if (parametros.length > 0) {
-    puerto = Number(parametros[0]);
+    exports.puerto = Number(parametros[0]);
     (parametros.length > 1) ? exports.modo = parametros[1] : "";
 }
 //Obtengo el numero de nucleos disponibles en mi PC
 const numCPUs = os_1.default.cpus().length;
-/* --------------------------------------------------------------------------- */
-/* MASTER */
-/**
- * isMaster vs isPrimary
- * https://stackoverflow.com/questions/68978929/why-is-nodejs-cluster-module-not-working
- */
-// console.log("master", cluster.isMaster)
-// console.log("cluster", (modo === "CLUSTER"))
 if (cluster_1.default.isMaster && (exports.modo === "CLUSTER")) {
     console.log(`NUMERO DE CPUS ===> ${numCPUs}`);
     console.log(`PID MASTER ${process.pid}`);
@@ -37,10 +30,13 @@ if (cluster_1.default.isMaster && (exports.modo === "CLUSTER")) {
     });
 }
 else {
-    /* --------------------------------------------------------------------------- */
     /* WORKERS */
-    server_1.default.listen(puerto, () => console.log(`Servidor express escuchando en el puerto ${puerto} - PID WORKER ${process.pid}`));
+    server_1.default.listen(exports.puerto, () => console.log(`Servidor express escuchando en el puerto ${exports.puerto} - PID WORKER ${process.pid}`));
 }
+// Writing some test logs
+logger_1.logger.warn('WARNING 1');
+logger_1.logger.error('ERROR 1');
+logger_1.logger.fatal('FATAL 1');
 //Inicio server HTTP comun (sin modulo cluster)
 // myHTTPServer.listen(puerto, () => console.log(`Server up en puerto ${puerto}`));
 //Inicio Websocket server

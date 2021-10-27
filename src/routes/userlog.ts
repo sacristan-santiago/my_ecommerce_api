@@ -4,7 +4,7 @@ import { isLoggedIn } from "../middlewares/auth";
 import { fork } from "child_process";
 import { generateObj } from "../utils/randomnumbers" 
 import path from "path";
-import {modo} from "../index"
+import {modo, puerto} from "../index"
  
 const router = Router();
 
@@ -41,6 +41,7 @@ router.get('/', isLoggedIn, (req, res) => {
 
 router.get('/hola', (req, res) => {
   res.json({
+    puerto: puerto,
     pid: process.pid,
     msg: 'HOLA',
   });
