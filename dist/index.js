@@ -31,12 +31,12 @@ if (cluster_1.default.isMaster && (exports.modo === "CLUSTER")) {
 }
 else {
     /* WORKERS */
-    server_1.default.listen(exports.puerto, () => console.log(`Servidor express escuchando en el puerto ${exports.puerto} - PID WORKER ${process.pid}`));
+    server_1.default.listen(exports.puerto, () => logger_1.logger.info(`Servidor express escuchando en el puerto ${exports.puerto} - PID WORKER ${process.pid}`));
 }
 // Writing some test logs
 logger_1.logger.warn('WARNING 1');
 logger_1.logger.error('ERROR 1');
-logger_1.logger.fatal('FATAL 1');
+logger_1.logger.info('INFO 1');
 //Inicio server HTTP comun (sin modulo cluster)
 // myHTTPServer.listen(puerto, () => console.log(`Server up en puerto ${puerto}`));
 //Inicio Websocket server

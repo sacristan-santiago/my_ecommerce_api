@@ -10,6 +10,7 @@ const child_process_1 = require("child_process");
 const randomnumbers_1 = require("../utils/randomnumbers");
 const path_1 = __importDefault(require("path"));
 const index_1 = require("../index");
+const logger_1 = require("../services/logger/logger");
 const router = express_1.Router();
 router.get('/', auth_2.isLoggedIn, (req, res) => {
     const dataDinamica = {
@@ -23,6 +24,24 @@ router.get('/hola', (req, res) => {
         pid: process.pid,
         msg: 'HOLA',
     });
+});
+router.get('/warn', (req, res) => {
+    res.json({
+        msg: "Se emitio warn"
+    });
+    logger_1.logger.warn("Se emite mensaje warn");
+});
+router.get('/info', (req, res) => {
+    res.json({
+        msg: "Se emitio info"
+    });
+    logger_1.logger.info("Se emite mensaje info");
+});
+router.get('/error', (req, res) => {
+    res.json({
+        msg: "Se emitio error"
+    });
+    logger_1.logger.error("Se emite mensaje error");
 });
 router.get("/random", (req, res) => {
     console.log(index_1.modo);
