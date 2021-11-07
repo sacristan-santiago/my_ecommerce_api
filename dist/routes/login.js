@@ -13,10 +13,12 @@ router.get('/', (req, res) => {
         };
         res.render("main", dataDinamica);
     }
-    const dataDinamica = {
-        mostrarLogin: true
-    };
-    res.render("main", dataDinamica);
+    else {
+        const dataDinamica = {
+            mostrarLogin: true
+        };
+        res.render("main", dataDinamica);
+    }
 });
 router.post('/', (req, res) => {
     console.log(req.body);

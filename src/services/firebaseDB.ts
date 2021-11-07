@@ -1,5 +1,5 @@
 var admin = require("firebase-admin");
-var serviceAccount = require("./firebase.json");
+// var serviceAccount = require("./firebase.json");
 import Config from "../config";
 
 class firebaseDB {

@@ -28,18 +28,31 @@ const path_1 = __importDefault(require("path"));
 const http = __importStar(require("http"));
 const index_1 = __importDefault(require("../routes/index"));
 const express_handlebars_1 = __importDefault(require("express-handlebars"));
-const app = express_1.default();
-const publicFolder = path_1.default.resolve(__dirname, "../../public");
-app.use(express_1.default.static(publicFolder));
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
-const oneMin = 1000 * 60;
-app.use(express_session_1.default({
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const connect_mongo_1 = __importDefault(require("connect-mongo"));
+const config_1 = __importDefault(require("../config"));
+const usuario = config_1.default.MONGO_ATLAS_USER;
+const password = config_1.default.MONGO_ATLAS_PASSWORD;
+const dbName = config_1.default.MONGO_ATLAS_DBNAME;
+const clusterUrl = config_1.default.MONGO_ATLAS_CLUSTER;
+const myURI = `mongodb+srv://${usuario}:${password}@${clusterUrl}/${dbName}?retryWrites=true&w=majority`;
+const oneMin = 1000 * 20;
+const StoreOptions = {
+    store: connect_mongo_1.default.create({
+        mongoUrl: myURI,
+    }),
     secret: 'thisismysecrctekeyfhrgfgrfrty84fwir767',
     saveUninitialized: true,
     cookie: { maxAge: oneMin },
     resave: true,
-}));
+};
+const app = express_1.default();
+app.use(cookie_parser_1.default());
+const publicFolder = path_1.default.resolve(__dirname, "../../public");
+app.use(express_1.default.static(publicFolder));
+app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
+app.use(express_session_1.default(StoreOptions));
 app.use("/api", index_1.default);
 //CONFIGURANDO HANDLEBARS//
 const layoutFolderPath = path_1.default.resolve(__dirname, '../../views/layouts');
