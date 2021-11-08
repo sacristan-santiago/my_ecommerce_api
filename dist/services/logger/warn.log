@@ -2,3 +2,5 @@
 {"level":50,"time":1635304964765,"pid":4776,"hostname":"DESKTOP-SGN90K7","msg":"ERROR 1"}
 {"level":60,"time":1635304964766,"pid":4776,"hostname":"DESKTOP-SGN90K7","msg":"FATAL 1"}
 {"level":40,"time":1636307726479,"pid":9248,"hostname":"DESKTOP-SGN90K7","msg":"WARNING 1"}
+{"level":40,"time":1636308476813,"pid":7104,"hostname":"DESKTOP-SGN90K7","msg":"WARNING 1"}
+{"level":40,"time":1636325330026,"pid":19916,"hostname":"DESKTOP-SGN90K7","msg":"WARNING 1"}

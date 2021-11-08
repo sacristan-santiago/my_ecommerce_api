@@ -25,9 +25,9 @@ const loginFunc: VerifyFunction = async (
   done
 ) => {
   console.log('SALIO TODO BIEN');
-  console.log(accessToken);
-  console.log(refreshToken);
-  console.log(profile);
+  // console.log(accessToken);
+  // console.log(refreshToken);
+  // console.log(profile);
   return done(null, profile);
 };
   

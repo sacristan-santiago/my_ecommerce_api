@@ -49,7 +49,7 @@ logger.info('INFO 1')
 // myHTTPServer.listen(puerto, () => console.log(`Server up en puerto ${puerto}`));
 
 //Inicio Websocket server
-// socketService.initWsService(myHTTPServer);
+socketService.initWsService(myHTTPServer);
 
 //Inicio server segun persistencia
-// serverInit(tipoPersistencia);
+serverInit(tipoPersistencia);

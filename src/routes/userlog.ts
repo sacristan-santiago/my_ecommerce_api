@@ -6,6 +6,7 @@ import { generateObj } from "../utils/randomnumbers"
 import path from "path";
 import {modo, puerto} from "../index"
 import { logger } from "../services/logger/logger";
+import { loginGmailMail, loginMail, logoutMail } from "../middlewares/mailer";
  
 const router = Router();
 
@@ -26,7 +27,7 @@ type Emails = {
   value: string;
 };
 
-interface User extends Express.User {
+export interface User extends Express.User {
   contador?: number;
   displayName?: string;
   photos?: Photos[];
@@ -110,7 +111,7 @@ router.get('/fail', (req, res) => {
   res.render('main', {loginFail:true});
 });
 
-router.get('/datos', (req, res) => {
+router.get('/datos', loginMail, loginGmailMail, (req, res) => {
   let foto = 'noPhoto';
   let email = 'noEmail';
 
@@ -134,7 +135,7 @@ router.get('/datos', (req, res) => {
   }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', logoutMail, (req, res) => {
     const dataDinamica = {
       mostrarLogout: true,
       username: req.session.username

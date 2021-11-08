@@ -2,7 +2,8 @@ import {Server, Socket} from "socket.io";
 import {formatMessage} from "../utils/messages";
 import { usersPersistencia } from "../models/mensajes/DAOs/messages_mongolocal";
 import { Message } from "../models/mensajes/messages.interface";
-import util from "util"
+import { SmsService } from "../services/twilio";
+import Config from "../config"
 
 // //usando socket.io
 // const myWSServer =  new Server(myServer);
@@ -55,10 +56,16 @@ class SocketServer {
                     })
 
                     //Escuchar mensajes en el chat
-                    socket.on("chatMessage", async (msg: Message) => {
+                    socket.on("chatMessage", async (msg: Message) => {                        
                         await usersPersistencia.saveMessage(msg)
 
                         this.myWSServer.to(user.room).emit("message", formatMessage(msg.author.email, msg.text));
+
+                        //Enviar SMS cuando se recibe "administrador"
+                        if (msg.text.includes("administrador") || msg.text.includes("Administrador") || 
+                        msg.text.includes("ADMINISTRADOR")) {
+                            SmsService.sendMessage(Config.PERSONAL_CELLPHONE, msg.text)
+                        }   
                     })
 
                     //Run cuando un cliente se desconecta
