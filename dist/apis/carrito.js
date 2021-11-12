@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.carritoAPI = void 0;
 const carrito_factory_1 = require("../models/carrito/carrito.factory");
 const productos_1 = require("./productos");
+const usuarios_1 = require("./usuarios");
 class CarritoAPI {
     constructor() {
         this.carrito = carrito_factory_1.CarritoFactoryDAO.get(productos_1.tipoPersistencia);
@@ -26,6 +27,20 @@ class CarritoAPI {
             if (id)
                 return this.carrito.getProducts(id);
             return this.carrito.getProducts();
+        });
+    }
+    getCart(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.carrito.get(userId);
+        });
+    }
+    createCart(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield usuarios_1.usuariosAPI.getUsers(userId);
+            if (!user.length)
+                throw new Error('User does not exist. Error creating cart');
+            const newCart = yield this.carrito.createCart(userId);
+            return newCart;
         });
     }
     addProduct(newItem) {

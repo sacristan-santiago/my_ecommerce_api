@@ -1,10 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { Usuario } from "../models/usuarios/usuarios.interface";
+import { UserI } from "../models/usuarios/usuarios.interface";
 
-
-
-const UsuarioSchema = new mongoose.Schema<Usuario> ({
+export const UsuarioSchema = new mongoose.Schema<UserI> ({
     username:  {
         type: String,
         required: true,
@@ -26,7 +24,11 @@ const UsuarioSchema = new mongoose.Schema<Usuario> ({
     lastName:  {
         type: String,
         required: true,
-    },
+    },    
+    photoId: {
+        type: String,
+        required: false,
+    }
 })
 
 UsuarioSchema.pre("save", async function (next) {

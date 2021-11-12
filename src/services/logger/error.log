@@ -1,0 +1,13 @@
+{"level":50,"time":1636633182543,"pid":15420,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR The database connection must be open to store files"}
+{"level":50,"time":1636633596543,"pid":14764,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR The database connection must be open to store files"}
+{"level":50,"time":1636633615709,"pid":14764,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR Unexpected field"}
+{"level":50,"time":1636633628509,"pid":14764,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR The database connection must be open to store files"}
+{"level":50,"time":1636633736429,"pid":7688,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR The database connection must be open to store files"}
+{"level":50,"time":1636634014499,"pid":11528,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR The database connection must be open to store files"}
+{"level":50,"time":1636634019364,"pid":11528,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR The database connection must be open to store files"}
+{"level":50,"time":1636682352024,"pid":10636,"hostname":"DESKTOP-SGN90K7","msg":"\"username\" length must be less than or equal to 10 characters long"}
+{"level":50,"time":1636682352025,"pid":10636,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR \"username\" length must be less than or equal to 10 characters long"}
+{"level":50,"time":1636682381820,"pid":10636,"hostname":"DESKTOP-SGN90K7","msg":"\"username\" length must be less than or equal to 10 characters long"}
+{"level":50,"time":1636682381820,"pid":10636,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR \"username\" length must be less than or equal to 10 characters long"}
+{"level":50,"time":1636682397537,"pid":10636,"hostname":"DESKTOP-SGN90K7","msg":"\"password\" with value \"soymuygay\" fails to match the required pattern: /^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/"}
+{"level":50,"time":1636682397538,"pid":10636,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR \"password\" with value \"soymuygay\" fails to match the required pattern: /^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/"}

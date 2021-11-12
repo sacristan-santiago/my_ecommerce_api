@@ -9,45 +9,51 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.productsAPI = exports.tipoPersistencia = void 0;
-const products_factory_1 = require("../models/products/products.factory");
-const products_factory_2 = require("../models/products/products.factory");
-/**
- * Con esta variable elegimos el tipo de persistencia
- */
-exports.tipoPersistencia = products_factory_2.TipoPersistencia.MongoAtlas;
-class prodAPI {
+exports.usuariosAPI = void 0;
+const usuarios_factory_1 = require("../models/usuarios/usuarios.factory");
+const productos_1 = require("./productos");
+const carrito_1 = require("./carrito");
+class UsuariosAPI {
     constructor() {
-        this.productos = products_factory_1.ProductosFactoryDAO.get(exports.tipoPersistencia);
+        this.usuarios = usuarios_factory_1.UsuariosFactoryDAO.get(productos_1.tipoPersistencia);
     }
-    getProducts(id = undefined) {
+    getUsers(id) {
         return __awaiter(this, void 0, void 0, function* () {
             if (id)
-                return this.productos.get(id);
-            return this.productos.get();
+                return this.usuarios.get(id);
+            return this.usuarios.get();
         });
     }
-    addProduct(productData) {
+    addUser(userData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newProduct = yield this.productos.add(productData);
-            return newProduct;
+            const newUser = yield this.usuarios.add(userData);
+            yield carrito_1.carritoAPI.createCart(newUser._id);
+            return newUser;
         });
     }
-    updateProduct(id, productData) {
+    updateUser(id, userData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const updatedProduct = yield this.productos.update(id, productData);
-            return updatedProduct;
+            const updatedUser = yield this.usuarios.update(id, userData);
+            return updatedUser;
         });
     }
-    deleteProduct(id) {
+    deleteUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.productos.delete(id);
+            yield this.usuarios.delete(id);
+            //Borrar carrito tambien
         });
     }
-    query(options) {
+    query(username, email) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.productos.query(options);
+            const query = {
+                $or: [],
+            };
+            if (username)
+                query.$or.push({ username });
+            if (email)
+                query.$or.push({ email });
+            return this.usuarios.query(query);
         });
     }
 }
-exports.productsAPI = new prodAPI();
+exports.usuariosAPI = new UsuariosAPI();

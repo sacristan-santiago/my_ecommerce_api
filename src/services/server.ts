@@ -1,4 +1,4 @@
-import express from "express";
+import express, { ErrorRequestHandler } from "express";
 import session from 'express-session';
 import passport from "passport";
 import path from "path";
@@ -8,6 +8,7 @@ import handlebars from "express-handlebars";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import Config from "../config"
+import { logger } from "./logger/logger"
 
 const usuario = Config.MONGO_ATLAS_USER;
 const password = Config.MONGO_ATLAS_PASSWORD;
@@ -20,9 +21,9 @@ const StoreOptions = {
   store: MongoStore.create({
     mongoUrl: myURI,
   }),
-  secret: 'thisismysecrctekeyfhrgfgrfrty84fwir767',
+  secret: Config.SESSION_SECRET,
   saveUninitialized: true,
-  cookie: { maxAge: oneMin*2 },
+  cookie: { maxAge: oneMin*Config.SESSION_COOKIE_TIMEOUT },
   resave: true,
 }
 
@@ -39,9 +40,16 @@ app.use(session(StoreOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 app.use("/api", apiRouter);
 
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    logger.error(`HUBO UN ERROR ${err.message}`);
+    res.status(500).json({
+      err:err.message
+    })
+}
+
+app.use(errorHandler)
 
 //CONFIGURANDO HANDLEBARS//
 const layoutFolderPath = path.resolve(__dirname, '../../views/layouts');

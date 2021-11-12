@@ -17,11 +17,13 @@ const moment_1 = __importDefault(require("moment"));
 class CarritoMemDAO {
     constructor() {
         const mockData = {
-            id: "1",
+            _id: "1",
+            userId: "sadasd",
             timestamp: "23.9.21 13:35:42",
-            productos: [
+            products: [
                 {
-                    id: '2',
+                    _id: '2',
+                    uID: "asdsada",
                     timestamp: '27.8.21 18:09:52',
                     nombre: 'lapiz2',
                     descripcion: 'lapiz de caracteristicas 2',
@@ -31,7 +33,8 @@ class CarritoMemDAO {
                     stock: 11
                 },
                 {
-                    id: '3',
+                    _id: '3',
+                    uID: "asda",
                     timestamp: '27.8.21 18:09:52',
                     nombre: 'lapiz3',
                     descripcion: 'lapiz de caracteristicas 3',
@@ -40,41 +43,31 @@ class CarritoMemDAO {
                     precio: 220,
                     stock: 12
                 },
-                {
-                    id: '5',
-                    timestamp: '27.8.21 18:09:52',
-                    nombre: 'lapiz5',
-                    descripcion: 'lapiz de caracteristicas 5',
-                    codigo: 'ASD523',
-                    foto: 'https://cdn.pixabay.com/photo/2020/08/08/05/15/pencil-5472136_960_720.png',
-                    precio: 240,
-                    stock: 14
-                }
             ]
         };
         this.carrito = mockData;
     }
     findIndex(id) {
-        return this.carrito.productos.findIndex((aProduct) => aProduct.id == id);
+        return this.carrito.products.findIndex((aProduct) => aProduct.id == id);
     }
     findProduct(id = undefined) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.carrito.productos.find((aProduct) => aProduct.id == id);
+            return this.carrito.products.find((aProduct) => aProduct.id == id);
         });
     }
     getProducts(id = undefined) {
         return __awaiter(this, void 0, void 0, function* () {
             if (id) {
-                return this.carrito.productos.find((aProduct) => aProduct.id == id);
+                return this.carrito.products.find((aProduct) => aProduct.id == id);
             }
-            return this.carrito.productos;
+            return this.carrito.products;
         });
     }
     addProduct(newItem) {
         return __awaiter(this, void 0, void 0, function* () {
             const newProduct = newItem[0];
             //Agrego producto y actulizo timestamp del carrito
-            this.carrito.productos.push(newProduct);
+            this.carrito.products.push(newProduct);
             this.carrito.timestamp = moment_1.default().format("D.M.YY HH:mm:ss");
             console.log("El producto fue agregado al carrito!");
             console.log(newProduct);
@@ -83,9 +76,9 @@ class CarritoMemDAO {
     }
     deleteProduct(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const deletedProduct = this.carrito.productos.find((aProduct) => aProduct.id == id);
+            const deletedProduct = this.carrito.products.find((aProduct) => aProduct.id == id);
             //borro producto y actualizo timestamp del carrito 
-            this.carrito.productos = this.carrito.productos.filter((aProduct) => aProduct.id !== id);
+            this.carrito.products = this.carrito.products.filter((aProduct) => aProduct.id !== id);
             this.carrito.timestamp = moment_1.default().format("D.M.YY HH:mm:ss");
             console.log("El producto fue eliminado del carrito!");
             return deletedProduct;

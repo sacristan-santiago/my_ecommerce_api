@@ -1,0 +1,8 @@
+{"level":50,"time":1636596446305,"pid":4796,"hostname":"DESKTOP-SGN90K7","msg":"\"password\" with value \"tinoteamo\" fails to match the required pattern: /^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/"}
+{"level":50,"time":1636596446306,"pid":4796,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR \"password\" with value \"tinoteamo\" fails to match the required pattern: /^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/"}
+{"level":50,"time":1636596478867,"pid":4796,"hostname":"DESKTOP-SGN90K7","msg":"\"password2\" is not allowed"}
+{"level":50,"time":1636596478867,"pid":4796,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR \"password2\" is not allowed"}
+{"level":50,"time":1636596766747,"pid":4796,"hostname":"DESKTOP-SGN90K7","msg":"\"password2\" is not allowed"}
+{"level":50,"time":1636596766753,"pid":4796,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR \"password2\" is not allowed"}
+{"level":50,"time":1636596833637,"pid":4796,"hostname":"DESKTOP-SGN90K7","msg":"\"password2\" is not allowed"}
+{"level":50,"time":1636596833637,"pid":4796,"hostname":"DESKTOP-SGN90K7","msg":"HUBO UN ERROR \"password2\" is not allowed"}

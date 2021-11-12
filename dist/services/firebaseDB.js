@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.firebaseService = void 0;
 var admin = require("firebase-admin");
-var serviceAccount = require("./firebase.json");
+// var serviceAccount = require("./firebase.json");
 const config_1 = __importDefault(require("../config"));
 class firebaseDB {
     init() {

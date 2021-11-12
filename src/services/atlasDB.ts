@@ -1,16 +1,24 @@
 import mongoose from "mongoose";
+import Grid from "gridfs-stream";
 import {productosmodel} from "../schemas/productos";
 import {countersmodel} from "../schemas/counters";
 import Config from "../config";
 
+const usuario = Config.MONGO_ATLAS_USER;
+const password = Config.MONGO_ATLAS_PASSWORD;
+const dbName = Config.MONGO_ATLAS_DBNAME;
+const clusterUrl = Config.MONGO_ATLAS_CLUSTER
+export const myURI = `mongodb+srv://${usuario}:${password}@${clusterUrl}/${dbName}?retryWrites=true&w=majority`
+
 class atlasDB {
     async init () {
         try {
-            const usuario = Config.MONGO_ATLAS_USER;
-            const password = Config.MONGO_ATLAS_PASSWORD;
-            const dbName = Config.MONGO_ATLAS_DBNAME;
-            const clusterUrl = Config.MONGO_ATLAS_CLUSTER
-            const myURI = `mongodb+srv://${usuario}:${password}@${clusterUrl}/${dbName}?retryWrites=true&w=majority`
+
+            // const connectionParams = {
+            //     useNewUrlParser: true,
+            //     useCreateIndex: true,
+            //     useUnifiedTopology: true
+            // }
                         
             /******************PRODUCTOS DB******************/    
             const products = [
@@ -57,6 +65,13 @@ class atlasDB {
               ]
 
             await mongoose.connect(myURI);
+
+            let gfs;
+            const conn = mongoose.connection
+            conn.once("open", ()=> {
+                gfs = Grid(conn, mongoose.mongo)
+                gfs.collection("photos")
+            })
             
             // await productosmodel.collection.drop();
             // await countersmodel.collection.drop();

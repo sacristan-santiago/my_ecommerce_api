@@ -10,6 +10,13 @@
             <input type="text" id="thumbnail" name="thumbnail">
             <button onclick="sendProduct()">Enviar</button>
         </fieldset>
+
+        <h2>Cargar tu foto</h2>
+        <form method="post", action="./upload">
+            <input type="file" name="file" accept="image/jpg, image/jpeg">
+            <input type="submit" value="Upload">
+        </form>
+
         <form method="GET" action="./logout">
             <button type="submit" class="btn">Log Out</button>
         </form>

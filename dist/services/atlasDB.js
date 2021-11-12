@@ -12,20 +12,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.altasService = void 0;
+exports.altasService = exports.myURI = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
+const gridfs_stream_1 = __importDefault(require("gridfs-stream"));
 const productos_1 = require("../schemas/productos");
 const counters_1 = require("../schemas/counters");
 const config_1 = __importDefault(require("../config"));
+const usuario = config_1.default.MONGO_ATLAS_USER;
+const password = config_1.default.MONGO_ATLAS_PASSWORD;
+const dbName = config_1.default.MONGO_ATLAS_DBNAME;
+const clusterUrl = config_1.default.MONGO_ATLAS_CLUSTER;
+exports.myURI = `mongodb+srv://${usuario}:${password}@${clusterUrl}/${dbName}?retryWrites=true&w=majority`;
 class atlasDB {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const usuario = config_1.default.MONGO_ATLAS_USER;
-                const password = config_1.default.MONGO_ATLAS_PASSWORD;
-                const dbName = config_1.default.MONGO_ATLAS_DBNAME;
-                const clusterUrl = config_1.default.MONGO_ATLAS_CLUSTER;
-                const myURI = `mongodb+srv://${usuario}:${password}@${clusterUrl}/${dbName}?retryWrites=true&w=majority`;
+                // const connectionParams = {
+                //     useNewUrlParser: true,
+                //     useCreateIndex: true,
+                //     useUnifiedTopology: true
+                // }
                 /******************PRODUCTOS DB******************/
                 const products = [
                     {
@@ -69,7 +75,13 @@ class atlasDB {
                         stock: 10
                     }
                 ];
-                yield mongoose_1.default.connect(myURI);
+                yield mongoose_1.default.connect(exports.myURI);
+                let gfs;
+                const conn = mongoose_1.default.connection;
+                conn.once("open", () => {
+                    gfs = gridfs_stream_1.default(conn, mongoose_1.default.mongo);
+                    gfs.collection("photos");
+                });
                 // await productosmodel.collection.drop();
                 // await countersmodel.collection.drop();
                 //Create collection

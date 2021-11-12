@@ -1,7 +1,10 @@
 import passport from "passport";
 import passportLocal, { IStrategyOptionsWithRequest, VerifyFunction } from "passport-local";
+import { usuariosAPI } from "../apis/usuarios"
 import { UsuarioModel} from "../schemas/usuario";
 import { IStrategyOptions } from "passport-local";
+import { userJoiSchema } from "../schemas/users";
+import { logger } from "../services/logger/logger";
 
 const LocalStrategy = passportLocal.Strategy;
 
@@ -20,24 +23,23 @@ const loginFunc = async (username: string, password: string, done: any): Promise
     const user = await UsuarioModel.findOne({ username });
   
     if (!user) {
-      return done(null, false, { message: 'User does not exist' });
+      logger.warn(`Login fail for username ${username}: user does not exist`)
+      return done(null, false, { message: 'User or password invalid' });
     }
     if (!user.isValidPassword(password)) {
-      return done(null, false, { message: 'Password is not valid.' });
+      logger.warn(`Login fail for username ${username}: password is not valid`)
+      return done(null, false, { message: 'User or password invalid' });
     }
-    console.log('SALIO TODO BIEN, TE LOGUEASTE!!');
+
+    logger.info(`User ${username} logged in at ${new Date()}`)
     return done(null, user);
   };
 
 const signUpFunc = async (req: any, username: string, password: string, done: any): Promise<VerifyFunction> => {
   try {
+    await userJoiSchema.validateAsync(req.body)
+
     const { username, password, password2, email, firstName, lastName } = req.body;
-    console.log(req.body)
-    
-    if (!username || !password || !password2 || !email || !firstName || !lastName || password != password2) {
-      console.log('Invalid body fields');
-      return done(null, false);
-    }
 
     const query = {
       $or: [{ username: username }, { email: email }],
@@ -46,8 +48,9 @@ const signUpFunc = async (req: any, username: string, password: string, done: an
     const user = await UsuarioModel.findOne(query);
 
     if (user) {
-      console.log('User already exists');
-      console.log(user);
+      logger.warn(
+        `Singup Fail for username ${username}: Username or email already exists`
+      )
       return done(null, false, 'User already exists');
     } else {
       const userData = {
@@ -58,14 +61,13 @@ const signUpFunc = async (req: any, username: string, password: string, done: an
         lastName,
       };
 
-      const newUser = new UsuarioModel(userData);
-
-      await newUser.save();
+      const newUser = await usuariosAPI.addUser(userData);
 
       return done(null, newUser);
     }
-  } catch (error) {
-    return done(error);
+  } catch (err: any) {
+        logger.error(err.message);
+        return done(err);
   }
 };
   
@@ -76,12 +78,13 @@ export const isLoggedIn = (req: any, res: any, done: any) => {
   done();
 };
 
+//se puede copiar isloggedIn para is admin
+
 
 passport.use("login", new LocalStrategy(strategyOptionsLogin, loginFunc));
 passport.use("signup", new LocalStrategy(strategyOptionsSignup, signUpFunc));
 
 passport.serializeUser((user: any, done) => {
-  // console.log(user);
   done(null, user._id);
 });
 

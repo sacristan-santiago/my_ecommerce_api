@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Grid from "gridfs-stream";
 import {productosmodel} from "../schemas/productos";
 import {countersmodel} from "../schemas/counters";
 import {carritomodel} from "../schemas/carrito";
@@ -12,6 +13,13 @@ class mongoooseDB {
             const URL = `mongodb://localhost/${dbName}`;
 
             await mongoose.connect(URL);
+            
+            let gfs;
+            const conn = mongoose.connection
+            conn.once("open", ()=> {
+                gfs = Grid(conn, mongoose.mongo)
+                gfs.collection("uploads")
+            })
             
             // await productosmodel.collection.drop();
             // await countersmodel.collection.drop();

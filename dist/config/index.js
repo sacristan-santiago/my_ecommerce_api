@@ -15,6 +15,8 @@ const venv = {
     MONGO_LOCAL_DBNAME: process.env.MONGO_LOCAL_DBNAME || 'dbNameLocal',
     FIREBASE_PRIVATEKEY: process.env.FIREBASE_PRIVATEKEY || 'firebaseKey',
     FIREBASE_PROJECTID: process.env.FIREBASE_PROJECTID || 'firebaseProjectId',
-    FIREBASE_CLIENTEMAIL: process.env.FIREBASE_CLIENTEMAIL || 'firebaseClienteEmail'
+    FIREBASE_CLIENTEMAIL: process.env.FIREBASE_CLIENTEMAIL || 'firebaseClienteEmail',
+    SESSION_SECRET: process.env.SESSION_SECRET || "shhhh",
+    SESSION_COOKIE_TIMEOUT: parseInt(process.env.SESSION_COOKIE_TIMEOUT || "2")
 };
 exports.default = venv;

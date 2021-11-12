@@ -1,12 +1,19 @@
-import mongoose from "mongoose";
-import {ProductoSchema} from "../schemas/productos";
+import mongoose, { Schema } from "mongoose";
 
 const carritoCollection = "carrito";
 
-const CarritoSchema = new mongoose.Schema ({
-    uID: {type: Number, required: true},
-    timestamp: {type: Date, required: true},
-    productos: [ProductoSchema],
+export const CarritoSchema = new mongoose.Schema ({
+    userId: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        unique: true,
+      },
+      products: [
+        {
+          _id: Schema.Types.ObjectId,
+          amount: Number,
+        },
+      ],
 })
 
 export const carritomodel = mongoose.model(carritoCollection, CarritoSchema)

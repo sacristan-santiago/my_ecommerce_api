@@ -1,6 +1,9 @@
 import {Router} from "express";
 import passport from "passport";
 import { isLoggedIn } from "../middlewares/auth";
+import { upload } from "../middlewares/multer"
+import { registerMail } from "../middlewares/mailer"
+import { usuariosAPI } from "../apis/usuarios";
 
 const router = Router();
 
@@ -48,13 +51,22 @@ router.post('/register', passport.authenticate("signup"), (req, res, next) => {
   res.render("main", dataDinamica)
 })
 
+router.post("/upload", isLoggedIn, upload.single("file"), async (req: any, res) => {
+  if (req.file === undefined) return res.send("you must select a file")
+
+  usuariosAPI.updatePhoto(req.user._id, req.file.id)
+
+  const imgUrl = `http://localhost:8080/file/${req.file.filename}`
+  return res.send(imgUrl)
+})
+
 declare module 'express-session' {
-interface Session {
-    loggedIn: boolean,
-    contador: number,
-    admin: boolean,
-    username: string
-}
+  interface Session {
+      loggedIn: boolean,
+      contador: number,
+      admin: boolean,
+      username: string
+  }
 }
 
 router.get('/logout', (req, res) => {

@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mongooseService = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
+const gridfs_stream_1 = __importDefault(require("gridfs-stream"));
 const productos_1 = require("../schemas/productos");
 const counters_1 = require("../schemas/counters");
 const carrito_1 = require("../schemas/carrito");
@@ -26,6 +27,12 @@ class mongoooseDB {
                 const dbName = config_1.default.MONGO_LOCAL_DBNAME;
                 const URL = `mongodb://localhost/${dbName}`;
                 yield mongoose_1.default.connect(URL);
+                let gfs;
+                const conn = mongoose_1.default.connection;
+                conn.once("open", () => {
+                    gfs = gridfs_stream_1.default(conn, mongoose_1.default.mongo);
+                    gfs.collection("uploads");
+                });
                 // await productosmodel.collection.drop();
                 // await countersmodel.collection.drop();
                 /******************PRODUCTOS COLLECTION******************/
