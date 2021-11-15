@@ -20,7 +20,11 @@ router.get('/', isLoggedIn, (req, res) => {
   const dataDinamica = {
     mostrarFormulario: true,
   }
-  res.render("main", dataDinamica)
+  res.json({
+    msg: "User logged in correctly"
+  })
+  // res.render("main", dataDinamica)
+  
 })
 
 router.get('/login',  (req, res) => {
@@ -44,7 +48,7 @@ router.get('/register', (req, res) => {
   res.render("main", dataDinamica)
 })
 
-router.post('/register', passport.authenticate("signup"), (req, res, next) => {
+router.post('/register', passport.authenticate("signup"), registerMail,  (req, res, next) => {
   const dataDinamica = {
     mostrarRegisterOk: true,
   }

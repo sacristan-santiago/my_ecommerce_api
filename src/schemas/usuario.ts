@@ -24,6 +24,10 @@ export const UsuarioSchema = new mongoose.Schema<UserI> ({
     lastName:  {
         type: String,
         required: true,
+    },
+    phoneNumber: {
+        type: String,
+        required: true
     },    
     photoId: {
         type: String,

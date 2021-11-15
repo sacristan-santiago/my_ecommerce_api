@@ -1,15 +1,16 @@
 import {Router} from "express";
 import { carritoController } from "../controllers/carrito";
 import { checkAdmin } from "../middlewares/admin";
+import { isLoggedIn } from "../middlewares/auth";
 
 const router = Router();
 
-router.get("/", carritoController.getProductosCarrito);
+router.get('/', carritoController.getCartByUser);
 
-router.get("/:id", carritoController.getProductosCarrito);
+router.post('/add', carritoController.addProduct);
 
-router.post("/:id", carritoController.addProductoCarrito);  
+router.post('/delete', carritoController.deleteProduct);
 
-router.delete("/:id", carritoController.deleteProductoCarrito);
+router.post('/submit', carritoController.submitCart);
 
 export default router; 

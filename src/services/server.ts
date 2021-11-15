@@ -64,6 +64,6 @@ app.engine("hbs", handlebars ({
     extname: "hbs",
 }))
 
-const myHTTPServer = new http.Server(app);
+export const myHTTPServer = new http.Server(app);
 
-export default myHTTPServer;
+export default app;

@@ -23,7 +23,7 @@ class Email {
       },
     });
 
-    this.transporter.verify().then(() => console.log('READY To Send Email'));
+    // this.transporter.verify().then(() => console.log('READY To Send Email'));
   }
 
   async sendEmail(dest: string, subject: string, content: string, photoUrl: string = "") {

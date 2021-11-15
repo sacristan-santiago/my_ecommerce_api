@@ -6,6 +6,7 @@ export interface NewUserI {
     email: string;
     username: string;
     password: string;
+    phoneNumber: string;
   }
 
   export interface UserI {
@@ -16,6 +17,7 @@ export interface NewUserI {
     email: string;
     username: string;
     password: string;
+    phoneNumber: string;
   }
   
   export interface UserQuery {

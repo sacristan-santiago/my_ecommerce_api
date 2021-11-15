@@ -1,78 +1,103 @@
 import {Request, Response, NextFunction} from "express";
 import {carritoAPI} from "../apis/carrito";
-import {productsAPI} from "../apis/productos"
-import { Product } from "../models/products/products.interface";
+import {productsAPI} from "../apis/productos";
+import { EmailGmailService } from "../services/mailservice";
+import { twilioService } from "../services/twilio";
+import Config from "../config"
 // import {carritoQuery} from "../models/carrito/carrito.interface";
 
 class Carrito {
-    async getProductosCarrito (req: Request, res: Response) {
-        const id = req.params.id;
+    async getCartByUser(req: Request, res: Response) {
+        const user: any = req.user;
+        const cart = await carritoAPI.getCart(user._id);
+        res.json(cart);
+      }
+    
+      async addProduct(req: Request, res: Response) {
+        const user: any = req.user;
+        const cart = await carritoAPI.getCart(user._id);
+    
+        const { productId, productAmount } = req.body;
+    
+        if (!productId || !productAmount)
+          return res.status(400).json({ msg: 'Invalid body parameters' });
+    
+        const product = await productsAPI.getProducts(productId);
+    
+        if (!product.length)
+          return res.status(400).json({ msg: 'product not found' });
+    
+        if (parseInt(productAmount) < 0)
+          return res.status(400).json({ msg: 'Invalid amount' });
+    
+        const updatedCart = await carritoAPI.addProduct(
+          cart._id,
+          productId,
+          parseInt(productAmount)
+        );
+        res.json({ msg: 'Product added', cart: updatedCart });
+      }
+    
+      async deleteProduct(req: Request, res: Response) {
+        const user: any = req.user;
+        const cart = await carritoAPI.getCart(user._id);
+    
+        const { productId, productAmount } = req.body;
+    
+        if (!productId || !productAmount)
+          return res.status(400).json({ msg: 'Invalid body parameters' });
+    
+        const product = await productsAPI.getProducts(productId);
+    
+        if (!product.length)
+          return res.status(400).json({ msg: 'product not found' });
+    
+        if (parseInt(productAmount) < 0)
+          return res.status(400).json({ msg: 'Invalid amount' });
+    
+        const updatedCart = await carritoAPI.deleteProduct(
+          cart._id,
+          productId,
+          parseInt(productAmount)
+        );
+        res.json({ msg: 'Product deleted', cart: updatedCart });
+      }
+
+      async submitCart (req: Request, res: Response) {
+        const user: any = req.user;
         
-        if (id) {
-            const productoCarrito = await carritoAPI.getProducts(id);
+        const cart = await carritoAPI.getCart(user.id)
+        if (cart.products.length>0) {
+          const order = await carritoAPI.submitCart(user._id);
+          
+          if (order) {
+            const mailSubject = `Nuevo pedido de ${user.firstName} ${user.lastName}, mail: ${user.email} `
+            const mailContent = `Has adquirido los siguiente productos: ${cart.products}`
+            await EmailGmailService.sendEmail(Config.GMAIL_EMAIL, mailSubject, mailContent)
 
-            if (!productoCarrito) {
-                return res.status(404).json ({
-                    msg: "Producto no encontrado en carrito",
-                })
-            }
+            const smsMessage = "Su pedido ha sido recibido y se encuentra en proceso."
+            await twilioService.sendMessage(user.phoneNumber, smsMessage)
+            
+            const whatsappMessage = mailSubject
+            await twilioService.sendWhatsappMessage(Config.ADMINISTRATOR_WHATSAPP_CELLPHONE, whatsappMessage )
 
+            await carritoAPI.clearCart(cart._id)
+            
             return res.json({
-                carritoProducto: productoCarrito,
+            order: order
             })
+          }
+
+          return res.json({
+            msg: "Order did not submit, please try again"
+          })
+          
         }
 
-        res.json({
-            carritoProductos: await carritoAPI.getProducts(),
+        return res.json({
+          msg: "Cart is empty, cannot submit order"
         })
-    }
-
-    async addProductoCarrito (req: Request, res: Response) {
-        const id = req.params.id;
-        
-        if (await carritoAPI.getProducts(id)) {
-            return res.json ({
-                msg: "El producto ya se encuentra en el carrito",
-            })
-        }
-        //AGREGO PRODUCTO AL CARRITO DESDE LA PERSISTENCIA DE PRODUCTOS
-        const newItem = await productsAPI.getProducts(id)
-        console.log(newItem);
-       
-        if (!newItem) {
-            return res.status(404).json ({
-                msg: "Producto no encontrado en base datos de productos",
-            })
-        } else {
-            return res.json({
-                msg: "Nuevo producto agregado al carrito",
-                nuevoProducto: await carritoAPI.addProduct(newItem),
-            })
-        }
-    }
-
-    async deleteProductoCarrito (req: Request, res: Response) {
-        const id = req.params.id;
-
-        if(!id) {
-            return res.status(404).json({
-                msg: "Es necesario definir un id"
-            })
-        }
-
-        const producto = await carritoAPI.findProduct(id);
-
-        if(!producto) {
-            return res.status(400).json ({
-                msg: "Producto no encontrado en el carrito"
-            }) 
-        }
-        
-        res.json({
-            msg: "Producto borrado del carrito",
-            producto: await carritoAPI.deleteProduct(id),
-        })
-    }
+      }
 }
 
 export const carritoController = new Carrito ();

@@ -39,7 +39,7 @@ const signUpFunc = async (req: any, username: string, password: string, done: an
   try {
     await userJoiSchema.validateAsync(req.body)
 
-    const { username, password, password2, email, firstName, lastName } = req.body;
+    const { username, password, password2, email, firstName, lastName, phoneNumber } = req.body;
 
     const query = {
       $or: [{ username: username }, { email: email }],
@@ -59,6 +59,7 @@ const signUpFunc = async (req: any, username: string, password: string, done: an
         email,
         firstName,
         lastName,
+        phoneNumber
       };
 
       const newUser = await usuariosAPI.addUser(userData);

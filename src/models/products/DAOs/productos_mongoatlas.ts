@@ -15,9 +15,9 @@ interface addProduct {
 
 export class ProductosATLASMONGODAO {
     
-    async get (id: number | undefined) {
+    async get (id: string | undefined) {
         if (id) {
-            return productosmodel.find({uID: id})
+            return productosmodel.find({_Id : id})
         }
         return productosmodel.find({});
         

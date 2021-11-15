@@ -1,8 +1,12 @@
 import mongoose, { Schema } from 'mongoose';
 import Config from '../../../config';
-import { CartI, ProductCart, CartBaseClass } from '../carrito.interface';
+import { CartI, ProductCart, CartBaseClass, OrderI } from '../carrito.interface';
 import { altasService } from "../../../services/atlasDB";
 import { carritomodel } from '../../../schemas/carrito';
+import { carritoAPI } from '../../../apis/carrito';
+import { ordermodel } from '../../../schemas/order';
+import { logger } from '../../../services/logger/logger';
+import { json } from 'express';
 
 export class CarritoATLASMONGODAO implements CartBaseClass {
 
@@ -23,6 +27,15 @@ export class CarritoATLASMONGODAO implements CartBaseClass {
     await newCart.save();
 
     return newCart;
+  }
+
+  async clearCart(cartId: string) {
+    const cart: any = await carritomodel.findById(cartId);
+    
+    await cart.save();
+    
+    return cart
+
   }
 
   productExist(cart: CartI, productId: string): boolean {
@@ -67,5 +80,22 @@ export class CarritoATLASMONGODAO implements CartBaseClass {
 
     await cart.save();
     return cart;
+  }
+
+  async submitCart(userId: string): Promise<OrderI | undefined> {
+    try {
+      const cart: any = await carritomodel.findOne({ userId });
+      if (!cart) throw new Error('id not found');
+      
+      const newOrder: any = new ordermodel({
+        userId: cart.userId,
+        products: cart.products
+      })
+
+      await newOrder.save()
+      return newOrder
+    }  catch (e) {
+      logger.error(e);
+    }
   }
 }

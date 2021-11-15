@@ -10,6 +10,14 @@ export interface CartI {
     products: MongoProduct[],
 }
 
+export interface OrderI {
+  _id: string,
+  cartId: productReference
+  userId: productReference
+  timestamp: string,
+  products: MongoProduct[],
+}
+
 export interface ProductCart {
     _id: string;
     amount: number;

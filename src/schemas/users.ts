@@ -18,6 +18,7 @@ export const userJoiSchema = Joi.object({
     username: Joi.string().min(5).max(10).required(),
     password: Joi.string().regex(PASS_RE).required(),
     password2: Joi.string().regex(PASS_RE).required(),
+    phoneNumber: Joi.string().min(14).max(15).required()
 })
 
 export const usersmodel = mongoose.model(usersCollection, UsersSchema)
