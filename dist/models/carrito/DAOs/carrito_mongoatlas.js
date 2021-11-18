@@ -11,6 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CarritoATLASMONGODAO = void 0;
 const carrito_1 = require("../../../schemas/carrito");
+const order_1 = require("../../../schemas/order");
+const logger_1 = require("../../../services/logger/logger");
 class CarritoATLASMONGODAO {
     get(userId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -28,6 +30,13 @@ class CarritoATLASMONGODAO {
             });
             yield newCart.save();
             return newCart;
+        });
+    }
+    clearCart(cartId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const cart = yield carrito_1.carritomodel.findById(cartId);
+            yield cart.save();
+            return cart;
         });
     }
     productExist(cart, productId) {
@@ -64,6 +73,24 @@ class CarritoATLASMONGODAO {
                 cart.products[index].amount -= product.amount;
             yield cart.save();
             return cart;
+        });
+    }
+    submitCart(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const cart = yield carrito_1.carritomodel.findOne({ userId });
+                if (!cart)
+                    throw new Error('id not found');
+                const newOrder = new order_1.ordermodel({
+                    userId: cart.userId,
+                    products: cart.products
+                });
+                yield newOrder.save();
+                return newOrder;
+            }
+            catch (e) {
+                logger_1.logger.error(e);
+            }
         });
     }
 }

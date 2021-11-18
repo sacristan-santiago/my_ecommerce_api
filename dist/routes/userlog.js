@@ -16,12 +16,17 @@ const express_1 = require("express");
 const passport_1 = __importDefault(require("passport"));
 const auth_1 = require("../middlewares/auth");
 const multer_1 = require("../middlewares/multer");
+const mailer_1 = require("../middlewares/mailer");
+const usuarios_1 = require("../apis/usuarios");
 const router = express_1.Router();
 router.get('/', auth_1.isLoggedIn, (req, res) => {
     const dataDinamica = {
         mostrarFormulario: true,
     };
-    res.render("main", dataDinamica);
+    res.json({
+        msg: "User logged in correctly"
+    });
+    // res.render("main", dataDinamica)
 });
 router.get('/login', (req, res) => {
     const dataDinamica = {
@@ -40,15 +45,16 @@ router.get('/register', (req, res) => {
     };
     res.render("main", dataDinamica);
 });
-router.post('/register', passport_1.default.authenticate("signup"), (req, res, next) => {
+router.post('/register', passport_1.default.authenticate("signup"), mailer_1.registerMail, (req, res, next) => {
     const dataDinamica = {
         mostrarRegisterOk: true,
     };
     res.render("main", dataDinamica);
 });
-router.post("/upload", multer_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/upload", auth_1.isLoggedIn, multer_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.file === undefined)
         return res.send("you must select a file");
+    usuarios_1.usuariosAPI.updatePhoto(req.user._id, req.file.id);
     const imgUrl = `http://localhost:8080/file/${req.file.filename}`;
     return res.send(imgUrl);
 }));

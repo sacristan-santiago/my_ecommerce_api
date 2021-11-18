@@ -55,5 +55,10 @@ class UsuariosAPI {
             return this.usuarios.query(query);
         });
     }
+    updatePhoto(id, photoId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.usuarios.updatePhoto(id, photoId);
+        });
+    }
 }
 exports.usuariosAPI = new UsuariosAPI();

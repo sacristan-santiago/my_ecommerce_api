@@ -17,7 +17,7 @@ const storage = new multer_gridfs_storage_1.GridFsStorage({
         }
         return {
             bucketName: "photos",
-            filename: `${Date.now()}-any-name-${file.originalname}`
+            filename: `${Date.now()}-Avatar-${file.originalname}`
         };
     }
 });

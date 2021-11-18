@@ -1,0 +1,11 @@
+config:
+  target: 'http://localhost:8081'
+  phases:
+    - duration: 5
+      arrivalRate: 50
+      name: Warm up
+scenarios:
+  - name: 'Search all products'
+    flow:
+      - get:
+          url: '/api/productos'

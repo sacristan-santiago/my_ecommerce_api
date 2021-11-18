@@ -22,6 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.myHTTPServer = void 0;
 const express_1 = __importDefault(require("express"));
 const express_session_1 = __importDefault(require("express-session"));
 const passport_1 = __importDefault(require("passport"));
@@ -76,5 +77,5 @@ app.engine("hbs", express_handlebars_1.default({
     partialsDir: partialsFolderPath,
     extname: "hbs",
 }));
-const myHTTPServer = new http.Server(app);
-exports.default = myHTTPServer;
+exports.myHTTPServer = new http.Server(app);
+exports.default = app;

@@ -16,7 +16,7 @@ class ProductosATLASMONGODAO {
     get(id) {
         return __awaiter(this, void 0, void 0, function* () {
             if (id) {
-                return productos_1.productosmodel.find({ uID: id });
+                return productos_1.productosmodel.find({ _Id: id });
             }
             return productos_1.productosmodel.find({});
         });

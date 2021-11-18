@@ -58,6 +58,20 @@ class UsuariosATLASMONGODAO {
             return result[0];
         });
     }
+    updatePhoto(id, photoId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log(`llego, userId: ${id}, photoId: ${photoId}`);
+                const user = yield usuario_1.UsuarioModel.findById(id);
+                user.photoId = photoId;
+                console.log(`nuevo user: ${user}`);
+                yield usuario_1.UsuarioModel.findByIdAndUpdate(id, user);
+            }
+            catch (err) {
+                console.log(err);
+            }
+        });
+    }
     validateUserPassword(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield usuario_1.UsuarioModel.findOne({ username });

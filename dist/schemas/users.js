@@ -21,5 +21,6 @@ exports.userJoiSchema = joi_1.default.object({
     username: joi_1.default.string().min(5).max(10).required(),
     password: joi_1.default.string().regex(PASS_RE).required(),
     password2: joi_1.default.string().regex(PASS_RE).required(),
+    phoneNumber: joi_1.default.string().min(14).max(15).required()
 });
 exports.usersmodel = mongoose_1.default.model(usersCollection, UsersSchema);

@@ -13,6 +13,7 @@ exports.carritoAPI = void 0;
 const carrito_factory_1 = require("../models/carrito/carrito.factory");
 const productos_1 = require("./productos");
 const usuarios_1 = require("./usuarios");
+const productos_2 = require("./productos");
 class CarritoAPI {
     constructor() {
         this.carrito = carrito_factory_1.CarritoFactoryDAO.get(productos_1.tipoPersistencia);
@@ -43,15 +44,41 @@ class CarritoAPI {
             return newCart;
         });
     }
-    addProduct(newItem) {
+    addProduct(cartId, productId, amount) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newProduct = yield this.carrito.addProduct(newItem);
-            return newProduct;
+            const product = (yield productos_2.productsAPI.getProducts(productId))[0];
+            const addProduct = {
+                _id: productId,
+                nombre: product.nombre,
+                precio: product.precio,
+                amount,
+            };
+            const updatedCart = yield this.carrito.addProduct(cartId, addProduct);
+            return updatedCart;
         });
     }
-    deleteProduct(id) {
+    deleteProduct(cartId, productId, amount) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.carrito.deleteProduct(id);
+            const product = (yield productos_2.productsAPI.getProducts(productId))[0];
+            const deleteProduct = {
+                _id: productId,
+                nombre: product.nombre,
+                precio: product.precio,
+                amount,
+            };
+            const updatedCart = yield this.carrito.deleteProduct(cartId, deleteProduct);
+            return updatedCart;
+        });
+    }
+    clearCart(cartId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.carrito.clearCart(cartId);
+        });
+    }
+    submitCart(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const order = yield this.carrito.submitCart(userId);
+            return order;
         });
     }
 }

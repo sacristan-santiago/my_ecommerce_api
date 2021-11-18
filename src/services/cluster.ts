@@ -5,7 +5,8 @@ import { logger } from "../services/logger/logger"
 import expressServer from "./server";
 
 const initiateHTTP = () => {
-    const modo = Config.SERVER_MODE
+    let modo: any
+    (process.argv[3]) ? modo = process.argv[3] : Config.SERVER_MODE
     const numCPUs = os.cpus().length //Obtengo el numero de nucleos disponibles en mi PC
 
     if (cluster.isMaster && (modo.toUpperCase() === "CLUSTER")) {
@@ -22,7 +23,8 @@ const initiateHTTP = () => {
         });
     } else {
     /* WORKERS */
-    const port = Config.PORT
+    let port:any;
+    (process.argv[2]) ? port = process.argv[2] : Config.PORT
     expressServer.listen(port, () =>
         logger.info(`Servidor express escuchando en el puerto ${port} - PID WORKER ${process.pid}`)
     );

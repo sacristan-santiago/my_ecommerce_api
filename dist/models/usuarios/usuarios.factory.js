@@ -13,26 +13,26 @@ class UsuariosFactoryDAO {
     static get(tipo) {
         switch (tipo) {
             //   case TipoPersistencia.FileSystem:
-            //     console.log('RETORNANDO INSTANCIA CLASE CARRITO FS');
+            //     console.log('RETORNANDO INSTANCIA CLASE USUARIOS FS');
             //     const filePath = path.resolve(__dirname, './DAOs/carrito.json');
             //     return new CarritoFSDAO(filePath);
             //   case TipoPersistencia.MYSQL:
-            //     console.log('RETORNANDO INSTANCIA CLASE CARRITO MYSQL');
+            //     console.log('RETORNANDO INSTANCIA CLASE USUARIOS MYSQL');
             //     return new CarritoMYSQLDAO;
             //   case TipoPersistencia.SQLITE3:
-            //     console.log('RETORNANDO INSTANCIA CLASE CARRITO SQLITE3');
+            //     console.log('RETORNANDO INSTANCIA CLASE USUARIOS SQLITE3');
             //     return new CarritoSQLITE3DAO;
             //   case TipoPersistencia.LocalMongo:
-            //     console.log('RETORNANDO INSTANCIA CLASE CARRITO MONGO LOCAL');
+            //     console.log('RETORNANDO INSTANCIA CLASE USUARIOS MONGO LOCAL');
             //     return new CarritoLOCALMONGODAO;
             case products_factory_1.TipoPersistencia.MongoAtlas:
-                console.log('RETORNANDO INSTANCIA CLASE CARRITO MONGO ATLAS');
+                console.log('RETORNANDO INSTANCIA CLASE USUARIOS MONGO ATLAS');
                 return new usuarios_mongoatlas_1.UsuariosATLASMONGODAO;
             //   case TipoPersistencia.Firebase:
-            //     console.log('RETORNANDO INSTANCIA CLASE CARRITO FIREBASE');
+            //     console.log('RETORNANDO INSTANCIA CLASE USUARIOS FIREBASE');
             //     return new CarritoFIREBASEDAO;
             default:
-                console.log('RETORNANDO INSTANCIA CLASE CARRITO MEMORIA');
+                console.log('RETORNANDO INSTANCIA CLASE USUARIOS MEMORIA');
             // return new UsuariosMemDAO();
         }
     }

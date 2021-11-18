@@ -38,6 +38,14 @@ exports.UsuarioSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    phoneNumber: {
+        type: String,
+        required: true
+    },
+    photoId: {
+        type: String,
+        required: false,
+    }
 });
 exports.UsuarioSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {

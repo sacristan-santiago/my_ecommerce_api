@@ -45,7 +45,7 @@ const loginFunc = (username, password, done) => __awaiter(void 0, void 0, void 0
 const signUpFunc = (req, username, password, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield users_1.userJoiSchema.validateAsync(req.body);
-        const { username, password, password2, email, firstName, lastName } = req.body;
+        const { username, password, password2, email, firstName, lastName, phoneNumber } = req.body;
         const query = {
             $or: [{ username: username }, { email: email }],
         };
@@ -61,6 +61,7 @@ const signUpFunc = (req, username, password, done) => __awaiter(void 0, void 0, 
                 email,
                 firstName,
                 lastName,
+                phoneNumber
             };
             const newUser = yield usuarios_1.usuariosAPI.addUser(userData);
             return done(null, newUser);
