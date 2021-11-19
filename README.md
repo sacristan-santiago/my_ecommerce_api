@@ -1,52 +1,52 @@
-Guia para usar la API:
------------------------------------------------------
+Guia para la 3er entrega:
 
-#API productos:
+1- Crear un archivo .env siguiendo las indicaciones de .envExample
 
-  -GET: http://localhost:8080/api/productos/?id
-  
-  -POST: http://localhost:8080/api/productos
-  
-  -PUT: http://localhost:8080/api/productos/id
-  
-  -DELETE: http://localhost:8080/api/productos/id
-  
--------------
 
-#API chat:
+2- http://localhost:8080/api/register
+nota: el phone number registrado va a recibir las notifiaciones de logueo y demas el formato es: +54911XXXXYYYY
+nota: el mail de administrador recibira un mail con todos los datos del nuevo usuario 
 
-  -GET: http://localhost:8080/api/chat
 
--------------
+3-Para subir la foto, no hay front....pero hay postman :)
+-Primero loguearse en postman mediante POST:
+http://localhost:8080/api/login
+Ejemplo de body/json:
+{
+    "username": "santi",
+    "password": "Rivercampeon10"
+}
 
-#PERSISTENCIA
+-Luego de loguearte:
+http://localhost:8080/api/upload
+En el body enviar foto mediante form-data:
+key=file(tipo file), value=(C:\Documents\rutaejemplo.jpg)
 
-1. Para cambiar de persistencia ir a "./apis/productos.ts" y modificar la variable
-tipoPersistencia segun el enum:
+Ahora se creó una nueva collection:photos.files y en el usuario se agrega un campo photoId con el _id de la foto.
 
-  enum TipoPersistencia {
-    Memoria = 'MEM',
-    FileSystem = 'FS',
-    MYSQL = 'MYSQL',
-    SQLITE3 = 'SQLITE3',
-    LocalMongo = 'LOCAL-MONGO',
-    MongoAtlas = 'MONGO-ATLAS',
-    Firebase = 'FIREBASE',
-  }
+4-Asumiendo que ya estás logueado:
+Ver carrito: GET: http://localhost:8080/api/carrito
 
-2. Luego de seleccionar la persistencia actuar segun el caso:
+Agregar producto al carrito: POST http://localhost:8080/api/carrito/add/
+Ejemplo body formato json:
+{
+    "productId": "614a537ccf76afc6329c9f6f",
+    "productAmount": 5
+}
 
-  -Memoria: sin pasos adicionales
+Borrar producto del carrito: POST http://localhost:8080/api/carrito/delete/
+Ejemplo body formato json:
+{
+    "productId": "614a537ccf76afc6329c9f6f",
+    "productAmount": 3
+}
 
-  -FileSystem: sin pasos adicionales
+Generar orden del carrito: POST http://localhost:8080/api/carrito/submit/
+Nota: se genera en la collection orders una nueva orden. El administrador
+recibe un mail, un sms y un whatsapp con la info del pedido.
 
-  -mySQL: crear una base de datos llamada "ecommerce" en localhost
-
-  -SQLITE3: sin pasos adicionales
-
-  -mongo_local: crear un archivo .env en el root con la variable MONGO_LOCAL_DBNAME=nombreDB
-
-  -mongo_altas: crear un archivo .env en el root con las variables MONGO_ATLAS_DBNAME, MONGO_ATLAS_USER, MONGO_ATLAS_PASSWORD, 
-  MONGO_ATLAS_CLUSTER y MONGO_ATLAS_DBNAME. Ver envExample
-
-  -firebase: crear un archivo .env en el root con las variables FIREBASE_PRIVATEKEY, FIREBASE_PROJECTID y FIREBASE_CLIENTEMAIL. Ver envExample
+5-Si se quisera se puede correr artillery para analizar el comportamiento de la app.
+Hay que abrir 3 consolas:
+consola 1: npm run start:fork
+consola 2: npm run start:cluster
+consola 3: npm run artillery:fork o npm run artillery:cluster

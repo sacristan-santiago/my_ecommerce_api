@@ -10,7 +10,7 @@ const logger_1 = require("../services/logger/logger");
 const server_1 = __importDefault(require("./server"));
 const initiateHTTP = () => {
     let modo;
-    (process.argv[3]) ? modo = process.argv[3] : config_1.default.SERVER_MODE;
+    (process.argv[3]) ? modo = process.argv[3] : modo = config_1.default.SERVER_MODE;
     const numCPUs = os_1.default.cpus().length; //Obtengo el numero de nucleos disponibles en mi PC
     if (cluster_1.default.isMaster && (modo.toUpperCase() === "CLUSTER")) {
         logger_1.logger.info(`NUMERO DE CPUS ===> ${numCPUs}`);
@@ -26,7 +26,7 @@ const initiateHTTP = () => {
     else {
         /* WORKERS */
         let port;
-        (process.argv[2]) ? port = process.argv[2] : config_1.default.PORT;
+        (process.argv[2]) ? port = process.argv[2] : port = config_1.default.PORT;
         server_1.default.listen(port, () => logger_1.logger.info(`Servidor express escuchando en el puerto ${port} - PID WORKER ${process.pid}`));
     }
 };
