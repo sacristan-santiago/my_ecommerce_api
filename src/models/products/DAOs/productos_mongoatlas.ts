@@ -17,8 +17,9 @@ export class ProductosATLASMONGODAO {
     
     async get (id: string | undefined) {
         if (id) {
-            return productosmodel.find({_Id : id})
+            return await productosmodel.findOne({id})
         }
+        
         return productosmodel.find({});
         
     }
@@ -30,7 +31,8 @@ export class ProductosATLASMONGODAO {
         await countersmodel.findByIdAndUpdate("productos counter identifier", {$inc: {count: 1}})
         const productscounter: any = await countersmodel.find({_id: "productos counter identifier" });
         producto.uID = productscounter[0].count;
-        return productosmodel.insertMany([producto])
+        const newProduct = await productosmodel.insertMany([producto])
+        return newProduct[0]
     }
 
     async update(id: number, data: addProduct) {

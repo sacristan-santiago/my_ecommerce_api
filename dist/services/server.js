@@ -34,6 +34,8 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const config_1 = __importDefault(require("../config"));
 const logger_1 = require("./logger/logger");
+const express_graphql_1 = require("express-graphql");
+const graphql_1 = require("./graphql");
 const usuario = config_1.default.MONGO_ATLAS_USER;
 const password = config_1.default.MONGO_ATLAS_PASSWORD;
 const dbName = config_1.default.MONGO_ATLAS_DBNAME;
@@ -59,6 +61,11 @@ app.use(express_session_1.default(StoreOptions));
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 app.use("/api", index_1.default);
+app.use('/graphql', express_graphql_1.graphqlHTTP({
+    schema: graphql_1.graphqlSchema,
+    rootValue: graphql_1.graphqlRoot,
+    graphiql: true,
+}));
 const errorHandler = (err, req, res, next) => {
     logger_1.logger.error(`HUBO UN ERROR ${err.message}`);
     res.status(500).json({

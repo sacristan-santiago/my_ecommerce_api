@@ -16,7 +16,7 @@ class ProductosATLASMONGODAO {
     get(id) {
         return __awaiter(this, void 0, void 0, function* () {
             if (id) {
-                return productos_1.productosmodel.find({ _Id: id });
+                return yield productos_1.productosmodel.findOne({ id });
             }
             return productos_1.productosmodel.find({});
         });
@@ -29,7 +29,8 @@ class ProductosATLASMONGODAO {
             yield counters_1.countersmodel.findByIdAndUpdate("productos counter identifier", { $inc: { count: 1 } });
             const productscounter = yield counters_1.countersmodel.find({ _id: "productos counter identifier" });
             producto.uID = productscounter[0].count;
-            return productos_1.productosmodel.insertMany([producto]);
+            const newProduct = yield productos_1.productosmodel.insertMany([producto]);
+            return newProduct[0];
         });
     }
     update(id, data) {

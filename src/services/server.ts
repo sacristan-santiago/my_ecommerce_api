@@ -7,8 +7,11 @@ import apiRouter from "../routes/index";
 import handlebars from "express-handlebars";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
-import Config from "../config"
-import { logger } from "./logger/logger"
+import Config from "../config";
+import { logger } from "./logger/logger";
+import { graphqlHTTP } from "express-graphql"
+import { graphqlRoot, graphqlSchema } from "./graphql"
+
 
 const usuario = Config.MONGO_ATLAS_USER;
 const password = Config.MONGO_ATLAS_PASSWORD;
@@ -41,6 +44,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/api", apiRouter);
+
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema: graphqlSchema,
+    rootValue: graphqlRoot,
+    graphiql: true,
+  })
+);
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     logger.error(`HUBO UN ERROR ${err.message}`);

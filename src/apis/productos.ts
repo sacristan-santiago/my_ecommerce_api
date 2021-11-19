@@ -21,10 +21,9 @@ class prodAPI {
   }
 
   async addProduct(productData: newProduct): Promise<Product> {
-    const newProduct = await this.productos.add(productData);
-    return newProduct;
+    return await this.productos.add(productData);
   }
-
+  
   async updateProduct(id: string, productData: newProduct) {
     const updatedProduct = await this.productos.update(id, productData);
     return updatedProduct;

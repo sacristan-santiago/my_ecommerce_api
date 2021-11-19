@@ -26,7 +26,7 @@ const initiateHTTP = () => {
     let port:any;
     (process.argv[2]) ? port = process.argv[2] : port = Config.PORT
     expressServer.listen(port, () =>
-        logger.info(`Servidor express escuchando en el puerto ${port} - PID WORKER ${process.pid}`)
+        logger.info(`Servidor graphQL escuchando en el puerto ${port} - PID WORKER ${process.pid}`)
     );
     }
 }

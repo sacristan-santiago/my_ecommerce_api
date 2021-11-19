@@ -27,7 +27,7 @@ const initiateHTTP = () => {
         /* WORKERS */
         let port;
         (process.argv[2]) ? port = process.argv[2] : port = config_1.default.PORT;
-        server_1.default.listen(port, () => logger_1.logger.info(`Servidor express escuchando en el puerto ${port} - PID WORKER ${process.pid}`));
+        server_1.default.listen(port, () => logger_1.logger.info(`Servidor graphQL escuchando en el puerto ${port} - PID WORKER ${process.pid}`));
     }
 };
 exports.default = initiateHTTP;

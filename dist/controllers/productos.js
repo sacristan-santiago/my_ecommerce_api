@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.productsController = void 0;
+exports.addProducts = exports.getProducts = exports.getProduct = exports.productsController = void 0;
 const productos_1 = require("../apis/productos");
 class Producto {
     getProducts(req, res) {
@@ -23,8 +23,8 @@ class Producto {
                         msg: "Producto no encontrado",
                     });
                 }
-                return res.json({
-                    producto: producto,
+                return res.status(200).json({
+                    producto: yield productos_1.productsAPI.getProducts(id)
                 });
             }
             const query = {};
@@ -41,13 +41,11 @@ class Producto {
             if (stockMax)
                 query.stockMax = Number(stockMax);
             if (Object.keys(query).length) {
-                return res.json({
-                    data: yield productos_1.productsAPI.query(query)
-                });
+                return yield productos_1.productsAPI.query(query);
             }
             ;
-            res.json({
-                productos: yield productos_1.productsAPI.getProducts(),
+            return res.status(200).json({
+                productos: yield productos_1.productsAPI.getProducts()
             });
         });
     }
@@ -63,10 +61,7 @@ class Producto {
     addProducts(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const newItem = yield productos_1.productsAPI.addProduct(req.body);
-            res.json({
-                msg: "Producto agregado con exito",
-                data: newItem
-            });
+            return newItem;
         });
     }
     updateProducts(req, res) {
@@ -106,3 +101,15 @@ class Producto {
     }
 }
 exports.productsController = new Producto();
+const getProduct = (args) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield productos_1.productsAPI.getProducts(args.id);
+});
+exports.getProduct = getProduct;
+const getProducts = () => __awaiter(void 0, void 0, void 0, function* () {
+    return yield productos_1.productsAPI.getProducts();
+});
+exports.getProducts = getProducts;
+const addProducts = (args) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield productos_1.productsAPI.addProduct(args);
+});
+exports.addProducts = addProducts;

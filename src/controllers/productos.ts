@@ -17,9 +17,8 @@ class Producto {
                     msg: "Producto no encontrado",
                 })
             }
-
-            return res.json({
-                producto: producto,
+            return res.status(200).json ({
+                producto: await  productsAPI.getProducts(id)
             })
         }
 
@@ -33,13 +32,11 @@ class Producto {
         if (stockMax) query.stockMax = Number(stockMax);
 
         if (Object.keys(query).length) {
-            return res.json({
-                data: await productsAPI.query(query)
-            })
+            return await productsAPI.query(query)
         };
         
-        res.json({
-            productos: await productsAPI.getProducts(),
+        return res.status(200).json ({
+            productos: await productsAPI.getProducts()
         })
     }
 
@@ -54,14 +51,10 @@ class Producto {
         next(); 
     }
     
-
     async addProducts (req: Request, res: Response) {
         const newItem = await productsAPI.addProduct(req.body);
 
-        res.json({
-            msg: "Producto agregado con exito",
-            data: newItem
-        })
+        return newItem
     }
 
     async updateProducts (req: Request, res: Response) {
@@ -104,3 +97,15 @@ class Producto {
 }
 
 export const productsController = new Producto ();
+
+export const getProduct = async (args: any) => {
+    return await productsAPI.getProducts(args.id)
+}
+
+export const getProducts = async () => {
+    return await productsAPI.getProducts()
+}
+
+export const addProducts = async (args: any) => {
+    return await productsAPI.addProduct(args);
+}

@@ -29,8 +29,7 @@ class prodAPI {
     }
     addProduct(productData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newProduct = yield this.productos.add(productData);
-            return newProduct;
+            return yield this.productos.add(productData);
         });
     }
     updateProduct(id, productData) {
