@@ -21,7 +21,7 @@ export interface Product {
 export interface MongoProduct {
     _id: string,
     uID: number,
-    timestamp: string
+    timestamp: string,
     nombre: string, 
     descripcion: string,
     codigo: string,

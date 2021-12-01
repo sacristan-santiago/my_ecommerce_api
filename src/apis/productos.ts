@@ -5,7 +5,7 @@ import { TipoPersistencia } from '../models/products/products.factory';
 /**
  * Con esta variable elegimos el tipo de persistencia
  */
-export const tipoPersistencia = TipoPersistencia.MongoAtlas;
+export const tipoPersistencia = TipoPersistencia.MongoAtlas_extended;
 
 class prodAPI {
   private productos: any;
@@ -14,7 +14,7 @@ class prodAPI {
     this.productos = ProductosFactoryDAO.get(tipoPersistencia);
   }
 
-  async getProducts(id: string | undefined = undefined): Promise<Product[]> {
+  async getProducts(id: string | undefined = undefined): Promise<any> {
     if (id) return this.productos.get(id);
 
     return this.productos.get();

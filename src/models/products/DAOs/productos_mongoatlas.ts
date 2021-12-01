@@ -1,6 +1,7 @@
 import {productosmodel} from "../../../schemas/productos";
 import  {countersmodel} from "../../../schemas/counters";
 import {ProductQuery, MongoProduct} from "../products.interface";
+import { ProductoPersistencia } from "../../../persistencia/productosMariaDB";
 
 interface addProduct {
     uID: number,
@@ -14,13 +15,28 @@ interface addProduct {
 }
 
 export class ProductosATLASMONGODAO {
+
+    private static instance: ProductosATLASMONGODAO
+
+    private constructor() { }
+
+    public static getInstance(): ProductosATLASMONGODAO {
+        if (!ProductosATLASMONGODAO.instance) {
+            ProductosATLASMONGODAO.instance = new ProductosATLASMONGODAO()
+        }
+        
+        return ProductosATLASMONGODAO.instance
+    }
     
     async get (id: string | undefined) {
+        console.log("entro al get mongo altas")
+
         if (id) {
             return productosmodel.find({_Id : id})
         }
+        const result = productosmodel.find({})
+        console.log(result)
         return productosmodel.find({});
-        
     }
 
     async add(data: addProduct) {
@@ -51,39 +67,33 @@ export class ProductosATLASMONGODAO {
     }
 
     async query(options: ProductQuery) {
-        try {
-            let productos = await productosmodel.find({});
+        let productos = await productosmodel.find({});
 
-            type Conditions = (aProduct: MongoProduct) => boolean;
-            const query: Conditions[] = [];
-            
-            if (options.nombre)
-              query.push((aProduct: MongoProduct) => aProduct.nombre == options.nombre);
+        type Conditions = (aProduct: MongoProduct) => boolean;
+        const query: Conditions[] = [];
         
-            if (options.codigo)
-              query.push((aProduct: MongoProduct) => aProduct.codigo == options.codigo);
+        if (options.nombre)
+            query.push((aProduct: MongoProduct) => aProduct.nombre == options.nombre);
+    
+        if (options.codigo)
+            query.push((aProduct: MongoProduct) => aProduct.codigo == options.codigo);
 
-            if (options.precioMin) {
-                query.push((aProduct: MongoProduct) => aProduct.precio >= Number(options.precioMin));
-            }
-
-            if (options.precioMax) {
-                query.push((aProduct: MongoProduct) => aProduct.precio <= Number(options.precioMax));
-            }
-
-            if (options.stockMin) {
-                query.push((aProduct: MongoProduct) => aProduct.stock >= Number(options.stockMin));
-            }
-
-            if (options.stockMax) {
-                query.push((aProduct: MongoProduct) => aProduct.stock <= Number(options.stockMax));
-            }
-              
-            return productos.filter((aProduct: any) => query.every((x) => x(aProduct)));
-        
-        } catch (err) {
-            console.log("ERROR");
-            console.log(err);
+        if (options.precioMin) {
+            query.push((aProduct: MongoProduct) => aProduct.precio >= Number(options.precioMin));
         }
+
+        if (options.precioMax) {
+            query.push((aProduct: MongoProduct) => aProduct.precio <= Number(options.precioMax));
+        }
+
+        if (options.stockMin) {
+            query.push((aProduct: MongoProduct) => aProduct.stock >= Number(options.stockMin));
+        }
+
+        if (options.stockMax) {
+            query.push((aProduct: MongoProduct) => aProduct.stock <= Number(options.stockMax));
+        }
+            
+        return productos.filter((aProduct: any) => query.every((x) => x(aProduct)));
     } 
 }

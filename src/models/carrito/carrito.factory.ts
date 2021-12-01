@@ -14,31 +14,31 @@ export class CarritoFactoryDAO {
       case TipoPersistencia.FileSystem:
         console.log('RETORNANDO INSTANCIA CLASE CARRITO FS');
         const filePath = path.resolve(__dirname, './DAOs/carrito.json');
-        return new CarritoFSDAO(filePath);
+        return CarritoFSDAO.getInstance(filePath);
 
       case TipoPersistencia.MYSQL:
         console.log('RETORNANDO INSTANCIA CLASE CARRITO MYSQL');
-        return new CarritoMYSQLDAO;
+        return CarritoMYSQLDAO.getInstance();
 
       case TipoPersistencia.SQLITE3:
         console.log('RETORNANDO INSTANCIA CLASE CARRITO SQLITE3');
-        return new CarritoSQLITE3DAO;
+        return CarritoSQLITE3DAO.getInstance();
 
     //   case TipoPersistencia.LocalMongo:
     //     console.log('RETORNANDO INSTANCIA CLASE CARRITO MONGO LOCAL');
-    //     return new CarritoLOCALMONGODAO;
+    //     return CarritoLOCALMONGODAO.getInstance();
 
       case TipoPersistencia.MongoAtlas:
         console.log('RETORNANDO INSTANCIA CLASE CARRITO MONGO ATLAS');
-        return new CarritoATLASMONGODAO;
+        return CarritoATLASMONGODAO.getInstance();
       
     //   case TipoPersistencia.Firebase:
     //     console.log('RETORNANDO INSTANCIA CLASE CARRITO FIREBASE');
-    //     return new CarritoFIREBASEDAO;
+    //     return CarritoFIREBASEDAO.getInstance();
         
       default:
         console.log('RETORNANDO INSTANCIA CLASE CARRITO MEMORIA');
-        // return new CarritoMemDAO();
+        // return CarritoMemDAO.getInstance();
     }
   }
 }

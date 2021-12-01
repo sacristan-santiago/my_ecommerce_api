@@ -4,9 +4,20 @@ import {Product, MongoProduct} from "../../products/products.interface"
 
 
 export class CarritoMemDAO {
-    carrito: any
+  
+  private static instance: CarritoMemDAO
+
+  public static getInstance(): CarritoMemDAO {
+      if (!CarritoMemDAO.instance) {
+        CarritoMemDAO.instance = new CarritoMemDAO()
+      }
+      
+      return CarritoMemDAO.instance
+  }
+  
+  carrito: any
     
-    constructor () {
+  private constructor () {
         const mockData = {
             _id: "1",
             userId: "sadasd",

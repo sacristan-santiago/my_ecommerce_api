@@ -4,6 +4,18 @@ import {Product} from "../../products/products.interface"
 
 export class CarritoMYSQLDAO {
 
+    private static instance: CarritoMYSQLDAO
+
+    private constructor() { }
+  
+    public static getInstance(): CarritoMYSQLDAO {
+        if (!CarritoMYSQLDAO.instance) {
+            CarritoMYSQLDAO.instance = new CarritoMYSQLDAO()
+        }
+        
+        return CarritoMYSQLDAO.instance
+    }
+
     async findProduct (id: string | undefined = undefined) {
         return myMariaDB.from("carrito").where({id: id}).select()
     }

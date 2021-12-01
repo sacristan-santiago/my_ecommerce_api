@@ -5,7 +5,17 @@ import {Product, newProduct, ProductQuery }  from '../products.interface';
 export class ProductosFSDAO {
     private rutaArchivo: string;
 
-    constructor (fileRoute: string) {
+    private static instance: ProductosFSDAO
+
+    public static getInstance(fileRoute: string): ProductosFSDAO {
+        if (!ProductosFSDAO.instance) {
+            ProductosFSDAO.instance = new ProductosFSDAO(fileRoute)
+        }
+        
+        return ProductosFSDAO.instance
+    }
+
+    private constructor (fileRoute: string) {
         this.rutaArchivo = fileRoute;
     }
     

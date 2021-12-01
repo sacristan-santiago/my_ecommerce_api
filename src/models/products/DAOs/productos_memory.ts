@@ -7,9 +7,21 @@ import {
 import moment from "moment";
 
 export class ProductosMemDAO implements ProductBaseClass {
+  
+  private static instance: ProductosMemDAO
+
+  public static getInstance(): ProductosMemDAO {
+      if (!ProductosMemDAO.instance) {
+        ProductosMemDAO.instance = new ProductosMemDAO()
+      }
+      
+      return ProductosMemDAO.instance
+  }
+  
+  
   private productos: Product[] = [];
 
-  constructor() {
+  private constructor() {
     const mockData = [
         {
           id: '1',

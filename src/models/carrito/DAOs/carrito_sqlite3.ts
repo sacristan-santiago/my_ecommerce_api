@@ -4,6 +4,18 @@ import {Product} from "../../products/products.interface"
 
 export class CarritoSQLITE3DAO {
 
+    private static instance: CarritoSQLITE3DAO
+
+    private constructor() { }
+  
+    public static getInstance(): CarritoSQLITE3DAO {
+        if (!CarritoSQLITE3DAO.instance) {
+            CarritoSQLITE3DAO.instance = new CarritoSQLITE3DAO()
+        }
+        
+        return CarritoSQLITE3DAO.instance
+    }
+
     async findProduct (id: string | undefined = undefined) {
         return sqliteDB.from("carrito").where({id: id}).select()
     }

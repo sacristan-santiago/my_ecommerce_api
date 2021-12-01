@@ -15,7 +15,17 @@ interface Product {
 export class CarritoFSDAO {
     private rutaArchivo: string;
 
-    constructor (fileRoute: string) {
+    private static instance: CarritoFSDAO
+
+    public static getInstance(fileRoute: string): CarritoFSDAO {
+        if (!CarritoFSDAO.instance) {
+            CarritoFSDAO.instance = new CarritoFSDAO(fileRoute)
+        }
+        
+        return CarritoFSDAO.instance
+    }
+    
+    private constructor (fileRoute: string) {
         this.rutaArchivo = fileRoute;
     }
 

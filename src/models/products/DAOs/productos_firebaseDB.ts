@@ -15,6 +15,18 @@ interface addProduct {
 
 export class ProductosFIREBASEDAO {
 
+    private static instance: ProductosFIREBASEDAO
+
+    private constructor() { }
+
+    public static getInstance(): ProductosFIREBASEDAO {
+        if (!ProductosFIREBASEDAO.instance) {
+            ProductosFIREBASEDAO.instance = new ProductosFIREBASEDAO()
+        }
+        
+        return ProductosFIREBASEDAO.instance
+    }
+
     async get (_id: string | undefined) {
         try {
             const firebaseDB = admin.firestore();

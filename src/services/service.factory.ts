@@ -24,6 +24,10 @@ export function serverInit (tipo: TipoPersistencia) {
         case TipoPersistencia.MongoAtlas:
             altasService.init();
             break;
+
+        case TipoPersistencia.MongoAtlas_extended:
+            altasService.init();
+            break;
         
         case TipoPersistencia.Firebase:
             firebaseService.init();

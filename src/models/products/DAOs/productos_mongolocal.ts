@@ -15,6 +15,18 @@ interface addProduct {
 
 export class ProductosLOCALMONGODAO {
     
+    private static instance: ProductosLOCALMONGODAO
+
+    private constructor() { }
+
+    public static getInstance(): ProductosLOCALMONGODAO {
+        if (!ProductosLOCALMONGODAO.instance) {
+            ProductosLOCALMONGODAO.instance = new ProductosLOCALMONGODAO()
+        }
+        
+        return ProductosLOCALMONGODAO.instance
+    }
+    
     async get (id: number | undefined) {
         if (id) {
             return productosmodel.find({uID: id})

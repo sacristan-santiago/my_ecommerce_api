@@ -10,6 +10,18 @@ import { json } from 'express';
 
 export class CarritoATLASMONGODAO implements CartBaseClass {
 
+  private static instance: CarritoATLASMONGODAO
+
+  private constructor() { }
+
+  public static getInstance(): CarritoATLASMONGODAO {
+      if (!CarritoATLASMONGODAO.instance) {
+        CarritoATLASMONGODAO.instance = new CarritoATLASMONGODAO()
+      }
+      
+      return CarritoATLASMONGODAO.instance
+  }
+
   async get(userId: string): Promise<CartI> {
     const result: any = await carritomodel.findOne({ userId });
 

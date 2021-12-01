@@ -11,6 +11,18 @@ interface addProduct {
 }
 
 export class ProductosSQLITE3DAO {
+    private static instance: ProductosSQLITE3DAO
+
+    private constructor() { }
+
+    public static getInstance(): ProductosSQLITE3DAO {
+        if (!ProductosSQLITE3DAO.instance) {
+            ProductosSQLITE3DAO.instance = new ProductosSQLITE3DAO()
+        }
+        
+        return ProductosSQLITE3DAO.instance
+    }
+
     async get (_id: string | undefined) {
         const id: number  = Number(_id)
         if (id) {

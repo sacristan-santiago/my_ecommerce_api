@@ -11,6 +11,19 @@ interface addProduct {
 }
 
 export class ProductosMYSQLDAO {
+
+    private static instance: ProductosMYSQLDAO
+
+    private constructor() { }
+
+    public static getInstance(): ProductosMYSQLDAO {
+        if (!ProductosMYSQLDAO.instance) {
+            ProductosMYSQLDAO.instance = new ProductosMYSQLDAO()
+        }
+        
+        return ProductosMYSQLDAO.instance
+    }
+    
     async get (_id: string | undefined) {
         const id: number  = Number(_id)
         if (id) {
